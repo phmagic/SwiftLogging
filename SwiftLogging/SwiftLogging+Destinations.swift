@@ -11,18 +11,18 @@ import Foundation
 public class ConsoleDestination: Destination {
     public let formatter:MessageFormatter
 
-    let queue = dispatch_queue_create("io.schwa.SwiftLogging.ConsoleDestination", DISPATCH_QUEUE_SERIAL)
-
-    init(logger:Logger, formatter:MessageFormatter = simpleFormatter) {
+    init(logger:Logger, formatter:MessageFormatter = terseFormatter) {
         self.formatter = formatter
         super.init(logger:logger)
     }
 
     public override func receiveMessage(message:Message) {
-        dispatch_async(queue) {
-            let string = simpleFormatter(message)
-            Swift.println(string)
+
+        dispatch_async(logger.consoleQueue) {
+            let string = self.formatter(message)
+            println(string)
         }
+
     }
 }
 
@@ -37,7 +37,7 @@ public class FileDestination: Destination {
     var channel:dispatch_io_t!
     var open:Bool = false
 
-    init(logger: Logger, url:NSURL = FileDestination.defaultFileDestinationURL, formatter:MessageFormatter = simpleFormatter) {
+    init(logger: Logger, url:NSURL = FileDestination.defaultFileDestinationURL, formatter:MessageFormatter = preciseFormatter) {
         self.url = url
         self.formatter = formatter
         super.init(logger: logger)
@@ -54,11 +54,13 @@ public class FileDestination: Destination {
 
         self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, queue) {
             (error:Int32) -> Void in
-            println("ERROR: \(error)")
+            self.logger.consoleLog("ERROR: \(error)")
         }
         if self.channel != nil {
             self.open = true
         }
+
+        logger.consoleLog("Startup Done")
     }
 
     public override func shutdown() {
@@ -75,10 +77,11 @@ public class FileDestination: Destination {
 
             if let strong_self = self {
                 if strong_self.open == false {
+                    strong_self.logger.consoleLog("File not open, skipping")
                     return
                 }
 
-                let string = simpleFormatter(message)
+                let string = strong_self.formatter(message)
                 let messageString = "\(string)\n"
                 var data = (messageString as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
                 // DISPATCH_DATA_DESTRUCTOR_DEFAULT is missing in swiff
@@ -86,29 +89,20 @@ public class FileDestination: Destination {
 
                 dispatch_io_write(strong_self.channel, 0, dispatchData, strong_self.queue) {
                     (done:Bool, data:dispatch_data_t!, error:Int32) -> Void in
-//                    println((done, data, error))
+                    strong_self.logger.consoleLog(("dispatch_io_write", done, data, error))
+
                 }
             }
         }
     }
 
     public static var defaultFileDestinationURL:NSURL {
-        get {
-            let fileManager = NSFileManager()
-            var url = fileManager.URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: nil)!
-
-
-            let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier!
-
-            let bundleName = NSBundle.mainBundle().infoDictionary?["CFBundleName"] as! String
-
-
-            url = url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
-            println(url)
-
-            return url
-
-        }
+        let fileManager = NSFileManager()
+        var url = fileManager.URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: nil)!
+        let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier!
+        let bundleName = NSBundle.mainBundle().infoDictionary?["CFBundleName"] as! String
+        url = url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
+        return url
     }
 
 }

@@ -11,12 +11,15 @@ import Darwin
 
 public class Logger {
 
-    private(set) var destinations:[Destination] = []
-    private(set) var filters:[(String,Filter)] = []
-    private(set) var triggers:[String:Trigger] = [:]
+    public typealias EventHandler = EventBroadcaster <Event>.Handler
+
+    private(set) var destinations:[String:Destination] = [:]
+    private(set) var filters:[(String, Filter)] = []
+    private(set) var eventBroadcaster = EventBroadcaster <Event>()
 
     private let startTimestamp:Timestamp = Timestamp()
-    private let queue = dispatch_queue_create("io.schwa.SwiftLogger", DISPATCH_QUEUE_SERIAL)
+    public let queue = dispatch_queue_create("io.schwa.SwiftLogger", DISPATCH_QUEUE_SERIAL)
+    public let consoleQueue = dispatch_queue_create("io.schwa.SwiftLogger.console", DISPATCH_QUEUE_SERIAL)
     private var count:Int64 = 0
     private var running:Bool = false
 
@@ -31,11 +34,10 @@ public class Logger {
 
     private func _startup() {
         running = true
-        fireTriggers(Event.startup)
-        for destination in destinations {
+        for (_, destination) in destinations {
             destination.startup()
         }
-        _log(Message(string:"Logging Started", priority:.info, source:Source()))
+        fireTriggers(.startup)
     }
 
 
@@ -49,33 +51,33 @@ public class Logger {
         if running == false {
             return
         }
-        for destination in destinations {
+        for (_, destination) in destinations {
             destination.shutdown()
         }
-        fireTriggers(Event.shutdown)
+        fireTriggers(.shutdown)
     }
 
     public func addDestination(key:String, destination:Destination) {
         dispatch_async(queue) {
-            self.destinations.append(destination)
+            self.destinations[key] = destination
         }
     }
 
     public func removeDestination(key:String) {
         dispatch_async(queue) {
-            // TODO
+            self.destinations.removeValueForKey(key)
         }
     }
 
-    public func addTrigger(key:String, trigger:Trigger) {
+    public func addEventHandler(key:String, event:Event, handler:EventHandler) {
         dispatch_async(queue) {
-            self.triggers[key] = trigger
+            self.eventBroadcaster.addHandler(key, event: event, handler: handler)
         }
     }
 
-    public func removeTrigger(key:String) {
+    public func removeEventHandler(key:String) {
         dispatch_async(queue) {
-            self.triggers.removeValueForKey(key)
+            self.eventBroadcaster.removeHandler(key)
         }
     }
 
@@ -91,19 +93,18 @@ public class Logger {
         }
     }
 
-    public final func log(message:Message) {
-        dispatch_async(queue) {
-            self._log(message)
-        }
-    }
+    public func log(message:Message, immediate:Bool = false) {
 
-    private func _log(message:Message) {
+        if immediate == false {
+            dispatch_async(queue) {
+                self.log(message, immediate:true)
+            }
+            return
+        }
+
         if count++ == 0 {
             _startup()
         }
-
-        let event = Event.messageLogged(message)
-        fireTriggers(event)
 
         var filteredMessage1: Message? = message
         for (key, filter) in filters {
@@ -113,7 +114,7 @@ public class Logger {
             }
         }
 
-        destinationLoop: for destination in destinations {
+        destinationLoop: for (_, destination) in destinations {
             var filteredMessage2: Message? = filteredMessage1
             for filter in destination.filters {
                 filteredMessage2 = filter(filteredMessage2!)
@@ -123,12 +124,20 @@ public class Logger {
             }
             destination.receiveMessage(filteredMessage2!)
         }
+
+        fireTriggers(.messageLogged, object: message)
     }
 
-    private func fireTriggers(event:Event) {
-        for trigger in triggers.values {
-            trigger(event)
-        }
+    private func fireTriggers(event:Event, object:Any? = nil) {
+        eventBroadcaster.fireHandlers(event, object: object)
+    }
+
+    func consoleLog(object:Any?) {
+//        dispatch_async(consoleQueue) {
+//            if let object = object {
+//                println(object)
+//            }
+//        }
     }
 }
 
@@ -173,9 +182,7 @@ public struct Source {
 
 extension Source: Hashable {
     public var hashValue: Int {
-        get {
-            return filename.hashValue ^ function.hashValue ^ line.hashValue
-        }
+        return filename.hashValue ^ function.hashValue ^ line.hashValue
     }
 }
 
@@ -186,6 +193,12 @@ public func ==(lhs: Source, rhs: Source) -> Bool {
 // MARK: -
 
 public typealias Tags = Set <String>
+
+// MARK: -
+
+public let preformattedTag = "preformatted"
+public let sensitiveTag = "sensitive"
+public let verboseTag = "verbose"
 
 // MARK: -
 
@@ -214,9 +227,7 @@ public struct Message {
 
 extension Message: Hashable {
     public var hashValue: Int {
-        get {
-            return string.hashValue ^ priority.hashValue ^ source.hashValue ^ (timestamp != nil ? timestamp!.hashValue : 0)
-        }
+        return string.hashValue ^ priority.hashValue ^ source.hashValue ^ (timestamp != nil ? timestamp!.hashValue : 0)
     }
 }
 
@@ -253,21 +264,15 @@ extension Message {
 
 public typealias MessageFormatter = Message -> String
 
-public func simpleFormatter(message:Message) -> String {
-
-
-    return "\(message.timestamp!) \(message.priority) \(message.source): \(message.string)"
-}
-
-
 // MARK: -
-
 
 public class Destination {
 
     public var filters:[Filter] = []
+    private(set) weak var logger:Logger!
 
     public init(logger:Logger) {
+        self.logger = logger
     }
 
     public func startup() {
@@ -289,9 +294,8 @@ public typealias Filter = (Message) -> Message?
 
 public enum Event {
     case startup
-    case messageLogged(Message)
+    case messageLogged
     case shutdown
 }
 
-public typealias Trigger = Event -> Void
 

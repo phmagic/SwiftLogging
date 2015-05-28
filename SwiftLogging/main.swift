@@ -12,7 +12,7 @@ import Foundation
 logger.addFilter("sensitiveFilter", filter: sensitiveFilter)
 
 
-logger.debug("My password is \"123456\"", tags:Tags(["sensitive"]))
+logger.debug("My password is \"123456\"", tags:Tags([sensitiveTag]))
 
 for R in 0..<10 {
 
