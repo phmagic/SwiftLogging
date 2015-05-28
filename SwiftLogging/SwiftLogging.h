@@ -17,3 +17,4 @@ FOUNDATION_EXPORT const unsigned char SwiftLoggingVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <SwiftLogging/PublicHeader.h>
 
 
+#import <asl.h>

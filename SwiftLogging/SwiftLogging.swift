@@ -268,7 +268,6 @@ extension Message {
     }
 
     public init(object:AnyObject?, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
-
         self.string = toString(object)
         self.priority = priority
         self.timestamp = timestamp

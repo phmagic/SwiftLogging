@@ -10,6 +10,6 @@
 #define SwiftLogging_BridgingHeader_h
 
 #import <asl.h>
-#import "BridgingHelpers.h"
+//#import "BridgingHelpers.h"
 
 #endif

@@ -259,17 +259,25 @@
 			isa = PBXGroup;
 			children = (
 				45347F431AFAF8730080DFF4 /* BridgingHeader.h */,
-				45347F4A1AFAFF800080DFF4 /* BridgingHelpers.h */,
-				45347F4B1AFAFF800080DFF4 /* BridgingHelpers.m */,
+				45E10CC81B16EA2600B918FE /* ASL (Broken) */,
 				455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */,
 				45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */,
 				45347F4F1AFB15560080DFF4 /* SwiftLogging+Printable.swift */,
 				45347F461AFAF94D0080DFF4 /* SwiftLogging+Filters.swift */,
 				45347F441AFAF9320080DFF4 /* SwiftLogging+Destinations.swift */,
-				453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */,
 				45E5799A1B16C73200D21B70 /* Utilities.swift */,
 			);
 			path = SwiftLogging;
+			sourceTree = "<group>";
+		};
+		45E10CC81B16EA2600B918FE /* ASL (Broken) */ = {
+			isa = PBXGroup;
+			children = (
+				45347F4A1AFAFF800080DFF4 /* BridgingHelpers.h */,
+				45347F4B1AFAFF800080DFF4 /* BridgingHelpers.m */,
+				453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */,
+			);
+			name = "ASL (Broken)";
 			sourceTree = "<group>";
 		};
 		45E147281B150EF100F46A98 /* SwiftLogging */ = {
@@ -942,6 +950,7 @@
 				454C89E41B16AB93002C33A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		455DD3911AE6F38400FF383E /* Build configuration list for PBXProject "SwiftLogging" */ = {
 			isa = XCConfigurationList;

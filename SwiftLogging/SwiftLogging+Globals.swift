@@ -11,6 +11,6 @@ import Foundation
 public var logger:Logger! = {
     var logger = Logger()
     logger.addDestination("console", destination:ConsoleDestination(logger:logger))
-    logger.addDestination("default-file", destination:FileDestination(logger:logger, url:NSURL(fileURLWithPath: "/Users/schwa/Desktop/Test.log")!)!)
+    logger.addDestination("default-file", destination:FileDestination(logger:logger))
     return logger
 }()
