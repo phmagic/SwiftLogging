@@ -8,8 +8,8 @@
 
 #import "BridgingHelpers.h"
 
-#include <asl.h>
-
-int my_asl_log_message(int level, const char *string) {
-    return asl_log_message(level, "%s", string);
-}
+//#include <asl.h>
+//
+//int my_asl_log_message(int level, const char *string) {
+//    return asl_log_message(level, "%s", string);
+//}

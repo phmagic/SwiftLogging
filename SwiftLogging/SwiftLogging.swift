@@ -24,7 +24,7 @@ public class Logger {
     }
 
     public final func startup() {
-        dispatch_barrier_sync(queue) {
+        dispatch_async(queue) {
             self._startup()
         }
     }
@@ -40,7 +40,7 @@ public class Logger {
 
 
     public final func shutdown() {
-        dispatch_barrier_sync(queue) {
+        dispatch_async(queue) {
             self._shutdown()
         }
     }
@@ -56,37 +56,37 @@ public class Logger {
     }
 
     public func addDestination(key:String, destination:Destination) {
-        dispatch_barrier_sync(queue) {
+        dispatch_async(queue) {
             self.destinations.append(destination)
         }
     }
 
     public func removeDestination(key:String) {
-        dispatch_barrier_sync(queue) {
+        dispatch_async(queue) {
             // TODO
         }
     }
 
     public func addTrigger(key:String, trigger:Trigger) {
-        dispatch_barrier_sync(queue) {
+        dispatch_async(queue) {
             self.triggers[key] = trigger
         }
     }
 
     public func removeTrigger(key:String) {
-        dispatch_barrier_sync(queue) {
+        dispatch_async(queue) {
             self.triggers.removeValueForKey(key)
         }
     }
 
     public func addFilter(key:String, filter:Filter) {
-        dispatch_barrier_sync(queue) {
+        dispatch_async(queue) {
             self.filters.append((key, filter))
         }
     }
 
     public func removeFilter(key:String, filter:Filter) {
-        dispatch_barrier_sync(queue) {
+        dispatch_async(queue) {
             // TODO
         }
     }
@@ -134,42 +134,9 @@ public class Logger {
 
 extension Logger {
 
-    public func log(object:AnyObject?, priority:Priority = .debug, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func log(object:Any?, priority:Priority = .debug, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
         let message = Message(object: object, priority: priority, source: source, tags: tags, userInfo: userInfo)
-        log(message)
-    }
-}
-
-extension Logger {
-
-    public func debug(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
-        let source = Source(filename: filename, function: function, line: line)
-        let message = Message(object: object, priority: .debug, source: source, tags: tags, userInfo: userInfo)
-        log(message)
-    }
-
-    public func info(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
-        let source = Source(filename: filename, function: function, line: line)
-        let message = Message(object: object, priority: .info, source: source, tags: tags, userInfo: userInfo)
-        log(message)
-    }
-
-    public func warning(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
-        let source = Source(filename: filename, function: function, line: line)
-        let message = Message(object: object, priority: .warning, source: source, tags: tags, userInfo: userInfo)
-        log(message)
-    }
-
-    public func error(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
-        let source = Source(filename: filename, function: function, line: line)
-        let message = Message(object: object, priority: .error, source: source, tags: tags, userInfo: userInfo)
-        log(message)
-    }
-
-    public func critical(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
-        let source = Source(filename: filename, function: function, line: line)
-        let message = Message(object: object, priority: .critical, source: source, tags: tags, userInfo: userInfo)
         log(message)
     }
 }
@@ -267,8 +234,13 @@ extension Message {
         self.userInfo = message.userInfo
     }
 
-    public init(object:AnyObject?, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
-        self.string = toString(object)
+    public init(object:Any?, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
+        if let object:Any = object {
+            self.string = toString(object)
+        }
+        else {
+            self.string = "nil"
+        }
         self.priority = priority
         self.timestamp = timestamp
         self.source = source
@@ -278,6 +250,18 @@ extension Message {
 }
 
 // MARK: -
+
+public typealias MessageFormatter = Message -> String
+
+public func simpleFormatter(message:Message) -> String {
+
+
+    return "\(message.timestamp!) \(message.priority) \(message.source): \(message.string)"
+}
+
+
+// MARK: -
+
 
 public class Destination {
 

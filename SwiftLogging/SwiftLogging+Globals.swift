@@ -12,5 +12,19 @@ public var logger:Logger! = {
     var logger = Logger()
     logger.addDestination("console", destination:ConsoleDestination(logger:logger))
     logger.addDestination("default-file", destination:FileDestination(logger:logger))
+
+
+    logger.addTrigger("MOTD") {
+        (event:Event) -> Void in
+        switch event {
+            case .startup:
+                logger.removeTrigger("MOTD")
+                logger.info("MOTD")
+            default:
+                break
+        }
+    }
+
+
     return logger
 }()

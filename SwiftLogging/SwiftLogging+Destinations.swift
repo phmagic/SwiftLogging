@@ -9,11 +9,19 @@
 import Foundation
 
 public class ConsoleDestination: Destination {
+    public let formatter:MessageFormatter
+
     let queue = dispatch_queue_create("io.schwa.SwiftLogging.ConsoleDestination", DISPATCH_QUEUE_SERIAL)
+
+    init(logger:Logger, formatter:MessageFormatter = simpleFormatter) {
+        self.formatter = formatter
+        super.init(logger:logger)
+    }
 
     public override func receiveMessage(message:Message) {
         dispatch_async(queue) {
-            Swift.println(message)
+            let string = simpleFormatter(message)
+            Swift.println(string)
         }
     }
 }
@@ -22,13 +30,16 @@ public class ConsoleDestination: Destination {
 
 public class FileDestination: Destination {
 
-    let url:NSURL
+    public let url:NSURL
+    public let formatter:MessageFormatter
+
     let queue = dispatch_queue_create("io.schwa.SwiftLogging.FileDestination", DISPATCH_QUEUE_SERIAL)
     var channel:dispatch_io_t!
     var open:Bool = false
 
-    init(logger: Logger, url:NSURL = FileDestination.defaultFileDestinationURL) {
+    init(logger: Logger, url:NSURL = FileDestination.defaultFileDestinationURL, formatter:MessageFormatter = simpleFormatter) {
         self.url = url
+        self.formatter = formatter
         super.init(logger: logger)
     }
 
@@ -67,7 +78,8 @@ public class FileDestination: Destination {
                     return
                 }
 
-                let messageString = "\(message)\n"
+                let string = simpleFormatter(message)
+                let messageString = "\(string)\n"
                 var data = (messageString as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
                 // DISPATCH_DATA_DESTRUCTOR_DEFAULT is missing in swiff
                 let dispatchData = dispatch_data_create(data.bytes, data.length, strong_self.queue, nil)

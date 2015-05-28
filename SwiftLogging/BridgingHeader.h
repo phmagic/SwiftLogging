@@ -9,7 +9,7 @@
 #ifndef SwiftLogging_BridgingHeader_h
 #define SwiftLogging_BridgingHeader_h
 
-#import <asl.h>
+//#import <asl.h>
 //#import "BridgingHelpers.h"
 
 #endif
