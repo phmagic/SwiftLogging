@@ -30,5 +30,5 @@ logger.shutdown()
 
 usleep(useconds_t(0.5 * 1000000))
 
-dispatch_main()
+//dispatch_main()
 

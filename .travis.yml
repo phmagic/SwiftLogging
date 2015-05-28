@@ -6,5 +6,3 @@ osx_image: beta-xcode6.3
 script:
    - xctool -project SwiftLogging.xcodeproj -scheme SwiftLogging_OSX build test
    - xctool -project SwiftLogging.xcodeproj -scheme SwiftLogging_iOS -sdk iphonesimulator build test
-   - xctool -project SwiftLogging.xcodeproj -scheme GUI -sdk iphonesimulator build test
-   - xctool -project SwiftLogging.xcodeproj -scheme CLI -sdk iphonesimulator build test
