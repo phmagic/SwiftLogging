@@ -11,21 +11,16 @@ import Darwin
 
 public class Logger {
 
-    public var destinations:[Destination] = []
-    public var filters:[(String,Filter)] = []
-    public var triggers:[String:Trigger] = [:]
+    private(set) var destinations:[Destination] = []
+    private(set) var filters:[(String,Filter)] = []
+    private(set) var triggers:[String:Trigger] = [:]
 
     private let startTimestamp:Timestamp = Timestamp()
     private let queue = dispatch_queue_create("io.schwa.SwiftLogger", DISPATCH_QUEUE_SERIAL)
     private var count:Int64 = 0
     private var running:Bool = false
 
-    public init(defaultConfig:Bool = true) {
-        if defaultConfig == true {
-            destinations.append(ConsoleDestination(logger:self))
-            destinations.append(FileDestination(logger:self, url:NSURL(fileURLWithPath: "/Users/schwa/Desktop/Test.log")!)!)
-//            destinations.append(ASLDestination(logger:self))
-        }
+    public init() {
     }
 
     public final func startup() {
@@ -58,6 +53,18 @@ public class Logger {
             destination.shutdown()
         }
         fireTriggers(Event.shutdown)
+    }
+
+    public func addDestination(key:String, destination:Destination) {
+        dispatch_barrier_sync(queue) {
+            self.destinations.append(destination)
+        }
+    }
+
+    public func removeDestination(key:String) {
+        dispatch_barrier_sync(queue) {
+            // TODO
+        }
     }
 
     public func addTrigger(key:String, trigger:Trigger) {
@@ -125,43 +132,44 @@ public class Logger {
     }
 }
 
-public var logger:Logger! = Logger()
+extension Logger {
+
+    public func log(object:AnyObject?, priority:Priority = .debug, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+        let source = Source(filename: filename, function: function, line: line)
+        let message = Message(object: object, priority: priority, source: source, tags: tags, userInfo: userInfo)
+        log(message)
+    }
+}
 
 extension Logger {
 
-    public func log(string:String, priority:Priority = .debug, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func debug(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
-        let message = Message(string: string, priority: priority, source: source, tags: tags, userInfo: userInfo)
+        let message = Message(object: object, priority: .debug, source: source, tags: tags, userInfo: userInfo)
         log(message)
     }
 
-    public func debug(string:String, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func info(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
-        let message = Message(string: string, priority: .debug, source: source, tags: tags, userInfo: userInfo)
+        let message = Message(object: object, priority: .info, source: source, tags: tags, userInfo: userInfo)
         log(message)
     }
 
-    public func info(string:String, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func warning(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
-        let message = Message(string: string, priority: .info, source: source, tags: tags, userInfo: userInfo)
+        let message = Message(object: object, priority: .warning, source: source, tags: tags, userInfo: userInfo)
         log(message)
     }
 
-    public func warning(string:String, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func error(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
-        let message = Message(string: string, priority: .warning, source: source, tags: tags, userInfo: userInfo)
+        let message = Message(object: object, priority: .error, source: source, tags: tags, userInfo: userInfo)
         log(message)
     }
 
-    public func error(string:String, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func critical(object:AnyObject?, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
-        let message = Message(string: string, priority: .error, source: source, tags: tags, userInfo: userInfo)
-        log(message)
-    }
-
-    public func critical(string:String, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
-        let source = Source(filename: filename, function: function, line: line)
-        let message = Message(string: string, priority: .critical, source: source, tags: tags, userInfo: userInfo)
+        let message = Message(object: object, priority: .critical, source: source, tags: tags, userInfo: userInfo)
         log(message)
     }
 }
@@ -174,33 +182,6 @@ public enum Priority: Int8 {
     case warning
     case error
     case critical
-}
-
-extension Priority {
-    public var toString:String {
-        get {
-            switch self {
-                case .debug:
-                    return "debug"
-                case .info:
-                    return "info"
-                case .warning:
-                    return "warning"
-                case .error:
-                    return "error"
-                case .critical:
-                    return "critical"
-            }
-        }
-    }
-}
-
-extension Priority: Printable {
-    public var description:String {
-        get {
-            return toString
-        }
-    }
 }
 
 // MARK: -
@@ -235,70 +216,6 @@ public func ==(lhs: Source, rhs: Source) -> Bool {
     return lhs.filename == rhs.filename && lhs.function == rhs.function && lhs.line == rhs.line
 }
 
-extension Source {
-    public var toString: String {
-        get {
-            let lastPathComponent = (filename as NSString).lastPathComponent
-            return "\(lastPathComponent):\(line) \(function)"
-        }
-    }
-}
-
-extension Source: Printable {
-    public var description: String {
-        get {
-            return toString
-        }
-    }
-}
-
-// MARK: -
-
-public struct Timestamp {
-    let timeIntervalSinceReferenceDate:NSTimeInterval
-
-    init() {
-        timeIntervalSinceReferenceDate = NSDate().timeIntervalSinceReferenceDate
-    }
-}
-
-extension Timestamp: Hashable {
-    public var hashValue: Int {
-        get {
-            return timeIntervalSinceReferenceDate.hashValue
-        }
-    }
-}
-
-public func ==(lhs: Timestamp, rhs: Timestamp) -> Bool {
-    return lhs.timeIntervalSinceReferenceDate == rhs.timeIntervalSinceReferenceDate
-}
-
-private let iso8601Formatter:NSDateFormatter = {
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSXX"
-//    dateFormatter.timeZone = NSTimeZone(name:"UTC")
-    return dateFormatter
-    }()
-
-extension Timestamp {
-    public var toString: String {
-        get {
-            let date = NSDate(timeIntervalSinceReferenceDate: timeIntervalSinceReferenceDate)
-            let string = iso8601Formatter.stringFromDate(date)
-            return string
-        }
-    }
-}
-
-extension Timestamp: Printable {
-    public var description: String {
-        get {
-            return toString
-        }
-    }
-}
-
 // MARK: -
 
 public typealias Tags = Set <String>
@@ -326,23 +243,6 @@ public struct Message {
         self.tags = tags
         self.userInfo = userInfo
     }
-
-    public init(message:Message, timestamp:Timestamp?) {
-        self.string = message.string
-        self.priority = message.priority
-        self.timestamp = timestamp
-        self.source = message.source
-        self.tags = message.tags
-        self.userInfo = message.userInfo
-    }
-}
-
-extension Message: Printable {
-    public var description:String {
-        get {
-            return "\(timestamp!) \(priority) \(source) \(string)"
-        }
-    }
 }
 
 extension Message: Hashable {
@@ -355,6 +255,27 @@ extension Message: Hashable {
 
 public func ==(lhs: Message, rhs: Message) -> Bool {
     return lhs.string == rhs.string && lhs.priority == rhs.priority && lhs.timestamp == rhs.timestamp && lhs.source == rhs.source
+}
+
+extension Message {
+    public init(message:Message, timestamp:Timestamp?) {
+        self.string = message.string
+        self.priority = message.priority
+        self.timestamp = timestamp
+        self.source = message.source
+        self.tags = message.tags
+        self.userInfo = message.userInfo
+    }
+
+    public init(object:AnyObject?, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
+
+        self.string = toString(object)
+        self.priority = priority
+        self.timestamp = timestamp
+        self.source = source
+        self.tags = tags
+        self.userInfo = userInfo
+    }
 }
 
 // MARK: -
@@ -387,21 +308,6 @@ public enum Event {
     case startup
     case messageLogged(Message)
     case shutdown
-}
-
-extension Event: Printable {
-    public var description:String {
-        get {
-            switch self {
-                case .startup:
-                    return "startup"
-                case .messageLogged:
-                    return "messageLogged"
-                case .shutdown:
-                    return "shutdown"
-            }
-        }
-    }
 }
 
 public typealias Trigger = Event -> Void

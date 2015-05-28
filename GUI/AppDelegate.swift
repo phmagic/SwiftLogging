@@ -10,7 +10,7 @@ import Cocoa
 
 import SwiftLogging
 
-public var logger:Logger! = Logger()
+//public var logger:Logger! = Logger()
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {

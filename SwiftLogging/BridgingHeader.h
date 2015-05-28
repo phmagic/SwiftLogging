@@ -12,5 +12,4 @@
 #import <asl.h>
 #import "BridgingHelpers.h"
 
-
 #endif
