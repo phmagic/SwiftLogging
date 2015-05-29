@@ -26,37 +26,6 @@ public class Logger {
     public init() {
     }
 
-    public final func startup() {
-        dispatch_async(queue) {
-            self._startup()
-        }
-    }
-
-    private func _startup() {
-        running = true
-        for (_, destination) in destinations {
-            destination.startup()
-        }
-        fireTriggers(.startup)
-    }
-
-
-    public final func shutdown() {
-        dispatch_async(queue) {
-            self._shutdown()
-        }
-    }
-
-    private func _shutdown() {
-        if running == false {
-            return
-        }
-        for (_, destination) in destinations {
-            destination.shutdown()
-        }
-        fireTriggers(.shutdown)
-    }
-
     public func addDestination(key:String, destination:Destination) {
         dispatch_async(queue) {
             self.destinations[key] = destination
@@ -89,8 +58,43 @@ public class Logger {
 
     public func removeFilter(key:String, filter:Filter) {
         dispatch_async(queue) {
-            // TODO
+            for (index, (k, _)) in enumerate(self.filters) {
+                if key == k {
+                    self.filters.removeAtIndex(index)
+                    break
+                }
+            }
         }
+    }
+
+    public final func startup() {
+        dispatch_async(queue) {
+            self._startup()
+        }
+    }
+
+    public final func shutdown() {
+        dispatch_async(queue) {
+            self._shutdown()
+        }
+    }
+
+    private func _startup() {
+        running = true
+        for (_, destination) in destinations {
+            destination.startup()
+        }
+        fireTriggers(.startup)
+    }
+
+    private func _shutdown() {
+        if running == false {
+            return
+        }
+        for (_, destination) in destinations {
+            destination.shutdown()
+        }
+        fireTriggers(.shutdown)
     }
 
     public func log(message:Message, immediate:Bool = false) {

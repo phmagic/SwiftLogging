@@ -52,8 +52,6 @@
 		45E10CD21B17A31600B918FE /* SwiftLogging+Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */; };
 		45E10CD31B17A35B00B918FE /* SwiftLogging+Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */; };
 		45E10CD41B17A35C00B918FE /* SwiftLogging+Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */; };
-		45E147321B150EF100F46A98 /* SwiftLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E147271B150EF100F46A98 /* SwiftLogging.framework */; };
-		45E1473B1B150EF100F46A98 /* SwiftLoggingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E1473A1B150EF100F46A98 /* SwiftLoggingTests.swift */; };
 		45E1473E1B150EF100F46A98 /* SwiftLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E147271B150EF100F46A98 /* SwiftLogging.framework */; };
 		45E147491B150F3000F46A98 /* BridgingHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 45347F4B1AFAFF800080DFF4 /* BridgingHelpers.m */; };
 		45E1474A1B150F3000F46A98 /* SwiftLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */; };
@@ -101,20 +99,6 @@
 			remoteInfo = CLI;
 		};
 		454C89EB1B16ABA5002C33A7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 455DD38E1AE6F38400FF383E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 453A359E1B07203B00A3923D;
-			remoteInfo = GUI;
-		};
-		45E147331B150EF100F46A98 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 455DD38E1AE6F38400FF383E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 45E147261B150EF100F46A98;
-			remoteInfo = SwiftLogging;
-		};
-		45E147351B150EF100F46A98 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 455DD38E1AE6F38400FF383E /* Project object */;
 			proxyType = 1;
@@ -172,9 +156,6 @@
 		45E147271B150EF100F46A98 /* SwiftLogging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLogging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		45E1472A1B150EF100F46A98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		45E1472B1B150EF100F46A98 /* SwiftLogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftLogging.h; sourceTree = "<group>"; };
-		45E147311B150EF100F46A98 /* SwiftLoggingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftLoggingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		45E147391B150EF100F46A98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		45E1473A1B150EF100F46A98 /* SwiftLoggingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLoggingTests.swift; sourceTree = "<group>"; };
 		45E5799A1B16C73200D21B70 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Globals.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -210,14 +191,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		45E1472E1B150EF100F46A98 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				45E147321B150EF100F46A98 /* SwiftLogging.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -250,7 +223,6 @@
 				45E579971B16C33500D21B70 /* CLI */,
 				453A35A01B07203B00A3923D /* GUI */,
 				45E147281B150EF100F46A98 /* SwiftLogging */,
-				45E147371B150EF100F46A98 /* SwiftLoggingTests */,
 				455DD3971AE6F38400FF383E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -262,7 +234,6 @@
 				453A357D1B071FD500A3923D /* SwiftLogging.framework */,
 				453A359F1B07203B00A3923D /* GUI.app */,
 				45E147271B150EF100F46A98 /* SwiftLogging.framework */,
-				45E147311B150EF100F46A98 /* SwiftLoggingTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -308,23 +279,6 @@
 			isa = PBXGroup;
 			children = (
 				45E1472A1B150EF100F46A98 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		45E147371B150EF100F46A98 /* SwiftLoggingTests */ = {
-			isa = PBXGroup;
-			children = (
-				45E1473A1B150EF100F46A98 /* SwiftLoggingTests.swift */,
-				45E147381B150EF100F46A98 /* Supporting Files */,
-			);
-			path = SwiftLoggingTests;
-			sourceTree = "<group>";
-		};
-		45E147381B150EF100F46A98 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				45E147391B150EF100F46A98 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -431,25 +385,6 @@
 			productReference = 45E147271B150EF100F46A98 /* SwiftLogging.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		45E147301B150EF100F46A98 /* SwiftLoggingTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 45E147441B150EF100F46A98 /* Build configuration list for PBXNativeTarget "SwiftLoggingTests" */;
-			buildPhases = (
-				45E1472D1B150EF100F46A98 /* Sources */,
-				45E1472E1B150EF100F46A98 /* Frameworks */,
-				45E1472F1B150EF100F46A98 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				45E147341B150EF100F46A98 /* PBXTargetDependency */,
-				45E147361B150EF100F46A98 /* PBXTargetDependency */,
-			);
-			name = SwiftLoggingTests;
-			productName = SwiftLoggingTests;
-			productReference = 45E147311B150EF100F46A98 /* SwiftLoggingTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -474,10 +409,6 @@
 					45E147261B150EF100F46A98 = {
 						CreatedOnToolsVersion = 6.3.2;
 					};
-					45E147301B150EF100F46A98 = {
-						CreatedOnToolsVersion = 6.3.2;
-						TestTargetID = 453A359E1B07203B00A3923D;
-					};
 				};
 			};
 			buildConfigurationList = 455DD3911AE6F38400FF383E /* Build configuration list for PBXProject "SwiftLogging" */;
@@ -498,7 +429,6 @@
 				45E147261B150EF100F46A98 /* SwiftLogging_iOS */,
 				455DD3951AE6F38400FF383E /* CLI */,
 				453A359E1B07203B00A3923D /* GUI */,
-				45E147301B150EF100F46A98 /* SwiftLoggingTests */,
 			);
 		};
 /* End PBXProject section */
@@ -522,13 +452,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		45E147251B150EF100F46A98 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		45E1472F1B150EF100F46A98 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -602,14 +525,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		45E1472D1B150EF100F46A98 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				45E1473B1B150EF100F46A98 /* SwiftLoggingTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -637,16 +552,6 @@
 			isa = PBXTargetDependency;
 			target = 453A359E1B07203B00A3923D /* GUI */;
 			targetProxy = 454C89EB1B16ABA5002C33A7 /* PBXContainerItemProxy */;
-		};
-		45E147341B150EF100F46A98 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 45E147261B150EF100F46A98 /* SwiftLogging_iOS */;
-			targetProxy = 45E147331B150EF100F46A98 /* PBXContainerItemProxy */;
-		};
-		45E147361B150EF100F46A98 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 453A359E1B07203B00A3923D /* GUI */;
-			targetProxy = 45E147351B150EF100F46A98 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -906,46 +811,6 @@
 			};
 			name = Release;
 		};
-		45E147451B150EF100F46A98 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = SwiftLoggingTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GUI.app/Contents/MacOS/GUI";
-			};
-			name = Debug;
-		};
-		45E147461B150EF100F46A98 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = SwiftLoggingTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GUI.app/Contents/MacOS/GUI";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -999,15 +864,6 @@
 			buildConfigurations = (
 				45E147411B150EF100F46A98 /* Debug */,
 				45E147421B150EF100F46A98 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		45E147441B150EF100F46A98 /* Build configuration list for PBXNativeTarget "SwiftLoggingTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				45E147451B150EF100F46A98 /* Debug */,
-				45E147461B150EF100F46A98 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
