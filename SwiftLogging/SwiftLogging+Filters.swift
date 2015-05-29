@@ -8,21 +8,21 @@
 
 import Foundation
 
-let nilFilter = {
+public let nilFilter = {
    (message:Message) -> Message? in
    return nil
 }
 
 // MARK: -
 
-let passthroughFilter = {
+public let passthroughFilter = {
    (message:Message) -> Message? in
    return message
 }
 
 // MARK: -
 
-func tagFilterOut(tags:Tags, replacement:(Message -> Message?)? = nil) -> Filter {
+public func tagFilterOut(tags:Tags, replacement:(Message -> Message?)? = nil) -> Filter {
     return {
         (message:Message) -> Message? in
         if let messageTags = message.tags {
@@ -34,26 +34,24 @@ func tagFilterOut(tags:Tags, replacement:(Message -> Message?)? = nil) -> Filter
     }
 }
 
-
 // MARK: -
 
-func priorityFilter(priorities:PrioritySet) -> Filter {
+public func priorityFilter(priorities:PrioritySet) -> Filter {
     return {
        (message:Message) -> Message? in
         return priorities.contains(message.priority) ? message : nil
     }
 }
 
-func priorityFilter(priorities:[Priority]) -> Filter {
+public func priorityFilter(priorities:[Priority]) -> Filter {
     return priorityFilter(PrioritySet(priorities))
 }
 
 // MARK: -
 
-// TODO: Global means not thread safe boyo.
 var seenMessageHashes = [Message:Timestamp] ()
 
-func duplicateFilter() -> Filter {
+public func duplicateFilter() -> Filter {
     return {
        (message:Message) -> Message? in
         let now = Timestamp()
@@ -73,6 +71,6 @@ func duplicateFilter() -> Filter {
 
 // MARK: -
 
-let sensitiveFilter = tagFilterOut(Tags([sensitiveTag])) {
+public let sensitiveFilter = tagFilterOut(Tags([sensitiveTag])) {
     return Message(string: "Sensitive log info redacted.", priority: .warning, timestamp: $0.timestamp, source: $0.source)
 }

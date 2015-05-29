@@ -13,73 +13,50 @@ public class Logger {
 
     public typealias EventHandler = EventBroadcaster <Event>.Handler
 
-    private(set) var destinations:[String:Destination] = [:]
-    private(set) var filters:[(String, Filter)] = []
-    private(set) var eventBroadcaster = EventBroadcaster <Event>()
+    public internal(set) var destinations:[String:Destination] = [:]
+    public internal(set) var filters:[(String, Filter)] = []
+    public internal(set) var eventBroadcaster = EventBroadcaster <Event>()
 
-    private let startTimestamp:Timestamp = Timestamp()
     public let queue = dispatch_queue_create("io.schwa.SwiftLogger", DISPATCH_QUEUE_SERIAL)
     public let consoleQueue = dispatch_queue_create("io.schwa.SwiftLogger.console", DISPATCH_QUEUE_SERIAL)
-    private var count:Int64 = 0
-    private var running:Bool = false
 
-    public init() {
-    }
+    internal let startTimestamp:Timestamp = Timestamp()
+    internal var count:Int64 = 0
+    internal var running:Bool = false
 
     public func addDestination(key:String, destination:Destination) {
-        dispatch_async(queue) {
-            self.destinations[key] = destination
-        }
+        self.destinations[key] = destination
+        destination.logger = self
     }
 
     public func removeDestination(key:String) {
-        dispatch_async(queue) {
-            self.destinations.removeValueForKey(key)
-        }
+        let destination = self.destinations[key]
+        destination?.logger = nil
+        self.destinations.removeValueForKey(key)
     }
 
     public func addEventHandler(key:String, event:Event, handler:EventHandler) {
-        dispatch_async(queue) {
-            self.eventBroadcaster.addHandler(key, event: event, handler: handler)
-        }
+        self.eventBroadcaster.addHandler(key, event: event, handler: handler)
     }
 
     public func removeEventHandler(key:String) {
-        dispatch_async(queue) {
-            self.eventBroadcaster.removeHandler(key)
-        }
+        self.eventBroadcaster.removeHandler(key)
     }
 
     public func addFilter(key:String, filter:Filter) {
-        dispatch_async(queue) {
-            self.filters.append((key, filter))
-        }
+        self.filters.append((key, filter))
     }
 
-    public func removeFilter(key:String, filter:Filter) {
-        dispatch_async(queue) {
-            for (index, (k, _)) in enumerate(self.filters) {
-                if key == k {
-                    self.filters.removeAtIndex(index)
-                    break
-                }
+    public func removeFilter(key:String) {
+        for (index, (k, _)) in enumerate(self.filters) {
+            if key == k {
+                self.filters.removeAtIndex(index)
+                break
             }
         }
     }
 
-    public final func startup() {
-        dispatch_async(queue) {
-            self._startup()
-        }
-    }
-
-    public final func shutdown() {
-        dispatch_async(queue) {
-            self._shutdown()
-        }
-    }
-
-    private func _startup() {
+    public func startup() {
         running = true
         for (_, destination) in destinations {
             destination.startup()
@@ -87,7 +64,7 @@ public class Logger {
         fireTriggers(.startup)
     }
 
-    private func _shutdown() {
+    public func shutdown() {
         if running == false {
             return
         }
@@ -107,7 +84,7 @@ public class Logger {
         }
 
         if count++ == 0 {
-            _startup()
+            startup()
         }
 
         var filteredMessage1: Message? = message
@@ -132,11 +109,11 @@ public class Logger {
         fireTriggers(.messageLogged, object: message)
     }
 
-    private func fireTriggers(event:Event, object:Any? = nil) {
+    internal func fireTriggers(event:Event, object:Any? = nil) {
         eventBroadcaster.fireHandlers(event, object: object)
     }
 
-    func consoleLog(object:Any?) {
+    func internalLog(object:Any?) {
 //        dispatch_async(consoleQueue) {
 //            if let object = object {
 //                println(object)
@@ -273,11 +250,7 @@ public typealias MessageFormatter = Message -> String
 public class Destination {
 
     public var filters:[Filter] = []
-    private(set) weak var logger:Logger!
-
-    public init(logger:Logger) {
-        self.logger = logger
-    }
+    public internal(set) weak var logger:Logger!
 
     public func startup() {
     }

@@ -43,11 +43,11 @@ public var logger:Logger! = {
     }
 
     // Logging to console.
-    let console = ConsoleDestination(logger:logger)
+    let console = ConsoleDestination()
     logger.addDestination("io.schwa.SwiftLogging.console", destination:console)
 
     // Logging to file.
-    let fileDestination = FileDestination(logger:logger)
+    let fileDestination = FileDestination()
     fileDestination.filters.append(sensitiveFilter)
     logger.addDestination("io.schwa.SwiftLogging.default-file", destination:fileDestination)
 

@@ -11,18 +11,25 @@ import Foundation
 public class ConsoleDestination: Destination {
     public let formatter:MessageFormatter
 
-    init(logger:Logger, formatter:MessageFormatter = terseFormatter) {
+    init(formatter:MessageFormatter = terseFormatter) {
         self.formatter = formatter
-        super.init(logger:logger)
     }
 
     public override func receiveMessage(message:Message) {
-
         dispatch_async(logger.consoleQueue) {
             let string = self.formatter(message)
             println(string)
         }
+    }
+}
 
+// MARK -
+
+public class MemoryDestination: Destination {
+    public internal(set) var messages:[Message] = []
+
+    public override func receiveMessage(message:Message) {
+        messages.append(message)
     }
 }
 
@@ -37,10 +44,10 @@ public class FileDestination: Destination {
     var channel:dispatch_io_t!
     var open:Bool = false
 
-    init(logger: Logger, url:NSURL = FileDestination.defaultFileDestinationURL, formatter:MessageFormatter = preciseFormatter) {
+    init(url:NSURL = FileDestination.defaultFileDestinationURL, formatter:MessageFormatter = preciseFormatter) {
         self.url = url
         self.formatter = formatter
-        super.init(logger: logger)
+        super.init()
     }
 
     public override func startup() {
@@ -54,13 +61,13 @@ public class FileDestination: Destination {
 
         self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, queue) {
             (error:Int32) -> Void in
-            self.logger.consoleLog("ERROR: \(error)")
+            self.logger.internalLog("ERROR: \(error)")
         }
         if self.channel != nil {
             self.open = true
         }
 
-        logger.consoleLog("Startup Done")
+        logger.internalLog("Startup Done")
     }
 
     public override func shutdown() {
@@ -77,7 +84,7 @@ public class FileDestination: Destination {
 
             if let strong_self = self {
                 if strong_self.open == false {
-                    strong_self.logger.consoleLog("File not open, skipping")
+                    strong_self.logger.internalLog("File not open, skipping")
                     return
                 }
 
@@ -89,7 +96,7 @@ public class FileDestination: Destination {
 
                 dispatch_io_write(strong_self.channel, 0, dispatchData, strong_self.queue) {
                     (done:Bool, data:dispatch_data_t!, error:Int32) -> Void in
-                    strong_self.logger.consoleLog(("dispatch_io_write", done, data, error))
+                    strong_self.logger.internalLog(("dispatch_io_write", done, data, error))
 
                 }
             }
