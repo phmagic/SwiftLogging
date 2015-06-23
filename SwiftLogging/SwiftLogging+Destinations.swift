@@ -54,9 +54,8 @@ public class FileDestination: Destination {
 
         let parentURL = url.URLByDeletingLastPathComponent!
 
-        if parentURL.checkPromisedItemIsReachableAndReturnError(nil) == false {
-            let fileManager = NSFileManager()
-            fileManager.createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil, error: nil)
+        if NSFileManager().fileExistsAtPath(parentURL.path!) == false {
+            try NSFileManager().createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil)
         }
 
         self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, queue) {
