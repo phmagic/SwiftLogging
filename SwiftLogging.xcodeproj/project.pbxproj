@@ -448,6 +448,7 @@
 		455DD38E1AE6F38400FF383E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = schwa.io;
 				TargetAttributes = {
@@ -979,6 +980,7 @@
 				4564D6B51B181D170004A3B3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		45E147401B150EF100F46A98 /* Build configuration list for PBXNativeTarget "SwiftLogging_iOS" */ = {
 			isa = XCConfigurationList;

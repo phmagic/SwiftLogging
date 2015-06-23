@@ -55,7 +55,7 @@ public class FileDestination: Destination {
         let parentURL = url.URLByDeletingLastPathComponent!
 
         if NSFileManager().fileExistsAtPath(parentURL.path!) == false {
-            try NSFileManager().createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil)
+            NSFileManager().createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil, error:nil)
         }
 
         self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, queue) {
@@ -105,8 +105,8 @@ public class FileDestination: Destination {
     public static var defaultFileDestinationURL:NSURL {
         let fileManager = NSFileManager()
         var url = fileManager.URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: nil)!
-        let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier!
-        let bundleName = NSBundle.mainBundle().infoDictionary?["CFBundleName"] as! String
+        let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier
+        let bundleName = NSBundle.mainBundle().infoDictionary?["CFBundleName"] as? String
         url = url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
         return url
     }

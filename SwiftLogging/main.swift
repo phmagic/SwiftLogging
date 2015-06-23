@@ -10,6 +10,7 @@ import Foundation
 
 
 logger.addFilter("sensitiveFilter", filter: sensitiveFilter)
+logger.addFilter("duplicateFilter", filter: duplicateFilter())
 
 
 logger.debug("My password is \"123456\"", tags:Tags([sensitiveTag]))

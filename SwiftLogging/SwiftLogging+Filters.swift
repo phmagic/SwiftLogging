@@ -49,9 +49,10 @@ public func priorityFilter(priorities:[Priority]) -> Filter {
 
 // MARK: -
 
-var seenMessageHashes = [Message:Timestamp] ()
 
 public func duplicateFilter() -> Filter {
+    var seenMessageHashes = [Message:Timestamp] ()
+
     return {
        (message:Message) -> Message? in
         let now = Timestamp()
@@ -59,7 +60,7 @@ public func duplicateFilter() -> Filter {
         var result:Message? = nil
         if let lastTimestamp = seenMessageHashes[key] {
             let delta = now.timeIntervalSinceReferenceDate - lastTimestamp.timeIntervalSinceReferenceDate
-            result = delta > 0.5 ? message : nil
+            result = delta > 1.0 ? message : nil
         }
         else {
             result = message
@@ -74,3 +75,6 @@ public func duplicateFilter() -> Filter {
 public let sensitiveFilter = tagFilterOut(Tags([sensitiveTag])) {
     return Message(string: "Sensitive log info redacted.", priority: .warning, timestamp: $0.timestamp, source: $0.source)
 }
+
+// MARK: -
+
