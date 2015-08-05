@@ -183,6 +183,7 @@ public typealias Tags = Set <String>
 public let preformattedTag = "preformatted"
 public let sensitiveTag = "sensitive"
 public let verboseTag = "verbose"
+public let veryVerboseTag = "verbose+"
 
 // MARK: -
 

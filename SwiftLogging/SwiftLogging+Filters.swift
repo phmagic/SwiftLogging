@@ -78,3 +78,46 @@ public let sensitiveFilter = tagFilterOut(Tags([sensitiveTag])) {
 
 // MARK: -
 
+public enum Verbosity:Int {
+    case Normal = 0
+    case Verbose = 1
+    case VeryVerbose = 2
+
+    public init(tags:Tags) {
+        if tags.contains(veryVerboseTag) {
+            self = .VeryVerbose
+        }
+        if tags.contains(verboseTag) {
+            self = .Verbose
+        }
+        else {
+            self = .Normal
+        }
+    }
+}
+
+extension Verbosity: Comparable {
+}
+
+public func <(lhs: Verbosity, rhs: Verbosity) -> Bool {
+    return lhs.rawValue < rhs.rawValue
+}
+
+public func verbosityFilter(tooMuchVerbosity:Verbosity = .Verbose) -> Filter {
+    return {
+        (message:Message) -> Message? in
+
+        if let tags = message.tags {
+            let verbosity = Verbosity(tags: tags)
+            if verbosity >= tooMuchVerbosity {
+                return nil
+            }
+            else {
+                return message
+            }
+        }
+        else {
+            return message
+        }
+    }
+}

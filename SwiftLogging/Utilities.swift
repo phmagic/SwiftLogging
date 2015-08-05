@@ -53,6 +53,8 @@ extension String {
     }
 }
 
+// MARK: -
+
 public struct Timestamp {
     let timeIntervalSinceReferenceDate:NSTimeInterval
 
@@ -77,8 +79,8 @@ extension Timestamp: Printable {
     }
 }
 
-extension Timestamp {
-    public var toString: String {
+public extension Timestamp {
+    var toString: String {
         return iso8601Formatter.stringFromDate(asDate)
     }
 
@@ -87,15 +89,15 @@ extension Timestamp {
     }
 }
 
-extension Timestamp {
-    public var asDate: NSDate {
+public extension Timestamp {
+    var asDate: NSDate {
         return NSDate(timeIntervalSinceReferenceDate: timeIntervalSinceReferenceDate)
     }
 }
 
 // MARK: -
 
-func banner(string:String, width:Int = 72, borderCharacter:Character = "*") -> String {
+public func banner(string:String, width:Int = 72, borderCharacter:Character = "*") -> String {
 
     let borderString = "\(borderCharacter)"
 
@@ -112,5 +114,4 @@ func banner(string:String, width:Int = 72, borderCharacter:Character = "*") -> S
     output += "".stringByPaddingToLength(width, withString: borderString, startingAtIndex: 0)
 
     return output
-
 }
