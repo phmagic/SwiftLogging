@@ -24,6 +24,9 @@ public class Logger {
     internal var count:Int64 = 0
     internal var running:Bool = false
 
+    public init() {
+    }
+
     public func addDestination(key:String, destination:Destination) {
         self.destinations[key] = destination
         destination.logger = self

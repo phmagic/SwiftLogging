@@ -11,7 +11,7 @@ import Foundation
 public class ConsoleDestination: Destination {
     public let formatter:MessageFormatter
 
-    init(formatter:MessageFormatter = terseFormatter) {
+    public init(formatter:MessageFormatter = terseFormatter) {
         self.formatter = formatter
     }
 
@@ -40,11 +40,11 @@ public class FileDestination: Destination {
     public let url:NSURL
     public let formatter:MessageFormatter
 
-    let queue = dispatch_queue_create("io.schwa.SwiftLogging.FileDestination", DISPATCH_QUEUE_SERIAL)
+    public let queue = dispatch_queue_create("io.schwa.SwiftLogging.FileDestination", DISPATCH_QUEUE_SERIAL)
+    public var open:Bool = false
     var channel:dispatch_io_t!
-    var open:Bool = false
 
-    init(url:NSURL = FileDestination.defaultFileDestinationURL, formatter:MessageFormatter = preciseFormatter) {
+    public init(url:NSURL = FileDestination.defaultFileDestinationURL, formatter:MessageFormatter = preciseFormatter) {
         self.url = url
         self.formatter = formatter
         super.init()
