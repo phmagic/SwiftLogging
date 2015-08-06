@@ -9,39 +9,39 @@
 import Foundation
 
 public let nilFilter = {
-   (message:Message) -> Message? in
+   (event:Event) -> Event? in
    return nil
 }
 
 // MARK: -
 
 public let passthroughFilter = {
-   (message:Message) -> Message? in
-   return message
+   (event:Event) -> Event? in
+   return event
 }
 
 // MARK: -
 
-public func tagFilterIn(tags:Tags, replacement:(Message -> Message?)? = nil) -> Filter {
+public func tagFilterIn(tags:Tags, replacement:(Event -> Event?)? = nil) -> Filter {
     return {
-        (message:Message) -> Message? in
-        if let messageTags = message.tags {
-            return tags.intersect(messageTags).count == 0 ? replacement?(message) : message
+        (event:Event) -> Event? in
+        if let eventTags = event.tags {
+            return tags.intersect(eventTags).count == 0 ? replacement?(event) : event
         }
         else {
-            return message
+            return event
         }
     }
 }
 
-public func tagFilterOut(tags:Tags, replacement:(Message -> Message?)? = nil) -> Filter {
+public func tagFilterOut(tags:Tags, replacement:(Event -> Event?)? = nil) -> Filter {
     return {
-        (message:Message) -> Message? in
-        if let messageTags = message.tags {
-            return tags.intersect(messageTags).count > 0 ? replacement?(message) : message
+        (event:Event) -> Event? in
+        if let eventTags = event.tags {
+            return tags.intersect(eventTags).count > 0 ? replacement?(event) : event
         }
         else {
-            return message
+            return event
         }
     }
 }
@@ -50,8 +50,8 @@ public func tagFilterOut(tags:Tags, replacement:(Message -> Message?)? = nil) ->
 
 public func priorityFilter(priorities:PrioritySet) -> Filter {
     return {
-       (message:Message) -> Message? in
-        return priorities.contains(message.priority) ? message : nil
+       (event:Event) -> Event? in
+        return priorities.contains(event.priority) ? event : nil
     }
 }
 
@@ -61,23 +61,22 @@ public func priorityFilter(priorities:[Priority]) -> Filter {
 
 // MARK: -
 
-
 public func duplicateFilter() -> Filter {
-    var seenMessageHashes = [Message:Timestamp] ()
+    var seenEventHashes = [Event:Timestamp] ()
 
     return {
-       (message:Message) -> Message? in
+       (event:Event) -> Event? in
         let now = Timestamp()
-        let key = Message(message: message, timestamp: nil)
-        var result:Message? = nil
-        if let lastTimestamp = seenMessageHashes[key] {
+        let key = Event(event: event, timestamp: nil)
+        var result:Event? = nil
+        if let lastTimestamp = seenEventHashes[key] {
             let delta = now.timeIntervalSinceReferenceDate - lastTimestamp.timeIntervalSinceReferenceDate
-            result = delta > 1.0 ? message : nil
+            result = delta > 1.0 ? event : nil
         }
         else {
-            result = message
+            result = event
         }
-        seenMessageHashes[key] = message.timestamp
+        seenEventHashes[key] = event.timestamp
         return result
     }
 }
@@ -85,7 +84,7 @@ public func duplicateFilter() -> Filter {
 // MARK: -
 
 public let sensitiveFilter = tagFilterOut(Tags([sensitiveTag])) {
-    return Message(string: "Sensitive log info redacted.", priority: .warning, timestamp: $0.timestamp, source: $0.source)
+    return Event(string: "Sensitive log info redacted.", priority: .warning, timestamp: $0.timestamp, source: $0.source)
 }
 
 // MARK: -
@@ -117,19 +116,19 @@ public func <(lhs: Verbosity, rhs: Verbosity) -> Bool {
 
 public func verbosityFilter(tooMuchVerbosity:Verbosity = .Verbose) -> Filter {
     return {
-        (message:Message) -> Message? in
+        (event:Event) -> Event? in
 
-        if let tags = message.tags {
+        if let tags = event.tags {
             let verbosity = Verbosity(tags: tags)
             if verbosity >= tooMuchVerbosity {
                 return nil
             }
             else {
-                return message
+                return event
             }
         }
         else {
-            return message
+            return event
         }
     }
 }

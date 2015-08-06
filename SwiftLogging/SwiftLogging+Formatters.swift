@@ -9,13 +9,13 @@
 import Foundation
 
 
-//public func simpleFormatter(message:Message) -> String {
+//public func simpleFormatter(event:Event) -> String {
 //
-//    if let tags = message.tags where tags.contains(preformattedTag) {
-//        return message.string
+//    if let tags = event.tags where tags.contains(preformattedTag) {
+//        return event.string
 //    }
 //
-//    return "\(message.timestamp!) \(message.priority) \(message.source): \(message.string)"
+//    return "\(event.timestamp!) \(event.priority) \(event.source): \(event.string)"
 //}
 
 extension Priority {
@@ -36,18 +36,18 @@ extension Priority {
 }
 
 
-public func preciseFormatter(message:Message) -> String {
-    let string = message.string.escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
-    return "\(message.timestamp!) \(message.priority) \(message.source): \(string)"
+public func preciseFormatter(event:Event) -> String {
+    let string = event.string.escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
+    return "\(event.timestamp!) \(event.priority) \(event.source): \(string)"
 }
 
 
-public func terseFormatter(message:Message) -> String {
+public func terseFormatter(event:Event) -> String {
 
-    if let tags = message.tags where tags.contains(preformattedTag) {
-        return message.string
+    if let tags = event.tags where tags.contains(preformattedTag) {
+        return event.string
     }
 
-    return "\(message.timestamp!.toTimeString) \(message.priority.toEmoji) [\(message.source)]: \(message.string)"
+    return "\(event.timestamp!.toTimeString) \(event.priority.toEmoji) [\(event.source)]: \(event.string)"
 }
 

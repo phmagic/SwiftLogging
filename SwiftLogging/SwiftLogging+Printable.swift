@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Message: Printable {
+extension Event: Printable {
     public var description:String {
         return "\(timestamp!) \(priority) \(source) \(string)"
     }

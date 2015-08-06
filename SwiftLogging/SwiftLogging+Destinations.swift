@@ -9,15 +9,15 @@
 import Foundation
 
 public class ConsoleDestination: Destination {
-    public let formatter:MessageFormatter
+    public let formatter:EventFormatter
 
-    public init(formatter:MessageFormatter = terseFormatter) {
+    public init(formatter:EventFormatter = terseFormatter) {
         self.formatter = formatter
     }
 
-    public override func receiveMessage(message:Message) {
+    public override func receiveEvent(event:Event) {
         dispatch_async(logger.consoleQueue) {
-            let string = self.formatter(message)
+            let string = self.formatter(event)
             println(string)
         }
     }
@@ -26,10 +26,10 @@ public class ConsoleDestination: Destination {
 // MARK -
 
 public class MemoryDestination: Destination {
-    public internal(set) var messages:[Message] = []
+    public internal(set) var events:[Event] = []
 
-    public override func receiveMessage(message:Message) {
-        messages.append(message)
+    public override func receiveEvent(event:Event) {
+        events.append(event)
     }
 }
 
@@ -38,13 +38,13 @@ public class MemoryDestination: Destination {
 public class FileDestination: Destination {
 
     public let url:NSURL
-    public let formatter:MessageFormatter
+    public let formatter:EventFormatter
 
     public let queue = dispatch_queue_create("io.schwa.SwiftLogging.FileDestination", DISPATCH_QUEUE_SERIAL)
     public var open:Bool = false
     var channel:dispatch_io_t!
 
-    public init(url:NSURL = FileDestination.defaultFileDestinationURL, formatter:MessageFormatter = preciseFormatter) {
+    public init(url:NSURL = FileDestination.defaultFileDestinationURL, formatter:EventFormatter = preciseFormatter) {
         self.url = url
         self.formatter = formatter
         super.init()
@@ -77,7 +77,7 @@ public class FileDestination: Destination {
         }
     }
 
-    public override func receiveMessage(message:Message) {
+    public override func receiveEvent(event:Event) {
         dispatch_async(queue) {
             [weak self] in
 
@@ -87,9 +87,8 @@ public class FileDestination: Destination {
                     return
                 }
 
-                let string = strong_self.formatter(message)
-                let messageString = "\(string)\n"
-                var data = (messageString as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
+                let string = strong_self.formatter(event) + "\n"
+                var data = (string as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
                 // DISPATCH_DATA_DESTRUCTOR_DEFAULT is missing in swiff
                 let dispatchData = dispatch_data_create(data.bytes, data.length, strong_self.queue, nil)
 

@@ -39,9 +39,9 @@ import Foundation
 //////        println(client.dynamicType)
 ////    }
 //
-//    public override  func receiveMessage(message:Message) {
+//    public override  func receiveEvent(event:Event) {
 //        dispatch_async(queue) {
-//            my_asl_log_message(message.priority.aslLevel, "\(message)")
+//            my_asl_log_message(event.priority.aslLevel, "\(event)")
 //        }
 //    }
 //}

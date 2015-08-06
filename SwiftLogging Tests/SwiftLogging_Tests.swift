@@ -23,25 +23,25 @@ class SwiftLogging_Tests: XCTestCase {
     }
 
     /**
-     Test filters dropping messages.
+     Test filters dropping events.
      
-     Note we have to construct a Message manually and call log() with immedate: true to prevent the operation from being deferred.
+     Note we have to construct a Event manually and call log() with immedate: true to prevent the operation from being deferred.
      */
     func testFilters() {
         let logger = Logger()
         let memoryDestination = MemoryDestination(logger:logger)
         logger.addDestination("memory", destination: memoryDestination)
 
-        XCTAssert(memoryDestination.messages.count == 0)
+        XCTAssert(memoryDestination.events.count == 0)
 
-        logger.log(Message(object: 1, priority: .debug, source: Source()), immediate: true)
+        logger.log(Event(object: 1, priority: .debug, source: Source()), immediate: true)
 
-        XCTAssert(memoryDestination.messages.count == 1)
+        XCTAssert(memoryDestination.events.count == 1)
 
         logger.addFilter("test", filter: nilFilter)
 
-        logger.log(Message(object: 2, priority: .debug, source: Source()), immediate: true)
+        logger.log(Event(object: 2, priority: .debug, source: Source()), immediate: true)
 
-        XCTAssert(memoryDestination.messages.count == 1)
+        XCTAssert(memoryDestination.events.count == 1)
     }
 }

@@ -64,11 +64,11 @@ public class Logger {
         }
     }
 
-    public func log(message:Message, immediate:Bool = false) {
+    public func log(event:Event, immediate:Bool = false) {
 
         if immediate == false {
             dispatch_async(queue) {
-                self.log(message, immediate:true)
+                self.log(event, immediate:true)
             }
             return
         }
@@ -77,23 +77,23 @@ public class Logger {
             startup()
         }
 
-        var filteredMessage1: Message? = message
+        var filteredEvent1: Event? = event
         for (key, filter) in filters {
-            filteredMessage1 = filter(filteredMessage1!)
-            if filteredMessage1 == nil {
+            filteredEvent1 = filter(filteredEvent1!)
+            if filteredEvent1 == nil {
                 return
             }
         }
 
         destinationLoop: for (_, destination) in destinations {
-            var filteredMessage2: Message? = filteredMessage1
+            var filteredEvent2: Event? = filteredEvent1
             for filter in destination.filters {
-                filteredMessage2 = filter(filteredMessage2!)
-                if filteredMessage2 == nil {
+                filteredEvent2 = filter(filteredEvent2!)
+                if filteredEvent2 == nil {
                     continue destinationLoop
                 }
             }
-            destination.receiveMessage(filteredMessage2!)
+            destination.receiveEvent(filteredEvent2!)
         }
     }
 
@@ -106,8 +106,8 @@ extension Logger {
 
     public func log(object:Any?, priority:Priority = .debug, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
-        let message = Message(object: object, priority: priority, source: source, tags: tags, userInfo: userInfo)
-        log(message)
+        let event = Event(object: object, priority: priority, source: source, tags: tags, userInfo: userInfo)
+        log(event)
     }
 }
 
@@ -168,7 +168,7 @@ public typealias UserInfo = Dictionary <String, Any>
 
 // MARK: -
 
-public struct Message {
+public struct Event {
 
     public let string:String
     public let priority:Priority
@@ -187,24 +187,24 @@ public struct Message {
     }
 }
 
-extension Message: Hashable {
+extension Event: Hashable {
     public var hashValue: Int {
         return string.hashValue ^ priority.hashValue ^ source.hashValue ^ (timestamp != nil ? timestamp!.hashValue : 0)
     }
 }
 
-public func ==(lhs: Message, rhs: Message) -> Bool {
+public func ==(lhs: Event, rhs: Event) -> Bool {
     return lhs.string == rhs.string && lhs.priority == rhs.priority && lhs.timestamp == rhs.timestamp && lhs.source == rhs.source
 }
 
-extension Message {
-    public init(message:Message, timestamp:Timestamp?) {
-        self.string = message.string
-        self.priority = message.priority
+extension Event {
+    public init(event:Event, timestamp:Timestamp?) {
+        self.string = event.string
+        self.priority = event.priority
         self.timestamp = timestamp
-        self.source = message.source
-        self.tags = message.tags
-        self.userInfo = message.userInfo
+        self.source = event.source
+        self.tags = event.tags
+        self.userInfo = event.userInfo
     }
 
     public init(object:Any?, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
@@ -224,7 +224,7 @@ extension Message {
 
 // MARK: -
 
-public typealias MessageFormatter = Message -> String
+public typealias EventFormatter = Event -> String
 
 // MARK: -
 
@@ -239,7 +239,7 @@ public class Destination {
     public func startup() {
     }
 
-    public func receiveMessage(message:Message) {
+    public func receiveEvent(event:Event) {
     }
 
     public func shutdown() {
@@ -249,4 +249,4 @@ public class Destination {
 
 // MARK: -
 
-public typealias Filter = (Message) -> Message?
+public typealias Filter = (Event) -> Event?
