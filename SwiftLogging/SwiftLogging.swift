@@ -40,7 +40,7 @@ public class Logger {
     }
 
     public func removeFilter(key:String) {
-        for (index, (k, _)) in enumerate(self.filters) {
+        for (index, (k, _)) in self.filters.enumerate() {
             if key == k {
                 self.filters.removeAtIndex(index)
                 break
@@ -113,7 +113,7 @@ public class Logger {
         dispatch_async(consoleQueue) {
             [weak self] in
             if let strong_self = self {
-                println(subject)
+                print(subject)
             }
         }
     }
@@ -227,7 +227,7 @@ extension Event {
 
     public init(subject:Any?, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
         if let subject:Any = subject {
-            self.subject = toString(subject)
+            self.subject = String(subject)
         }
         else {
             // TODO: Really?

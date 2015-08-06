@@ -20,7 +20,7 @@ public class ConsoleDestination: Destination {
             [weak self] in
             if let strong_self = self {
                 let string = strong_self.formatter(event)
-                println(string)
+                print(string)
             }
         }
     }
@@ -60,7 +60,7 @@ public class FileDestination: Destination {
             if let strong_self = self {
                 let parentURL = strong_self.url.URLByDeletingLastPathComponent!
                 if NSFileManager().fileExistsAtPath(parentURL.path!) == false {
-                    NSFileManager().createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil, error:nil)
+                    try! NSFileManager().createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil)
                 }
                 strong_self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, strong_self.url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, strong_self.queue) {
                     (error:Int32) -> Void in
@@ -93,7 +93,7 @@ public class FileDestination: Destination {
                 }
 
                 let string = strong_self.formatter(event) + "\n"
-                var data = (string as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
+                let data = (string as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
                 // DISPATCH_DATA_DESTRUCTOR_DEFAULT is missing in swiff
                 let dispatchData = dispatch_data_create(data.bytes, data.length, strong_self.queue, nil)
 
@@ -119,15 +119,15 @@ public class FileDestination: Destination {
         let bundle = NSBundle.mainBundle()
         // If we're in a bundle: use ~/Library/Application Support/<bundle identifier>/<bundle name>.log
         if let bundleIdentifier = bundle.bundleIdentifier, let bundleName = bundle.infoDictionary?["CFBundleName"] as? String {
-            let url = NSFileManager().URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: nil)!
+            let url = try! NSFileManager().URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
             return url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
         }
         // Otherwise use ~/Library/Logs/<process name>.log
         else {
-            let processName = Process.arguments.first!.pathComponents.last!
-            var url = NSFileManager().URLForDirectory(.LibraryDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: nil)!
+            let processName = (Process.arguments.first! as NSString).pathComponents.last!
+            var url = try! NSFileManager().URLForDirectory(.LibraryDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
             url = url.URLByAppendingPathComponent("Logs")
-            NSFileManager().createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil, error: nil)
+            try! NSFileManager().createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil)
             url = url.URLByAppendingPathComponent("\(processName).log")
             return url
         }

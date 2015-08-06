@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Event: Printable {
+extension Event: CustomStringConvertible {
     public var description:String {
         return "\(timestamp!) \(priority) \(source) \(subject)"
     }
@@ -31,13 +31,13 @@ extension Priority {
     }
 }
 
-extension Priority: Printable {
+extension Priority: CustomStringConvertible {
     public var description:String {
         return toString
     }
 }
 
-extension Source: Printable {
+extension Source: CustomStringConvertible {
     public var description: String {
         return toString
     }

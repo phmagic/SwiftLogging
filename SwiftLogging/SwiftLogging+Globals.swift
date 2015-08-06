@@ -38,7 +38,7 @@ public var logger:Logger! = {
         ("Locale", NSLocale.currentLocale().localeIdentifier),
     ]
 
-    var string = "\n".join(map(items) {
+    var string = "\n".join(items.map {
         return "\($0.0): \($0.1!)"
     })
 

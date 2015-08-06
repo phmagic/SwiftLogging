@@ -24,8 +24,8 @@ internal let timeFormatter:NSDateFormatter = {
 }()
 
 extension String {
-    func escape(# asASCII: Bool, extraCharacters: NSCharacterSet? = nil) -> String {
-        let f:[String] = map(self.unicodeScalars) {
+    func escape(asASCII  asASCII: Bool, extraCharacters: NSCharacterSet? = nil) -> String {
+        let f:[String] = self.unicodeScalars.map {
             (unicodeScalar:UnicodeScalar) -> String in
 
             if let extraCharacters = extraCharacters where extraCharacters.longCharacterIsMember(unicodeScalar.value) {
@@ -73,7 +73,7 @@ public func ==(lhs: Timestamp, rhs: Timestamp) -> Bool {
     return lhs.timeIntervalSinceReferenceDate == rhs.timeIntervalSinceReferenceDate
 }
 
-extension Timestamp: Printable {
+extension Timestamp: CustomStringConvertible {
     public var description: String {
         return toString
     }
