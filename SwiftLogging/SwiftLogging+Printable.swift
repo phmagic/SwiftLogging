@@ -10,22 +10,22 @@ import Foundation
 
 extension Event: Printable {
     public var description:String {
-        return "\(timestamp!) \(priority) \(source) \(string)"
+        return "\(timestamp!) \(priority) \(source) \(subject)"
     }
 }
 
 extension Priority {
     public var toString:String {
         switch self {
-            case .debug:
+            case .Debug:
                 return "debug"
-            case .info:
+            case .Info:
                 return "info"
-            case .warning:
+            case .Warning:
                 return "warning"
-            case .error:
+            case .Error:
                 return "error"
-            case .critical:
+            case .Critical:
                 return "critical"
         }
     }

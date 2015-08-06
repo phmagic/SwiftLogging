@@ -97,16 +97,16 @@ public class Logger {
         }
     }
 
-    func internalLog(object:Any?) {
-        println(object)
+    func internalLog(subject:Any?) {
+        println(subject)
     }
 }
 
 extension Logger {
 
-    public func log(object:Any?, priority:Priority = .debug, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func log(subject:Any?, priority:Priority = .Debug, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
-        let event = Event(object: object, priority: priority, source: source, tags: tags, userInfo: userInfo)
+        let event = Event(subject: subject, priority: priority, source: source, tags: tags, userInfo: userInfo)
         log(event)
     }
 }
@@ -114,11 +114,11 @@ extension Logger {
 // MARK: -
 
 public enum Priority: Int8 {
-    case debug
-    case info
-    case warning
-    case error
-    case critical
+    case Debug
+    case Info
+    case Warning
+    case Error
+    case Critical
 }
 
 // MARK: -
@@ -170,15 +170,15 @@ public typealias UserInfo = Dictionary <String, Any>
 
 public struct Event {
 
-    public let string:String
+    public let subject:String // Should this be an any?
     public let priority:Priority
     public let timestamp:Timestamp?
     public let source:Source
     public let tags:Tags?
     public let userInfo:UserInfo?
 
-    public init(string:String, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
-        self.string = string
+    public init(subject:String, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
+        self.subject = subject
         self.priority = priority
         self.timestamp = timestamp
         self.source = source
@@ -189,17 +189,17 @@ public struct Event {
 
 extension Event: Hashable {
     public var hashValue: Int {
-        return string.hashValue ^ priority.hashValue ^ source.hashValue ^ (timestamp != nil ? timestamp!.hashValue : 0)
+        return subject.hashValue ^ priority.hashValue ^ source.hashValue ^ (timestamp != nil ? timestamp!.hashValue : 0)
     }
 }
 
 public func ==(lhs: Event, rhs: Event) -> Bool {
-    return lhs.string == rhs.string && lhs.priority == rhs.priority && lhs.timestamp == rhs.timestamp && lhs.source == rhs.source
+    return lhs.subject == rhs.subject && lhs.priority == rhs.priority && lhs.timestamp == rhs.timestamp && lhs.source == rhs.source
 }
 
 extension Event {
     public init(event:Event, timestamp:Timestamp?) {
-        self.string = event.string
+        self.subject = event.subject
         self.priority = event.priority
         self.timestamp = timestamp
         self.source = event.source
@@ -207,12 +207,13 @@ extension Event {
         self.userInfo = event.userInfo
     }
 
-    public init(object:Any?, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
-        if let object:Any = object {
-            self.string = toString(object)
+    public init(subject:Any?, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
+        if let subject:Any = subject {
+            self.subject = toString(subject)
         }
         else {
-            self.string = "nil"
+            // TODO: Really?
+            self.subject = "nil"
         }
         self.priority = priority
         self.timestamp = timestamp

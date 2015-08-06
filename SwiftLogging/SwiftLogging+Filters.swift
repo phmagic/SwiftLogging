@@ -84,7 +84,7 @@ public func duplicateFilter() -> Filter {
 // MARK: -
 
 public let sensitiveFilter = tagFilterOut(Tags([sensitiveTag])) {
-    return Event(string: "Sensitive log info redacted.", priority: .warning, timestamp: $0.timestamp, source: $0.source)
+    return Event(subject: "Sensitive log info redacted.", priority: .Warning, timestamp: $0.timestamp, source: $0.source)
 }
 
 // MARK: -

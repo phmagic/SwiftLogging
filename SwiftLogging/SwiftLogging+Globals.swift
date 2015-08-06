@@ -44,8 +44,7 @@ public var logger:Logger! = {
 
     string = banner(string)
 
-
-    let event = Event(string:string, priority:.info, source:Source(), tags:Tags([preformattedTag, verboseTag]))
+    let event = Event(subject:string, priority:.Info, source:Source(), tags:Tags([preformattedTag, verboseTag]))
     logger.log(event, immediate:true)
 
 

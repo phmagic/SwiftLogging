@@ -21,15 +21,15 @@ import Foundation
 extension Priority {
     var toEmoji:String {
         switch self {
-            case .debug:
+            case .Debug:
                 return "👷"
-            case .info:
+            case .Info:
                 return "📰"
-            case .warning:
+            case .Warning:
                 return "🚧"
-            case .error:
+            case .Error:
                 return "🚨"
-            case .critical:
+            case .Critical:
                 return "💣"
         }
     }
@@ -37,7 +37,7 @@ extension Priority {
 
 
 public func preciseFormatter(event:Event) -> String {
-    let string = event.string.escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
+    let string = event.subject.escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
     return "\(event.timestamp!) \(event.priority) \(event.source): \(string)"
 }
 
@@ -45,9 +45,9 @@ public func preciseFormatter(event:Event) -> String {
 public func terseFormatter(event:Event) -> String {
 
     if let tags = event.tags where tags.contains(preformattedTag) {
-        return event.string
+        return event.subject
     }
 
-    return "\(event.timestamp!.toTimeString) \(event.priority.toEmoji) [\(event.source)]: \(event.string)"
+    return "\(event.timestamp!.toTimeString) \(event.priority.toEmoji) [\(event.source)]: \(event.subject)"
 }
 
