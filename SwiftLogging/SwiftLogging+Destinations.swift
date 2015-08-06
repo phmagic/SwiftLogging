@@ -65,8 +65,6 @@ public class FileDestination: Destination {
         if self.channel != nil {
             self.open = true
         }
-
-        logger.internalLog("Startup Done")
     }
 
     public override func shutdown() {
