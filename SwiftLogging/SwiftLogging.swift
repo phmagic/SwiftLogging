@@ -11,11 +11,8 @@ import Darwin
 
 public class Logger {
 
-    public typealias EventHandler = EventBroadcaster <Event>.Handler
-
     public internal(set) var destinations:[String:Destination] = [:]
     public internal(set) var filters:[(String, Filter)] = []
-    public internal(set) var eventBroadcaster = EventBroadcaster <Event>()
 
     public let queue = dispatch_queue_create("io.schwa.SwiftLogger", DISPATCH_QUEUE_SERIAL)
     public let consoleQueue = dispatch_queue_create("io.schwa.SwiftLogger.console", DISPATCH_QUEUE_SERIAL)
@@ -38,14 +35,6 @@ public class Logger {
         self.destinations.removeValueForKey(key)
     }
 
-    public func addEventHandler(key:String, event:Event, handler:EventHandler) {
-        self.eventBroadcaster.addHandler(key, event: event, handler: handler)
-    }
-
-    public func removeEventHandler(key:String) {
-        self.eventBroadcaster.removeHandler(key)
-    }
-
     public func addFilter(key:String, filter:Filter) {
         self.filters.append((key, filter))
     }
@@ -64,7 +53,6 @@ public class Logger {
         for (_, destination) in destinations {
             destination.startup()
         }
-        fireTriggers(.startup)
     }
 
     public func shutdown() {
@@ -74,7 +62,6 @@ public class Logger {
         for (_, destination) in destinations {
             destination.shutdown()
         }
-        fireTriggers(.shutdown)
     }
 
     public func log(message:Message, immediate:Bool = false) {
@@ -108,12 +95,6 @@ public class Logger {
             }
             destination.receiveMessage(filteredMessage2!)
         }
-
-        fireTriggers(.messageLogged, object: message)
-    }
-
-    internal func fireTriggers(event:Event, object:Any? = nil) {
-        eventBroadcaster.fireHandlers(event, object: object)
     }
 
     func internalLog(object:Any?) {
@@ -269,13 +250,3 @@ public class Destination {
 // MARK: -
 
 public typealias Filter = (Message) -> Message?
-
-// MARK: -
-
-public enum Event {
-    case startup
-    case messageLogged
-    case shutdown
-}
-
-

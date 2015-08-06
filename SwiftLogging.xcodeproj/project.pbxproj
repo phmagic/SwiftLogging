@@ -47,9 +47,6 @@
 		45E10CCA1B1772D100B918FE /* SwiftLogging+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */; };
 		45E10CCB1B1772EE00B918FE /* SwiftLogging+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */; };
 		45E10CCC1B1772EF00B918FE /* SwiftLogging+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */; };
-		45E10CCE1B17741A00B918FE /* EventBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CCD1B17741A00B918FE /* EventBroadcaster.swift */; };
-		45E10CCF1B17744B00B918FE /* EventBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CCD1B17741A00B918FE /* EventBroadcaster.swift */; };
-		45E10CD01B17744C00B918FE /* EventBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CCD1B17741A00B918FE /* EventBroadcaster.swift */; };
 		45E10CD21B17A31600B918FE /* SwiftLogging+Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */; };
 		45E10CD31B17A35B00B918FE /* SwiftLogging+Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */; };
 		45E10CD41B17A35C00B918FE /* SwiftLogging+Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */; };
@@ -162,7 +159,6 @@
 		4564D6AD1B181D170004A3B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4564D6AE1B181D170004A3B3 /* SwiftLogging_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLogging_Tests.swift; sourceTree = "<group>"; };
 		45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Convenience.swift"; sourceTree = "<group>"; };
-		45E10CCD1B17741A00B918FE /* EventBroadcaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventBroadcaster.swift; sourceTree = "<group>"; };
 		45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Formatters.swift"; sourceTree = "<group>"; };
 		45E147271B150EF100F46A98 /* SwiftLogging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLogging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		45E1472A1B150EF100F46A98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -271,7 +267,6 @@
 				45347F461AFAF94D0080DFF4 /* SwiftLogging+Filters.swift */,
 				45347F441AFAF9320080DFF4 /* SwiftLogging+Destinations.swift */,
 				45E5799A1B16C73200D21B70 /* Utilities.swift */,
-				45E10CCD1B17741A00B918FE /* EventBroadcaster.swift */,
 			);
 			path = SwiftLogging;
 			sourceTree = "<group>";
@@ -537,7 +532,6 @@
 				453A35981B071FF100A3923D /* SwiftLogging+Printable.swift in Sources */,
 				45E5799B1B16C73200D21B70 /* Utilities.swift in Sources */,
 				45E10CD21B17A31600B918FE /* SwiftLogging+Formatters.swift in Sources */,
-				45E10CCE1B17741A00B918FE /* EventBroadcaster.swift in Sources */,
 				453A35991B071FF100A3923D /* SwiftLogging+Filters.swift in Sources */,
 				453A359A1B071FF100A3923D /* SwiftLogging+Destinations.swift in Sources */,
 				453A35961B071FEC00A3923D /* BridgingHelpers.m in Sources */,
@@ -565,7 +559,6 @@
 				45347F4C1AFAFF800080DFF4 /* BridgingHelpers.m in Sources */,
 				45E5799D1B16C73200D21B70 /* Utilities.swift in Sources */,
 				45E10CD41B17A35C00B918FE /* SwiftLogging+Formatters.swift in Sources */,
-				45E10CD01B17744C00B918FE /* EventBroadcaster.swift in Sources */,
 				45347F471AFAF94D0080DFF4 /* SwiftLogging+Filters.swift in Sources */,
 				45347F501AFB15560080DFF4 /* SwiftLogging+Printable.swift in Sources */,
 				455DD39A1AE6F38400FF383E /* main.swift in Sources */,
@@ -591,7 +584,6 @@
 				45E1474A1B150F3000F46A98 /* SwiftLogging.swift in Sources */,
 				45E5799C1B16C73200D21B70 /* Utilities.swift in Sources */,
 				45E10CD31B17A35B00B918FE /* SwiftLogging+Formatters.swift in Sources */,
-				45E10CCF1B17744B00B918FE /* EventBroadcaster.swift in Sources */,
 				45E1474B1B150F3000F46A98 /* SwiftLogging+Printable.swift in Sources */,
 				45E1474C1B150F3000F46A98 /* SwiftLogging+Filters.swift in Sources */,
 				45E1474D1B150F3000F46A98 /* SwiftLogging+Destinations.swift in Sources */,

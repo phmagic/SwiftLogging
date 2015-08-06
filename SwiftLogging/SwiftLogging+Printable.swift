@@ -14,19 +14,6 @@ extension Message: Printable {
     }
 }
 
-extension Event: Printable {
-    public var description:String {
-        switch self {
-            case .startup:
-                return "startup"
-            case .messageLogged:
-                return "messageLogged"
-            case .shutdown:
-                return "shutdown"
-        }
-    }
-}
-
 extension Priority {
     public var toString:String {
         switch self {
