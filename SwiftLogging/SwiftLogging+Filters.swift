@@ -22,6 +22,18 @@ public let passthroughFilter = {
 
 // MARK: -
 
+public func tagFilterIn(tags:Tags, replacement:(Message -> Message?)? = nil) -> Filter {
+    return {
+        (message:Message) -> Message? in
+        if let messageTags = message.tags {
+            return tags.intersect(messageTags).count == 0 ? replacement?(message) : message
+        }
+        else {
+            return message
+        }
+    }
+}
+
 public func tagFilterOut(tags:Tags, replacement:(Message -> Message?)? = nil) -> Filter {
     return {
         (message:Message) -> Message? in
