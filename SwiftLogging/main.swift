@@ -14,9 +14,9 @@ logger.addFilter("duplicateFilter", filter: duplicateFilter())
 logger.addFilter("duplicateFilter", filter: verbosityFilter())
 
 
-logger.debug("My password is \"123456\"", tags:Tags([sensitiveTag]))
+logger.debug("My password is \"123456\"", tags:[sensitiveTag])
 
-logger.debug("Blah blah", tags:Tags([verboseTag]))
+logger.debug("Blah blah", tags:[verboseTag])
 
 
 for R in 0..<10 {
