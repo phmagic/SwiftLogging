@@ -17,8 +17,11 @@ public class ConsoleDestination: Destination {
 
     public override func receiveEvent(event:Event) {
         dispatch_async(logger.consoleQueue) {
-            let string = self.formatter(event)
-            println(string)
+            [weak self] in
+            if let strong_self = self {
+                let string = strong_self.formatter(event)
+                println(string)
+            }
         }
     }
 }
@@ -51,24 +54,29 @@ public class FileDestination: Destination {
     }
 
     public override func startup() {
+        dispatch_async(queue) {
+            [weak self] in
 
-        let parentURL = url.URLByDeletingLastPathComponent!
-
-        if NSFileManager().fileExistsAtPath(parentURL.path!) == false {
-            NSFileManager().createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil, error:nil)
-        }
-
-        self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, queue) {
-            (error:Int32) -> Void in
-            self.logger.internalLog("ERROR: \(error)")
-        }
-        if self.channel != nil {
-            self.open = true
+            if let strong_self = self {
+                let parentURL = strong_self.url.URLByDeletingLastPathComponent!
+                if NSFileManager().fileExistsAtPath(parentURL.path!) == false {
+                    NSFileManager().createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil, error:nil)
+                }
+                strong_self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, strong_self.url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, strong_self.queue) {
+                    (error:Int32) -> Void in
+                    if error != 0 {
+                        strong_self.logger.internalLog("ERROR: \(error)")
+                    }
+                }
+                if strong_self.channel != nil {
+                    strong_self.open = true
+                }
+            }
         }
     }
 
     public override func shutdown() {
-        dispatch_sync(queue) {
+        dispatch_async(queue) {
             [unowned self] in
             self.open = false
             dispatch_io_close(self.channel, 0)
@@ -81,7 +89,6 @@ public class FileDestination: Destination {
 
             if let strong_self = self {
                 if strong_self.open == false {
-                    strong_self.logger.internalLog("File not open, skipping")
                     return
                 }
 
@@ -92,20 +99,38 @@ public class FileDestination: Destination {
 
                 dispatch_io_write(strong_self.channel, 0, dispatchData, strong_self.queue) {
                     (done:Bool, data:dispatch_data_t!, error:Int32) -> Void in
-                    strong_self.logger.internalLog(("dispatch_io_write", done, data, error))
-
                 }
             }
         }
     }
 
+    public override func flush() {
+        dispatch_barrier_async(queue) {
+            [weak self] in
+
+            if let strong_self = self {
+                let descriptor = dispatch_io_get_descriptor(strong_self.channel)
+                fsync(descriptor)
+            }
+        }
+    }
+
     public static var defaultFileDestinationURL:NSURL {
-        let fileManager = NSFileManager()
-        var url = fileManager.URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: nil)!
-        let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier
-        let bundleName = NSBundle.mainBundle().infoDictionary?["CFBundleName"] as? String
-        url = url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
-        return url
+        let bundle = NSBundle.mainBundle()
+        // If we're in a bundle: use ~/Library/Application Support/<bundle identifier>/<bundle name>.log
+        if let bundleIdentifier = bundle.bundleIdentifier, let bundleName = bundle.infoDictionary?["CFBundleName"] as? String {
+            let url = NSFileManager().URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: nil)!
+            return url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
+        }
+        // Otherwise use ~/Library/Logs/<process name>.log
+        else {
+            let processName = Process.arguments.first!.pathComponents.last!
+            var url = NSFileManager().URLForDirectory(.LibraryDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true, error: nil)!
+            url = url.URLByAppendingPathComponent("Logs")
+            NSFileManager().createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil, error: nil)
+            url = url.URLByAppendingPathComponent("\(processName).log")
+            return url
+        }
     }
 
 }

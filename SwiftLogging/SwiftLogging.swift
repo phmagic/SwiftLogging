@@ -64,6 +64,12 @@ public class Logger {
         }
     }
 
+    public func flush() {
+        for (_, destination) in destinations {
+            destination.flush()
+        }
+    }
+
     public func log(event:Event, immediate:Bool = false) {
 
         if immediate == false {
@@ -76,6 +82,8 @@ public class Logger {
         if count++ == 0 {
             startup()
         }
+
+        let shouldFlush = event.tags?.contains(flushTag)
 
         var filteredEvent1: Event? = event
         for (key, filter) in filters {
@@ -95,10 +103,19 @@ public class Logger {
             }
             destination.receiveEvent(filteredEvent2!)
         }
+
+        if shouldFlush == true {
+            flush()
+        }
     }
 
     func internalLog(subject:Any?) {
-        println(subject)
+        dispatch_async(consoleQueue) {
+            [weak self] in
+            if let strong_self = self {
+                println(subject)
+            }
+        }
     }
 }
 
@@ -161,6 +178,7 @@ public let preformattedTag = "preformatted"
 public let sensitiveTag = "sensitive"
 public let verboseTag = "verbose"
 public let veryVerboseTag = "verbose+"
+public let flushTag = "flush"
 
 // MARK: -
 
@@ -244,6 +262,9 @@ public class Destination {
     }
 
     public func shutdown() {
+    }
+
+    public func flush() {
     }
 
 }

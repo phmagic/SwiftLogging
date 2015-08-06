@@ -21,7 +21,7 @@ logger.debug("Blah blah", tags:[verboseTag])
 
 for R in 0..<10 {
 
-    usleep(useconds_t(5.0 * 1000000))
+    usleep(useconds_t(5.0 * 100000))
 
     for N in 0..<5000 {
         logger.info("Hello world")
