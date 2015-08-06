@@ -256,6 +256,9 @@ public class Destination {
     public var filters:[Filter] = []
     public internal(set) weak var logger:Logger!
 
+    public init() {
+    }
+
     public func startup() {
     }
 

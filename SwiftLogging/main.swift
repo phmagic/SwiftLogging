@@ -11,9 +11,13 @@ import Foundation
 
 logger.addFilter("sensitiveFilter", filter: sensitiveFilter)
 logger.addFilter("duplicateFilter", filter: duplicateFilter())
+logger.addFilter("duplicateFilter", filter: verbosityFilter())
 
 
 logger.debug("My password is \"123456\"", tags:Tags([sensitiveTag]))
+
+logger.debug("Blah blah", tags:Tags([verboseTag]))
+
 
 for R in 0..<10 {
 
