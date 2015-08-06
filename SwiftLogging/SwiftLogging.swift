@@ -117,11 +117,7 @@ public class Logger {
     }
 
     func internalLog(object:Any?) {
-//        dispatch_async(consoleQueue) {
-//            if let object = object {
-//                println(object)
-//            }
-//        }
+        println(object)
     }
 }
 
