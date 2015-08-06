@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
 
-        logger.debug("My password is \"123456\"", tags:Tags([sensitiveTag]))
+        logger.debug("My password is \"123456\"", tags:[sensitiveTag])
         logger.debug("Poop:\n💩")
 
     }

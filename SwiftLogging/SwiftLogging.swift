@@ -86,7 +86,7 @@ public class Logger {
         let shouldFlush = event.tags?.contains(flushTag)
 
         var filteredEvent1: Event? = event
-        for (key, filter) in filters {
+        for (_, filter) in filters {
             filteredEvent1 = filter(filteredEvent1!)
             if filteredEvent1 == nil {
                 return
@@ -111,10 +111,7 @@ public class Logger {
 
     func internalLog(subject:Any?) {
         dispatch_async(consoleQueue) {
-            [weak self] in
-            if let strong_self = self {
-                println(subject)
-            }
+            print(subject)
         }
     }
 }
