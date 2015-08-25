@@ -38,9 +38,9 @@ public var logger:Logger! = {
         ("Locale", NSLocale.currentLocale().localeIdentifier),
     ]
 
-    var string = "\n".join(items.map {
+    var string = items.map() {
         return "\($0.0): \($0.1!)"
-    })
+    }.joinWithSeparator("\n")
 
     string = banner(string)
 

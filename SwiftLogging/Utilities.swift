@@ -49,7 +49,7 @@ extension String {
 
             return unicodeScalar.escape(asASCII: asASCII)
         }
-        return "".join(f)
+        return f.joinWithSeparator("")
     }
 }
 
