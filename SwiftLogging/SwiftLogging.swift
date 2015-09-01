@@ -9,6 +9,8 @@
 import Foundation
 import Darwin
 
+public var log = Logger()
+
 public class Logger {
 
     public internal(set) var destinations:[String:Destination] = [:]
