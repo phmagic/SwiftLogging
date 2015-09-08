@@ -44,6 +44,7 @@
 		455DD3A11AE6F38F00FF383E /* SwiftLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */; };
 		4564D6AF1B181D170004A3B3 /* SwiftLogging_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564D6AE1B181D170004A3B3 /* SwiftLogging_Tests.swift */; };
 		4564D6B01B181D170004A3B3 /* SwiftLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 453A357D1B071FD500A3923D /* SwiftLogging.framework */; };
+		456CA8601B965337000A9185 /* SwiftLogging+Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */; };
 		45E10CCA1B1772D100B918FE /* SwiftLogging+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */; };
 		45E10CCB1B1772EE00B918FE /* SwiftLogging+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */; };
 		45E10CCC1B1772EF00B918FE /* SwiftLogging+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */; };
@@ -62,8 +63,6 @@
 		45E5799B1B16C73200D21B70 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799A1B16C73200D21B70 /* Utilities.swift */; };
 		45E5799C1B16C73200D21B70 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799A1B16C73200D21B70 /* Utilities.swift */; };
 		45E5799D1B16C73200D21B70 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799A1B16C73200D21B70 /* Utilities.swift */; };
-		45E5799F1B16C92C00D21B70 /* SwiftLogging+Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */; };
-		45E579A01B16C92C00D21B70 /* SwiftLogging+Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */; };
 		45E579A11B16C92C00D21B70 /* SwiftLogging+Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */; };
 /* End PBXBuildFile section */
 
@@ -262,7 +261,6 @@
 				455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */,
 				45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */,
 				45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */,
-				45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */,
 				45347F4F1AFB15560080DFF4 /* SwiftLogging+Printable.swift */,
 				45347F461AFAF94D0080DFF4 /* SwiftLogging+Filters.swift */,
 				45347F441AFAF9320080DFF4 /* SwiftLogging+Destinations.swift */,
@@ -318,6 +316,7 @@
 		45E579971B16C33500D21B70 /* CLI */ = {
 			isa = PBXGroup;
 			children = (
+				45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */,
 				455DD3991AE6F38400FF383E /* main.swift */,
 			);
 			name = CLI;
@@ -528,7 +527,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45E5799F1B16C92C00D21B70 /* SwiftLogging+Globals.swift in Sources */,
 				453A35C21B07216F00A3923D /* SwiftLogging+ASL.swift in Sources */,
 				453A35981B071FF100A3923D /* SwiftLogging+Printable.swift in Sources */,
 				45E5799B1B16C73200D21B70 /* Utilities.swift in Sources */,
@@ -545,6 +543,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				456CA8601B965337000A9185 /* SwiftLogging+Globals.swift in Sources */,
 				453A35C51B0721C800A3923D /* SwiftLoggingViewController.swift in Sources */,
 				453A35A61B07203B00A3923D /* ViewController.swift in Sources */,
 				453A35A41B07203B00A3923D /* AppDelegate.swift in Sources */,
@@ -580,7 +579,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45E579A01B16C92C00D21B70 /* SwiftLogging+Globals.swift in Sources */,
 				45E147491B150F3000F46A98 /* BridgingHelpers.m in Sources */,
 				45E1474A1B150F3000F46A98 /* SwiftLogging.swift in Sources */,
 				45E5799C1B16C73200D21B70 /* Utilities.swift in Sources */,

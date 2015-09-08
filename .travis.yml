@@ -1,8 +1,4 @@
 language: objective-c
-osx_image: beta-xcode6.3
-#xcode_project: 'SwiftLogging.xcodeproj'
-#xcode_scheme: 'All'
-#xcode_sdk: 'iphonesimulator'
+osx_image: xcode7
 script:
-   - xctool -project SwiftLogging.xcodeproj -scheme SwiftLogging_OSX build test
-   - xctool -project SwiftLogging.xcodeproj -scheme SwiftLogging_iOS -sdk iphonesimulator build test
+   - ./scripts/build.sh
