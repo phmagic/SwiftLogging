@@ -8,25 +8,25 @@
 
 import Foundation
 
-internal let iso8601Formatter:NSDateFormatter = {
+internal let iso8601Formatter: NSDateFormatter = {
     let dateFormatter = NSDateFormatter()
-    dateFormatter.locale = NSLocale(localeIdentifier:"en_US_POSIX")
+    dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
     dateFormatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSXX"
-//    dateFormatter.timeZone = NSTimeZone(name:"UTC")
+//    dateFormatter.timeZone = NSTimeZone(name: "UTC")
     return dateFormatter
 }()
 
-internal let timeFormatter:NSDateFormatter = {
+internal let timeFormatter: NSDateFormatter = {
     let dateFormatter = NSDateFormatter()
     dateFormatter.dateFormat = "HH':'mm':'ss.SSS"
-//    dateFormatter.timeZone = NSTimeZone(name:"UTC")
+//    dateFormatter.timeZone = NSTimeZone(name: "UTC")
     return dateFormatter
 }()
 
 extension String {
     func escape(asASCII  asASCII: Bool, extraCharacters: NSCharacterSet? = nil) -> String {
-        let f:[String] = self.unicodeScalars.map {
-            (unicodeScalar:UnicodeScalar) -> String in
+        let f: [String] = self.unicodeScalars.map {
+            (unicodeScalar: UnicodeScalar) -> String in
 
             if let extraCharacters = extraCharacters where extraCharacters.longCharacterIsMember(unicodeScalar.value) {
 
@@ -56,7 +56,7 @@ extension String {
 // MARK: -
 
 public struct Timestamp {
-    let timeIntervalSinceReferenceDate:NSTimeInterval
+    let timeIntervalSinceReferenceDate: NSTimeInterval
 
     init() {
         timeIntervalSinceReferenceDate = NSDate().timeIntervalSinceReferenceDate
@@ -97,7 +97,7 @@ public extension Timestamp {
 
 // MARK: -
 
-public func banner(string:String, width:Int = 72, borderCharacter:Character = "*") -> String {
+public func banner(string: String, width: Int = 72, borderCharacter: Character = "*") -> String {
 
     let borderString = "\(borderCharacter)"
 
@@ -106,7 +106,7 @@ public func banner(string:String, width:Int = 72, borderCharacter:Character = "*
 
     for line in string.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet()) {
         var formattedLine = borderString + " " + line
-        formattedLine = formattedLine.stringByPaddingToLength(width - 2, withString:" ", startingAtIndex:0)
+        formattedLine = formattedLine.stringByPaddingToLength(width - 2, withString: " ", startingAtIndex: 0)
         formattedLine += " " + borderString + "\n"
         output += formattedLine
     }

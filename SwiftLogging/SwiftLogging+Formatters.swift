@@ -9,7 +9,7 @@
 import Foundation
 
 
-//public func simpleFormatter(event:Event) -> String {
+//public func simpleFormatter(event: Event) -> String {
 //
 //    if let tags = event.tags where tags.contains(preformattedTag) {
 //        return event.string
@@ -19,7 +19,7 @@ import Foundation
 //}
 
 extension Priority {
-    var toEmoji:String {
+    var toEmoji: String {
         switch self {
             case .Debug:
                 return "👷"
@@ -36,13 +36,13 @@ extension Priority {
 }
 
 
-public func preciseFormatter(event:Event) -> String {
+public func preciseFormatter(event: Event) -> String {
     let string = event.subject.escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
     return "\(event.timestamp!) \(event.priority) \(event.source): \(string)"
 }
 
 
-public func terseFormatter(event:Event) -> String {
+public func terseFormatter(event: Event) -> String {
 
     if let tags = event.tags where tags.contains(preformattedTag) {
         return event.subject

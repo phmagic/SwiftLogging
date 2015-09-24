@@ -9,13 +9,13 @@
 import Foundation
 
 public class ConsoleDestination: Destination {
-    public let formatter:EventFormatter
+    public let formatter: EventFormatter
 
-    public init(formatter:EventFormatter = terseFormatter) {
+    public init(formatter: EventFormatter = terseFormatter) {
         self.formatter = formatter
     }
 
-    public override func receiveEvent(event:Event) {
+    public override func receiveEvent(event: Event) {
         dispatch_async(logger.consoleQueue) {
             [weak self] in
             if let strong_self = self {
@@ -29,9 +29,9 @@ public class ConsoleDestination: Destination {
 // MARK -
 
 public class MemoryDestination: Destination {
-    public internal(set) var events:[Event] = []
+    public internal(set) var events: [Event] = []
 
-    public override func receiveEvent(event:Event) {
+    public override func receiveEvent(event: Event) {
         events.append(event)
     }
 }
@@ -40,14 +40,14 @@ public class MemoryDestination: Destination {
 
 public class FileDestination: Destination {
 
-    public let url:NSURL
-    public let formatter:EventFormatter
+    public let url: NSURL
+    public let formatter: EventFormatter
 
     public let queue = dispatch_queue_create("io.schwa.SwiftLogging.FileDestination", DISPATCH_QUEUE_SERIAL)
-    public var open:Bool = false
-    var channel:dispatch_io_t!
+    public var open: Bool = false
+    var channel: dispatch_io_t!
 
-    public init(url:NSURL = FileDestination.defaultFileDestinationURL, formatter:EventFormatter = preciseFormatter) {
+    public init(url: NSURL = FileDestination.defaultFileDestinationURL, formatter: EventFormatter = preciseFormatter) {
         self.url = url
         self.formatter = formatter
         super.init()
@@ -63,7 +63,7 @@ public class FileDestination: Destination {
                     try! NSFileManager().createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil)
                 }
                 strong_self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, strong_self.url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, strong_self.queue) {
-                    (error:Int32) -> Void in
+                    (error: Int32) -> Void in
                     if error != 0 {
                         strong_self.logger.internalLog("ERROR: \(error)")
                     }
@@ -83,7 +83,7 @@ public class FileDestination: Destination {
         }
     }
 
-    public override func receiveEvent(event:Event) {
+    public override func receiveEvent(event: Event) {
         dispatch_async(queue) {
             [weak self] in
 
@@ -98,7 +98,7 @@ public class FileDestination: Destination {
                 let dispatchData = dispatch_data_create(data.bytes, data.length, strong_self.queue, nil)
 
                 dispatch_io_write(strong_self.channel, 0, dispatchData, strong_self.queue) {
-                    (done:Bool, data:dispatch_data_t!, error:Int32) -> Void in
+                    (done: Bool, data: dispatch_data_t!, error: Int32) -> Void in
                 }
             }
         }
@@ -115,7 +115,7 @@ public class FileDestination: Destination {
         }
     }
 
-    public static var defaultFileDestinationURL:NSURL {
+    public static var defaultFileDestinationURL: NSURL {
         let bundle = NSBundle.mainBundle()
         // If we're in a bundle: use ~/Library/Application Support/<bundle identifier>/<bundle name>.log
         if let bundleIdentifier = bundle.bundleIdentifier, let bundleName = bundle.infoDictionary?["CFBundleName"] as? String {

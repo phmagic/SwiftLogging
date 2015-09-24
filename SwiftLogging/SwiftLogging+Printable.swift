@@ -9,13 +9,13 @@
 import Foundation
 
 extension Event: CustomStringConvertible {
-    public var description:String {
+    public var description: String {
         return "\(timestamp!) \(priority) \(source) \(subject)"
     }
 }
 
 extension Priority {
-    public var toString:String {
+    public var toString: String {
         switch self {
             case .Debug:
                 return "debug"
@@ -32,7 +32,7 @@ extension Priority {
 }
 
 extension Priority: CustomStringConvertible {
-    public var description:String {
+    public var description: String {
         return toString
     }
 }

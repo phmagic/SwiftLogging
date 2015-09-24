@@ -13,35 +13,35 @@ public var log = Logger()
 
 public class Logger {
 
-    public internal(set) var destinations:[String:Destination] = [:]
-    public internal(set) var filters:[(String, Filter)] = []
+    public internal(set) var destinations: [String: Destination] = [:]
+    public internal(set) var filters: [(String, Filter)] = []
 
     public let queue = dispatch_queue_create("io.schwa.SwiftLogger", DISPATCH_QUEUE_SERIAL)
     public let consoleQueue = dispatch_queue_create("io.schwa.SwiftLogger.console", DISPATCH_QUEUE_SERIAL)
 
-    internal let startTimestamp:Timestamp = Timestamp()
-    internal var count:Int64 = 0
-    internal var running:Bool = false
+    internal let startTimestamp: Timestamp = Timestamp()
+    internal var count: Int64 = 0
+    internal var running: Bool = false
 
     public init() {
     }
 
-    public func addDestination(key:String, destination:Destination) {
+    public func addDestination(key: String, destination: Destination) {
         self.destinations[key] = destination
         destination.logger = self
     }
 
-    public func removeDestination(key:String) {
+    public func removeDestination(key: String) {
         let destination = self.destinations[key]
         destination?.logger = nil
         self.destinations.removeValueForKey(key)
     }
 
-    public func addFilter(key:String, filter:Filter) {
+    public func addFilter(key: String, filter: Filter) {
         self.filters.append((key, filter))
     }
 
-    public func removeFilter(key:String) {
+    public func removeFilter(key: String) {
         for (index, (k, _)) in self.filters.enumerate() {
             if key == k {
                 self.filters.removeAtIndex(index)
@@ -72,11 +72,11 @@ public class Logger {
         }
     }
 
-    public func log(event:Event, immediate:Bool = false) {
+    public func log(event: Event, immediate: Bool = false) {
 
         if immediate == false {
             dispatch_async(queue) {
-                self.log(event, immediate:true)
+                self.log(event, immediate: true)
             }
             return
         }
@@ -111,7 +111,7 @@ public class Logger {
         }
     }
 
-    func internalLog(subject:Any?) {
+    func internalLog(subject: Any?) {
         dispatch_async(consoleQueue) {
             print(subject)
         }
@@ -120,7 +120,7 @@ public class Logger {
 
 extension Logger {
 
-    public func log(subject:Any?, priority:Priority = .Debug, tags:Tags? = nil, userInfo:UserInfo? = nil, filename:String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public func log(subject: Any?, priority: Priority = .Debug, tags: Tags? = nil, userInfo: UserInfo? = nil, filename: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
         let event = Event(subject: subject, priority: priority, source: source, tags: tags, userInfo: userInfo)
         log(event)
@@ -144,11 +144,11 @@ public typealias PrioritySet = Set <Priority>
 // MARK: -
 
 public struct Source {
-    // public let bundleID:String
-    // public let version:????
-    public let filename:String
-    public let function:String
-    public let line:Int
+    // public let bundleID: String
+    // public let version: ????
+    public let filename: String
+    public let function: String
+    public let line: Int
 
     public init(filename: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         self.filename = filename
@@ -187,14 +187,14 @@ public typealias UserInfo = Dictionary <String, Any>
 
 public struct Event {
 
-    public let subject:String // Should this be an any?
-    public let priority:Priority
-    public let timestamp:Timestamp?
-    public let source:Source
-    public let tags:Tags?
-    public let userInfo:UserInfo?
+    public let subject: String // Should this be an any?
+    public let priority: Priority
+    public let timestamp: Timestamp?
+    public let source: Source
+    public let tags: Tags?
+    public let userInfo: UserInfo?
 
-    public init(subject:String, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
+    public init(subject: String, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
         self.subject = subject
         self.priority = priority
         self.timestamp = timestamp
@@ -215,7 +215,7 @@ public func ==(lhs: Event, rhs: Event) -> Bool {
 }
 
 extension Event {
-    public init(event:Event, timestamp:Timestamp?) {
+    public init(event: Event, timestamp: Timestamp?) {
         self.subject = event.subject
         self.priority = event.priority
         self.timestamp = timestamp
@@ -224,8 +224,8 @@ extension Event {
         self.userInfo = event.userInfo
     }
 
-    public init(subject:Any?, priority:Priority, timestamp:Timestamp? = Timestamp(), source:Source, tags:Tags? = nil, userInfo:UserInfo? = nil) {
-        if let subject:Any = subject {
+    public init(subject: Any?, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
+        if let subject: Any = subject {
             self.subject = String(subject)
         }
         else {
@@ -248,8 +248,8 @@ public typealias EventFormatter = Event -> String
 
 public class Destination {
 
-    public var filters:[Filter] = []
-    public internal(set) weak var logger:Logger!
+    public var filters: [Filter] = []
+    public internal(set) weak var logger: Logger!
 
     public init() {
     }
@@ -257,7 +257,7 @@ public class Destination {
     public func startup() {
     }
 
-    public func receiveEvent(event:Event) {
+    public func receiveEvent(event: Event) {
     }
 
     public func shutdown() {

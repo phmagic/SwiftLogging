@@ -29,7 +29,7 @@ class SwiftLogging_Tests: XCTestCase {
      */
     func testFilters() {
         let logger = Logger()
-        let memoryDestination = MemoryDestination(logger:logger)
+        let memoryDestination = MemoryDestination(logger: logger)
         logger.addDestination("memory", destination: memoryDestination)
 
         XCTAssert(memoryDestination.events.count == 0)

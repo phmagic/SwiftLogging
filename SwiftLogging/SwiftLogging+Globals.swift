@@ -10,18 +10,18 @@ import Foundation
 
 import SwiftLogging
 
-public var logger:Logger! = {
+public var logger: Logger! = {
     var logger = Logger()
 
 
     // Logging to console.
     let console = ConsoleDestination()
-    logger.addDestination("io.schwa.SwiftLogging.console", destination:console)
+    logger.addDestination("io.schwa.SwiftLogging.console", destination: console)
 
     // Logging to file.
     let fileDestination = FileDestination()
     fileDestination.filters.append(sensitiveFilter)
-    logger.addDestination("io.schwa.SwiftLogging.default-file", destination:fileDestination)
+    logger.addDestination("io.schwa.SwiftLogging.default-file", destination: fileDestination)
 
     // MOTD
 
@@ -46,8 +46,8 @@ public var logger:Logger! = {
 
     string = banner(string)
 
-    let event = Event(subject:string, priority:.Info, source:Source(), tags:Tags([preformattedTag, verboseTag]))
-    logger.log(event, immediate:true)
+    let event = Event(subject: string, priority: .Info, source: Source(), tags: Tags([preformattedTag, verboseTag]))
+    logger.log(event, immediate: true)
 
 
     return logger

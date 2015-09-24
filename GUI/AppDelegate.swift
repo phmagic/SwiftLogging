@@ -10,15 +10,15 @@ import Cocoa
 
 import SwiftLogging
 
-//public var logger:Logger! = Logger()
+//public var logger: Logger! = Logger()
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
 
-        logger.debug("My password is \"123456\"", tags:[sensitiveTag])
-        logger.debug("Poop:\n💩")
+        logger.debug("My password is \"123456\"", tags: [sensitiveTag])
+        logger.debug("Poop: \n💩")
 
     }
 
