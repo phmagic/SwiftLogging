@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4564D6A91B181D170004A3B3"
+               BuildableName = "SwiftLogging Tests.xctest"
+               BlueprintName = "SwiftLogging Tests"
+               ReferencedContainer = "container:SwiftLogging.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "453A357C1B071FD500A3923D"
+            BuildableName = "SwiftLogging.framework"
+            BlueprintName = "SwiftLogging_OSX"
+            ReferencedContainer = "container:SwiftLogging.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
