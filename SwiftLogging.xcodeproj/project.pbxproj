@@ -40,6 +40,8 @@
 		453A35C21B07216F00A3923D /* SwiftLogging+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */; };
 		453A35C51B0721C800A3923D /* SwiftLoggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A35C31B0721C800A3923D /* SwiftLoggingViewController.swift */; };
 		453A35C81B0721D900A3923D /* SwiftLogging.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453A35C71B0721D900A3923D /* SwiftLogging.storyboard */; };
+		4544F6241BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; settings = {ASSET_TAGS = (); }; };
+		4544F6251BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; settings = {ASSET_TAGS = (); }; };
 		455DD39A1AE6F38400FF383E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DD3991AE6F38400FF383E /* main.swift */; };
 		455DD3A11AE6F38F00FF383E /* SwiftLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */; };
 		4564D6AF1B181D170004A3B3 /* SwiftLogging_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564D6AE1B181D170004A3B3 /* SwiftLogging_Tests.swift */; };
@@ -151,6 +153,8 @@
 		453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+ASL.swift"; sourceTree = "<group>"; };
 		453A35C31B0721C800A3923D /* SwiftLoggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLoggingViewController.swift; sourceTree = "<group>"; };
 		453A35C71B0721D900A3923D /* SwiftLogging.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SwiftLogging.storyboard; sourceTree = "<group>"; };
+		4544F6221BD57F030057E3D2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Utilities.swift"; sourceTree = "<group>"; };
 		455DD3961AE6F38400FF383E /* CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		455DD3991AE6F38400FF383E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLogging.swift; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 		455DD38D1AE6F38400FF383E = {
 			isa = PBXGroup;
 			children = (
+				4544F6221BD57F030057E3D2 /* README.md */,
 				455DD3981AE6F38400FF383E /* SwiftLogging */,
 				45E579971B16C33500D21B70 /* CLI */,
 				453A35A01B07203B00A3923D /* GUI */,
@@ -264,6 +269,7 @@
 				45347F4F1AFB15560080DFF4 /* SwiftLogging+Printable.swift */,
 				45347F461AFAF94D0080DFF4 /* SwiftLogging+Filters.swift */,
 				45347F441AFAF9320080DFF4 /* SwiftLogging+Destinations.swift */,
+				4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */,
 				45E5799A1B16C73200D21B70 /* Utilities.swift */,
 			);
 			path = SwiftLogging;
@@ -531,6 +537,7 @@
 				453A35981B071FF100A3923D /* SwiftLogging+Printable.swift in Sources */,
 				45E5799B1B16C73200D21B70 /* Utilities.swift in Sources */,
 				45E10CD21B17A31600B918FE /* SwiftLogging+Formatters.swift in Sources */,
+				4544F6241BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */,
 				453A35991B071FF100A3923D /* SwiftLogging+Filters.swift in Sources */,
 				453A359A1B071FF100A3923D /* SwiftLogging+Destinations.swift in Sources */,
 				453A35961B071FEC00A3923D /* BridgingHelpers.m in Sources */,
@@ -583,6 +590,7 @@
 				45E1474A1B150F3000F46A98 /* SwiftLogging.swift in Sources */,
 				45E5799C1B16C73200D21B70 /* Utilities.swift in Sources */,
 				45E10CD31B17A35B00B918FE /* SwiftLogging+Formatters.swift in Sources */,
+				4544F6251BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */,
 				45E1474B1B150F3000F46A98 /* SwiftLogging+Printable.swift in Sources */,
 				45E1474C1B150F3000F46A98 /* SwiftLogging+Filters.swift in Sources */,
 				45E1474D1B150F3000F46A98 /* SwiftLogging+Destinations.swift in Sources */,

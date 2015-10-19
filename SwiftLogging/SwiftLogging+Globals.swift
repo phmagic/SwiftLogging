@@ -16,9 +16,7 @@ public var log: Logger = {
     // Logging to console.
     let console = ConsoleDestination()
     console.addFilter(sourceFilter())
-
     logger.addDestination("io.schwa.SwiftLogging.console", destination: console)
-
 
     // Logging to file.
     let fileDestination = FileDestination()
@@ -26,11 +24,8 @@ public var log: Logger = {
     logger.addDestination("io.schwa.SwiftLogging.default-file", destination: fileDestination)
 
     // MOTD
-
     let infoDictionary = NSBundle.mainBundle().infoDictionary!
-
     let processInfo = NSProcessInfo.processInfo()
-
     var items = [
         ("App Name", infoDictionary["CFBundleName"] ?? "?"),
         ("App Identifier", infoDictionary["CFBundleIdentifier"] ?? "?"),
@@ -42,15 +37,8 @@ public var log: Logger = {
         ("Locale", NSLocale.currentLocale().localeIdentifier),
     ]
 
-    var string = items.map() {
-        return "\($0.0): \($0.1!)"
-    }.joinWithSeparator("\n")
-
-    string = banner(string)
-
-    let event = Event(subject: string, priority: .Info, source: Source(), tags: Tags([preformattedTag, verboseTag]))
-    logger.log(event, immediate: true)
-
+    logger.motd(items, priority: .Info, tags: Tags([preformattedTag, verboseTag]))
 
     return logger
 }()
+

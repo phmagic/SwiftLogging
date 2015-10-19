@@ -16,16 +16,12 @@ import SwiftLogging
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-
-        logger.debug("My password is \"123456\"", tags: [sensitiveTag])
-        logger.debug("Poop: \n💩")
+        log.debug("My password is \"123456\"", tags: [sensitiveTag])
+        log.debug("Poop: \n💩")
 
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
     }
-
-
 }
 
