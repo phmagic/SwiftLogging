@@ -9,14 +9,14 @@
 import Foundation
 
 
-logger.addFilter("sensitiveFilter", filter: sensitiveFilter)
-logger.addFilter("duplicateFilter", filter: duplicateFilter())
-logger.addFilter("duplicateFilter", filter: verbosityFilter())
+log.addFilter("sensitiveFilter", filter: sensitiveFilter)
+log.addFilter("duplicateFilter", filter: duplicateFilter())
+log.addFilter("duplicateFilter", filter: verbosityFilter())
 
 
-logger.debug("My password is \"123456\"", tags: [sensitiveTag])
+log.debug("My password is \"123456\"", tags: [sensitiveTag])
 
-logger.debug("Blah blah", tags: [verboseTag])
+log.debug("Blah blah", tags: [verboseTag])
 
 
 for R in 0..<10 {
@@ -24,14 +24,14 @@ for R in 0..<10 {
     usleep(useconds_t(5.0 * 100000))
 
     for N in 0..<5000 {
-        logger.info("Hello world")
+        log.info("Hello world")
     //    usleep(useconds_t(0.1 * 1000000))
     }
 }
 
-logger.info("Done")
+log.info("Done")
 
-logger.shutdown()
+log.shutdown()
 
 usleep(useconds_t(0.5 * 1000000))
 

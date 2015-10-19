@@ -10,17 +10,19 @@ import Foundation
 
 import SwiftLogging
 
-public var logger: Logger! = {
-    var logger = Logger()
-
+public var log: Logger = {
+    var logger = SwiftLogging.log
 
     // Logging to console.
     let console = ConsoleDestination()
+    console.addFilter(sourceFilter())
+
     logger.addDestination("io.schwa.SwiftLogging.console", destination: console)
+
 
     // Logging to file.
     let fileDestination = FileDestination()
-    fileDestination.filters.append(sensitiveFilter)
+    fileDestination.addFilter(sensitivityFilter)
     logger.addDestination("io.schwa.SwiftLogging.default-file", destination: fileDestination)
 
     // MOTD

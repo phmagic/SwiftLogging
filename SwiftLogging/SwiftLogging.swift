@@ -9,9 +9,11 @@
 import Foundation
 import Darwin
 
-public var log = Logger()
+public var log = Logger.sharedInstance
 
 public class Logger {
+
+    static let sharedInstance = Logger()
 
     public internal(set) var destinations: [String: Destination] = [:]
     public internal(set) var filters: [(String, Filter)] = []
@@ -266,6 +268,9 @@ public class Destination {
     public func flush() {
     }
 
+    public func addFilter(filter: Filter) {
+        filters.append(filter)
+    }
 }
 
 // MARK: -

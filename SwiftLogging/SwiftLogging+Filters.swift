@@ -8,19 +8,21 @@
 
 import Foundation
 
+// MARK: nilFilter
+
 public let nilFilter = {
    (event: Event) -> Event? in
    return nil
 }
 
-// MARK: -
+// MARK: Passthrough (NOP) filter
 
 public let passthroughFilter = {
    (event: Event) -> Event? in
    return event
 }
 
-// MARK: -
+// MARK: Tag Filters
 
 public func tagFilterIn(tags: Tags, replacement: (Event -> Event?)? = nil) -> Filter {
     return {
@@ -46,7 +48,7 @@ public func tagFilterOut(tags: Tags, replacement: (Event -> Event?)? = nil) -> F
     }
 }
 
-// MARK: -
+// MARK: Priority Filter
 
 public func priorityFilter(priorities: PrioritySet) -> Filter {
     return {
@@ -59,9 +61,9 @@ public func priorityFilter(priorities: [Priority]) -> Filter {
     return priorityFilter(PrioritySet(priorities))
 }
 
-// MARK: -
+// MARK: Duplicates Filter
 
-public func duplicateFilter() -> Filter {
+public func duplicatesFilter(timeout: NSTimeInterval) -> Filter {
     var seenEventHashes = [Event: Timestamp] ()
 
     return {
@@ -71,7 +73,7 @@ public func duplicateFilter() -> Filter {
         var result: Event? = nil
         if let lastTimestamp = seenEventHashes[key] {
             let delta = now.timeIntervalSinceReferenceDate - lastTimestamp.timeIntervalSinceReferenceDate
-            result = delta > 1.0 ? event : nil
+            result = delta > timeout ? event : nil
         }
         else {
             result = event
@@ -81,13 +83,13 @@ public func duplicateFilter() -> Filter {
     }
 }
 
-// MARK: -
+// MARK: Sensitivity Filter
 
-public let sensitiveFilter = tagFilterOut(Tags([sensitiveTag])) {
+public let sensitivityFilter = tagFilterOut(Tags([sensitiveTag])) {
     return Event(subject: "Sensitive log info redacted.", priority: .Warning, timestamp: $0.timestamp, source: $0.source)
 }
 
-// MARK: -
+// MARK: Verbosity Filter
 
 public enum Verbosity: Int {
     case Normal = 0
@@ -114,13 +116,23 @@ public func <(lhs: Verbosity, rhs: Verbosity) -> Bool {
     return lhs.rawValue < rhs.rawValue
 }
 
-public func verbosityFilter(tooMuchVerbosity: Verbosity = .Verbose) -> Filter {
+public func verbosityFilter(userVerbosityLimit: Verbosity? = nil) -> Filter {
+    let verbosityLimit: Verbosity
+    if userVerbosityLimit != nil {
+        verbosityLimit = userVerbosityLimit!
+    }
+    else {
+        let verbosityRaw = NSUserDefaults.standardUserDefaults().integerForKey("logging_filter_verbosity_limit")
+        verbosityLimit = Verbosity(rawValue:verbosityRaw)!
+    }
+
     return {
+
         (event: Event) -> Event? in
 
         if let tags = event.tags {
             let verbosity = Verbosity(tags: tags)
-            if verbosity >= tooMuchVerbosity {
+            if verbosity >= verbosityLimit {
                 return nil
             }
             else {
@@ -130,5 +142,37 @@ public func verbosityFilter(tooMuchVerbosity: Verbosity = .Verbose) -> Filter {
         else {
             return event
         }
+    }
+}
+
+// MARK: Source Filter
+
+public func sourceFilter(pattern: String? = nil) -> Filter {
+
+    var pattern = pattern
+    if pattern == nil {
+        pattern = NSUserDefaults.standardUserDefaults().stringForKey("logging_filter_source_pattern")
+    }
+
+    guard let strongPattern = pattern else {
+        SwiftLogging.log.internalLog("No pattern provided to sourceFilter(). Use logging_filter_source_pattern user default (Put `-logging_filter_source_pattern <regex>` in your run scheme.)")
+        return passthroughFilter
+    }
+
+    guard let expression = try? NSRegularExpression(pattern: strongPattern, options: NSRegularExpressionOptions()) else {
+        SwiftLogging.log.internalLog("Pattern provided to SwiftLogging log is not a valid regular expression.")
+        return passthroughFilter
+    }
+
+    return {
+        (event: Event) -> Event? in
+
+        let string = String(event.source)
+
+        if expression.numberOfMatchesInString(string, options: NSMatchingOptions(), range: NSRange(location: 0, length: (string as NSString).length)) == 0 {
+            return nil
+        }
+
+        return event
     }
 }
