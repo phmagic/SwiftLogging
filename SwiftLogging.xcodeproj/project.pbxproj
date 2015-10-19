@@ -153,8 +153,8 @@
 		453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+ASL.swift"; sourceTree = "<group>"; };
 		453A35C31B0721C800A3923D /* SwiftLoggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLoggingViewController.swift; sourceTree = "<group>"; };
 		453A35C71B0721D900A3923D /* SwiftLogging.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SwiftLogging.storyboard; sourceTree = "<group>"; };
-		4544F6221BD57F030057E3D2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Utilities.swift"; sourceTree = "<group>"; };
+		4544F6261BD593AB0057E3D2 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
 		455DD3961AE6F38400FF383E /* CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		455DD3991AE6F38400FF383E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLogging.swift; sourceTree = "<group>"; };
@@ -236,7 +236,7 @@
 		455DD38D1AE6F38400FF383E = {
 			isa = PBXGroup;
 			children = (
-				4544F6221BD57F030057E3D2 /* README.md */,
+				4544F6261BD593AB0057E3D2 /* README.markdown */,
 				455DD3981AE6F38400FF383E /* SwiftLogging */,
 				45E579971B16C33500D21B70 /* CLI */,
 				453A35A01B07203B00A3923D /* GUI */,

@@ -116,13 +116,15 @@ public func <(lhs: Verbosity, rhs: Verbosity) -> Bool {
     return lhs.rawValue < rhs.rawValue
 }
 
+
+// TODO: get rid of very verbose
 public func verbosityFilter(verbosityLimit userVerbosityLimit: Verbosity? = nil) -> Filter {
     let verbosityLimit: Verbosity
     if userVerbosityLimit != nil {
         verbosityLimit = userVerbosityLimit!
     }
     else {
-        let verbosityRaw = NSUserDefaults.standardUserDefaults().integerForKey("logging_filter_verbosity_limit")
+        let verbosityRaw = NSUserDefaults.standardUserDefaults().integerForKey("loggingFilterVerbosityLimit")
         verbosityLimit = Verbosity(rawValue:verbosityRaw)!
     }
 
@@ -151,11 +153,10 @@ public func sourceFilter(pattern pattern: String? = nil) -> Filter {
 
     var pattern = pattern
     if pattern == nil {
-        pattern = NSUserDefaults.standardUserDefaults().stringForKey("logging_filter_source_pattern")
+        pattern = NSUserDefaults.standardUserDefaults().stringForKey("loggingFilterSourcePattern")
     }
 
     guard let strongPattern = pattern else {
-        SwiftLogging.log.internalLog("No pattern provided to sourceFilter(). Use logging_filter_source_pattern user default (Put `-logging_filter_source_pattern <regex>` in your run scheme.)")
         return passthroughFilter
     }
 

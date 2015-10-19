@@ -63,8 +63,8 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-logging_filter_source_pattern AppDelegate"
-            isEnabled = "NO">
+            argument = "-loggingFilterSourcePattern Foo*"
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>

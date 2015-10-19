@@ -18,6 +18,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         log.debug("My password is \"123456\"", tags: [sensitiveTag])
         log.debug("Poop: \n💩")
+        log.debug("This is so verbose", tags: [verboseTag])
+        log.debug("This is so very verbose", tags: [veryVerboseTag])
 
     }
 

@@ -23,6 +23,9 @@ public var log: Logger = {
     // Add duplications filter
     console.addFilter(duplicatesFilter(timeout: 5.0))
 
+    // Add verbosity filter
+    console.addFilter(verbosityFilter())
+
     // Logging to file.
     let fileDestination = FileDestination()
     fileDestination.addFilter(sensitivityFilter)
