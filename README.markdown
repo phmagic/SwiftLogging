@@ -201,7 +201,7 @@ filter can be configured via `NSUserDefaults`/command line switches.
 
 ### What about "modules" or "facilities"?
 
-Syslog style "facilities" or the concept of logging "modules" used
+Syslog style "facilities" or the concept of logging "modules" used by other logging frameworks are primarily used to help filter log events. The tagging provided by SwiftLogging is a more generic replacement for modules.
 
 ### Threading
 
