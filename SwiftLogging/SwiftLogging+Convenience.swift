@@ -8,6 +8,14 @@
 
 extension Logger {
 
+    public func log(subject: Any?, priority: Priority = .Debug, tags: Tags? = nil, userInfo: UserInfo? = nil, filename: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+        let source = Source(filename: filename, function: function, line: line)
+        let event = Event(subject: subject, priority: priority, source: source, tags: tags, userInfo: userInfo)
+        log(event)
+    }
+
+    // Priority based logging
+
     public func debug(subject: Any?, tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
         let source = Source(filename: filename, function: function, line: line)
         let tags: Tags? = tags != nil ? Tags(tags!) : nil

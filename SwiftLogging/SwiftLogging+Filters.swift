@@ -63,7 +63,7 @@ public func priorityFilter(priorities: [Priority]) -> Filter {
 
 // MARK: Duplicates Filter
 
-public func duplicatesFilter(timeout: NSTimeInterval) -> Filter {
+public func duplicatesFilter(timeout timeout: NSTimeInterval) -> Filter {
     var seenEventHashes = [Event: Timestamp] ()
 
     return {
@@ -116,7 +116,7 @@ public func <(lhs: Verbosity, rhs: Verbosity) -> Bool {
     return lhs.rawValue < rhs.rawValue
 }
 
-public func verbosityFilter(userVerbosityLimit: Verbosity? = nil) -> Filter {
+public func verbosityFilter(verbosityLimit userVerbosityLimit: Verbosity? = nil) -> Filter {
     let verbosityLimit: Verbosity
     if userVerbosityLimit != nil {
         verbosityLimit = userVerbosityLimit!
@@ -147,7 +147,7 @@ public func verbosityFilter(userVerbosityLimit: Verbosity? = nil) -> Filter {
 
 // MARK: Source Filter
 
-public func sourceFilter(pattern: String? = nil) -> Filter {
+public func sourceFilter(pattern pattern: String? = nil) -> Filter {
 
     var pattern = pattern
     if pattern == nil {

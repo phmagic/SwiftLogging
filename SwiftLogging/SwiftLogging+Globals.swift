@@ -15,13 +15,20 @@ public var log: Logger = {
 
     // Logging to console.
     let console = ConsoleDestination()
-    console.addFilter(sourceFilter())
     logger.addDestination("io.schwa.SwiftLogging.console", destination: console)
+
+    // Add source filter
+    console.addFilter(sourceFilter(pattern: ".*"))
+
+    // Add duplications filter
+    console.addFilter(duplicatesFilter(timeout: 5.0))
 
     // Logging to file.
     let fileDestination = FileDestination()
     fileDestination.addFilter(sensitivityFilter)
+
     logger.addDestination("io.schwa.SwiftLogging.default-file", destination: fileDestination)
+
 
     // MOTD
     let infoDictionary = NSBundle.mainBundle().infoDictionary!

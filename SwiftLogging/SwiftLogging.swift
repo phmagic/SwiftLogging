@@ -120,15 +120,6 @@ public class Logger {
     }
 }
 
-extension Logger {
-
-    public func log(subject: Any?, priority: Priority = .Debug, tags: Tags? = nil, userInfo: UserInfo? = nil, filename: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
-        let source = Source(filename: filename, function: function, line: line)
-        let event = Event(subject: subject, priority: priority, source: source, tags: tags, userInfo: userInfo)
-        log(event)
-    }
-}
-
 // MARK: -
 
 public enum Priority: Int8 {
@@ -188,6 +179,9 @@ public typealias UserInfo = Dictionary <String, Any>
 // MARK: -
 
 public struct Event {
+
+
+    // TODO: we'd like formatters to be able to special case subject formatting. We rely on String(subject) currently
 
     public let subject: String // Should this be an any?
     public let priority: Priority
