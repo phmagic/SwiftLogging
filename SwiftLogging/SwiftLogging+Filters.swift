@@ -149,7 +149,7 @@ public func verbosityFilter(verbosityLimit userVerbosityLimit: Verbosity? = nil)
 
 // MARK: Source Filter
 
-public func sourceFilter(pattern pattern: String? = nil) -> Filter {
+public func sourceFilter(pattern pattern: String? = nil, inclusive: Bool = true) -> Filter {
 
     var pattern = pattern
     if pattern == nil {
@@ -170,8 +170,16 @@ public func sourceFilter(pattern pattern: String? = nil) -> Filter {
 
         let string = String(event.source)
 
-        if expression.numberOfMatchesInString(string, options: NSMatchingOptions(), range: NSRange(location: 0, length: (string as NSString).length)) == 0 {
-            return nil
+        let matches = expression.numberOfMatchesInString(string, options: NSMatchingOptions(), range: NSRange(location: 0, length: (string as NSString).length))
+        if inclusive == true {
+            if matches == 0 {
+                return nil
+            }
+        }
+        else {
+            if matches != 0 {
+                return nil
+            }
         }
 
         return event
