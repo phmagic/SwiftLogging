@@ -6,22 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		454C89E11B16AB93002C33A7 /* All */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 454C89E21B16AB93002C33A7 /* Build configuration list for PBXAggregateTarget "All" */;
-			buildPhases = (
-			);
-			dependencies = (
-				454C89E61B16ABA5002C33A7 /* PBXTargetDependency */,
-				454C89E81B16ABA5002C33A7 /* PBXTargetDependency */,
-				454C89EC1B16ABA5002C33A7 /* PBXTargetDependency */,
-			);
-			name = All;
-			productName = All;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		4537337C1C541FEB00EA1E6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537337B1C541FEB00EA1E6E /* AppDelegate.swift */; };
 		453733811C541FEB00EA1E6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4537337F1C541FEB00EA1E6E /* Main.storyboard */; };
@@ -41,6 +25,7 @@
 		453A35C81B0721D900A3923D /* SwiftLogging.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453A35C71B0721D900A3923D /* SwiftLogging.storyboard */; };
 		4544F6241BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; };
 		4544F6251BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; };
+		45646BB91C55D4AF0042E2C0 /* SwiftUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; };
 		4564D6AF1B181D170004A3B3 /* SwiftLogging_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564D6AE1B181D170004A3B3 /* SwiftLogging_Tests.swift */; };
 		4564D6B01B181D170004A3B3 /* SwiftLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 453A357D1B071FD500A3923D /* SwiftLogging.framework */; };
 		4568CA3E1C54728B00ACB6C2 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568CA3D1C54728B00ACB6C2 /* Utilities.swift */; };
@@ -59,7 +44,6 @@
 		45E1474D1B150F3000F46A98 /* SwiftLogging+Destinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45347F441AFAF9320080DFF4 /* SwiftLogging+Destinations.swift */; };
 		45E1474E1B150F3000F46A98 /* SwiftLogging+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */; };
 		45E1474F1B150FA800F46A98 /* SwiftLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E1472B1B150EF100F46A98 /* SwiftLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		45E579991B16C38400D21B70 /* SwiftLogging.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 453A357D1B071FD500A3923D /* SwiftLogging.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		45E5799B1B16C73200D21B70 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799A1B16C73200D21B70 /* Utilities.swift */; };
 		45E5799C1B16C73200D21B70 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799A1B16C73200D21B70 /* Utilities.swift */; };
 		45F9D9491C54206700C7BF45 /* SwiftLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E147271B150EF100F46A98 /* SwiftLogging.framework */; };
@@ -67,10 +51,8 @@
 		45F9D94C1C54208800C7BF45 /* SwiftLogging+Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */; };
 		45F9D95C1C54247B00C7BF45 /* SwiftUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9561C54246600C7BF45 /* SwiftUtilities.framework */; };
 		45F9D95D1C54247D00C7BF45 /* SwiftUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9561C54246600C7BF45 /* SwiftUtilities.framework */; };
-		45F9D95E1C54248100C7BF45 /* SwiftUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; };
 		45F9D95F1C54248200C7BF45 /* SwiftUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; };
 		45F9D9611C54256100C7BF45 /* MemoryLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F9D9601C54256100C7BF45 /* MemoryLogViewController.swift */; };
-		45F9D9631C54263000C7BF45 /* SwiftUtilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9561C54246600C7BF45 /* SwiftUtilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,27 +69,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 453A357C1B071FD500A3923D;
 			remoteInfo = SwiftLogging;
-		};
-		454C89E51B16ABA5002C33A7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 455DD38E1AE6F38400FF383E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 453A357C1B071FD500A3923D;
-			remoteInfo = SwiftLogging_OSX;
-		};
-		454C89E71B16ABA5002C33A7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 455DD38E1AE6F38400FF383E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 45E147261B150EF100F46A98;
-			remoteInfo = SwiftLogging_iOS;
-		};
-		454C89EB1B16ABA5002C33A7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 455DD38E1AE6F38400FF383E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 453A359E1B07203B00A3923D;
-			remoteInfo = GUI;
 		};
 		4564D6B11B181D170004A3B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -126,7 +87,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				45F9D94A1C54206700C7BF45 /* SwiftLogging.framework in Embed Frameworks */,
-				45F9D9631C54263000C7BF45 /* SwiftUtilities.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -194,7 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45F9D95E1C54248100C7BF45 /* SwiftUtilities.framework in Frameworks */,
+				45646BB91C55D4AF0042E2C0 /* SwiftUtilities.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,7 +385,6 @@
 				453733751C541FEB00EA1E6E /* Sources */,
 				453733761C541FEB00EA1E6E /* Frameworks */,
 				453733771C541FEB00EA1E6E /* Resources */,
-				45F9D94B1C54206700C7BF45 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -530,9 +489,6 @@
 					453A359E1B07203B00A3923D = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
-					454C89E11B16AB93002C33A7 = {
-						CreatedOnToolsVersion = 6.3.2;
-					};
 					4564D6A91B181D170004A3B3 = {
 						CreatedOnToolsVersion = 6.3.2;
 					};
@@ -554,7 +510,6 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				454C89E11B16AB93002C33A7 /* All */,
 				453A357C1B071FD500A3923D /* SwiftLogging_OSX */,
 				45E147261B150EF100F46A98 /* SwiftLogging_iOS */,
 				453A359E1B07203B00A3923D /* GUI_OSX */,
@@ -688,21 +643,6 @@
 			target = 453A357C1B071FD500A3923D /* SwiftLogging_OSX */;
 			targetProxy = 453A35BE1B07205F00A3923D /* PBXContainerItemProxy */;
 		};
-		454C89E61B16ABA5002C33A7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 453A357C1B071FD500A3923D /* SwiftLogging_OSX */;
-			targetProxy = 454C89E51B16ABA5002C33A7 /* PBXContainerItemProxy */;
-		};
-		454C89E81B16ABA5002C33A7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 45E147261B150EF100F46A98 /* SwiftLogging_iOS */;
-			targetProxy = 454C89E71B16ABA5002C33A7 /* PBXContainerItemProxy */;
-		};
-		454C89EC1B16ABA5002C33A7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 453A359E1B07203B00A3923D /* GUI_OSX */;
-			targetProxy = 454C89EB1B16ABA5002C33A7 /* PBXContainerItemProxy */;
-		};
 		4564D6B21B181D170004A3B3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 453A357C1B071FD500A3923D /* SwiftLogging_OSX */;
@@ -790,7 +730,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
@@ -820,7 +759,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
@@ -867,20 +805,6 @@
 				INFOPLIST_FILE = GUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.schwa.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		454C89E31B16AB93002C33A7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		454C89E41B16AB93002C33A7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1092,15 +1016,6 @@
 			buildConfigurations = (
 				453A35B91B07203B00A3923D /* Debug */,
 				453A35BA1B07203B00A3923D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		454C89E21B16AB93002C33A7 /* Build configuration list for PBXAggregateTarget "All" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				454C89E31B16AB93002C33A7 /* Debug */,
-				454C89E41B16AB93002C33A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
