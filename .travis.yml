@@ -4,5 +4,4 @@ script:
 - xctool -project SwiftLogging.xcodeproj -scheme SwiftLogging_OSX build test
 - xctool -project SwiftLogging.xcodeproj -scheme SwiftLogging_iOS -sdk iphonesimulator build test
 - xctool -project SwiftLogging.xcodeproj -scheme GUI build test
-- xctool -project SwiftLogging.xcodeproj -scheme CLI build test
 
