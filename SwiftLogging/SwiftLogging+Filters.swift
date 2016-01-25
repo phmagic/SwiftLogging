@@ -63,25 +63,27 @@ public func priorityFilter(priorities: [Priority]) -> Filter {
 
 // MARK: Duplicates Filter
 
-public func duplicatesFilter(timeout timeout: NSTimeInterval) -> Filter {
-    var seenEventHashes = [Event: Timestamp] ()
+// TODO: This should filter OUTPUT not input
 
-    return {
-       (event: Event) -> Event? in
-        let now = Timestamp()
-        let key = Event(event: event, timestamp: nil)
-        var result: Event? = nil
-        if let lastTimestamp = seenEventHashes[key] {
-            let delta = now.timeIntervalSinceReferenceDate - lastTimestamp.timeIntervalSinceReferenceDate
-            result = delta > timeout ? event : nil
-        }
-        else {
-            result = event
-        }
-        seenEventHashes[key] = event.timestamp
-        return result
-    }
-}
+//public func duplicatesFilter(timeout timeout: NSTimeInterval) -> Filter {
+//    var seenEventHashes = [Event: Timestamp] ()
+//
+//    return {
+//       (event: Event) -> Event? in
+//        let now = Timestamp()
+//        let key = Event(event: event, timestamp: nil)
+//        var result: Event? = nil
+//        if let lastTimestamp = seenEventHashes[key] {
+//            let delta = now.timeIntervalSinceReferenceDate - lastTimestamp.timeIntervalSinceReferenceDate
+//            result = delta > timeout ? event : nil
+//        }
+//        else {
+//            result = event
+//        }
+//        seenEventHashes[key] = event.timestamp
+//        return result
+//    }
+//}
 
 // MARK: Sensitivity Filter
 

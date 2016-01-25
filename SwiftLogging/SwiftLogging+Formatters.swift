@@ -28,14 +28,14 @@ extension Priority {
 // MARK: -
 
 public func preciseFormatter(event: Event) -> String {
-    let string = event.subject.escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
+    let string = String(event.subject).escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
     return "\(event.timestamp!) \(event.priority) \(event.source): \(string)"
 }
 
 public func terseFormatter(event: Event) -> String {
 
     if let tags = event.tags where tags.contains(preformattedTag) {
-        return event.subject
+        return String(event.subject)
     }
 
     return "\(event.timestamp!.toTimeString) \(event.priority.toEmoji) [\(event.source)]: \(event.subject)"

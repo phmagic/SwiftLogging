@@ -20,8 +20,8 @@ public var log: Logger = {
     // Add source filter
     console.addFilter(sourceFilter(pattern: ".*"))
 
-    // Add duplications filter
-    console.addFilter(duplicatesFilter(timeout: 5.0))
+//    // Add duplications filter
+//    console.addFilter(duplicatesFilter(timeout: 5.0))
 
     // Add verbosity filter
     console.addFilter(verbosityFilter())

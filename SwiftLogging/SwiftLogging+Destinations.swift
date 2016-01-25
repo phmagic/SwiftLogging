@@ -8,6 +8,8 @@
 
 import Foundation
 
+import SwiftUtilities
+
 public class ConsoleDestination: Destination {
     public let formatter: EventFormatter
 
@@ -29,10 +31,24 @@ public class ConsoleDestination: Destination {
 // MARK -
 
 public class MemoryDestination: Destination {
+
+    // TODO: Thread safety.
+
     public internal(set) var events: [Event] = []
+
+    var listeners: NSMapTable = NSMapTable.weakToStrongObjectsMapTable()
 
     public override func receiveEvent(event: Event) {
         events.append(event)
+        typealias Closure = Event -> Void
+        for (_, value) in listeners {
+            let closureBox = value as! Box <Closure>
+            closureBox.value(event)
+        }
+    }
+
+    public func addListener(listener: AnyObject, closure: Event -> Void) {
+        listeners.setObject(Box(closure), forKey: listener)
     }
 }
 

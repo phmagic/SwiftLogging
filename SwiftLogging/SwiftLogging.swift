@@ -39,6 +39,10 @@ public class Logger {
         self.destinations.removeValueForKey(key)
     }
 
+    public func destinationForKey(key: String) -> Destination? {
+        return destinations[key]
+    }
+
     public func addFilter(key: String, filter: Filter) {
         self.filters.append((key, filter))
     }
@@ -180,17 +184,26 @@ public typealias UserInfo = Dictionary <String, Any>
 
 public struct Event {
 
+    static var nextID: Int = 0
+
+    static func generateID() -> Int {
+        let id = nextID
+        nextID += 1
+        return id
+    }
 
     // TODO: we'd like formatters to be able to special case subject formatting. We rely on String(subject) currently
 
-    public let subject: String // Should this be an any?
+    public let id: Int
+    public let subject: Any?
     public let priority: Priority
     public let timestamp: Timestamp?
     public let source: Source
     public let tags: Tags?
     public let userInfo: UserInfo?
 
-    public init(subject: String, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
+    public init(subject: Any?, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
+        self.id = Event.generateID()
         self.subject = subject
         self.priority = priority
         self.timestamp = timestamp
@@ -202,39 +215,25 @@ public struct Event {
 
 extension Event: Hashable {
     public var hashValue: Int {
-        return subject.hashValue ^ priority.hashValue ^ source.hashValue ^ (timestamp != nil ? timestamp!.hashValue : 0)
+        return id.hashValue
     }
 }
 
 public func ==(lhs: Event, rhs: Event) -> Bool {
-    return lhs.subject == rhs.subject && lhs.priority == rhs.priority && lhs.timestamp == rhs.timestamp && lhs.source == rhs.source
+    return lhs.id == rhs.id
 }
 
-extension Event {
-    public init(event: Event, timestamp: Timestamp?) {
-        self.subject = event.subject
-        self.priority = event.priority
-        self.timestamp = timestamp
-        self.source = event.source
-        self.tags = event.tags
-        self.userInfo = event.userInfo
-    }
-
-    public init(subject: Any?, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
-        if let subject: Any = subject {
-            self.subject = String(subject)
-        }
-        else {
-            // TODO: Really?
-            self.subject = "nil"
-        }
-        self.priority = priority
-        self.timestamp = timestamp
-        self.source = source
-        self.tags = tags
-        self.userInfo = userInfo
-    }
-}
+//extension Event {
+//    public init(event: Event, timestamp: Timestamp?) {
+//        self.id = Event.generateID()
+//        self.subject = event.subject
+//        self.priority = event.priority
+//        self.timestamp = timestamp
+//        self.source = event.source
+//        self.tags = event.tags
+//        self.userInfo = event.userInfo
+//    }
+//}
 
 // MARK: -
 
