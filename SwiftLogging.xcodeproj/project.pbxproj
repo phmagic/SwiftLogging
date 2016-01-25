@@ -26,6 +26,8 @@
 		4544F6241BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; };
 		4544F6251BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; };
 		45646BB91C55D4AF0042E2C0 /* SwiftUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; };
+		45646BC21C55DFDD0042E2C0 /* SwiftUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; };
+		45646BC41C55E0000042E2C0 /* SwiftUtilities.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; };
 		4564D6AF1B181D170004A3B3 /* SwiftLogging_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564D6AE1B181D170004A3B3 /* SwiftLogging_Tests.swift */; };
 		4564D6B01B181D170004A3B3 /* SwiftLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 453A357D1B071FD500A3923D /* SwiftLogging.framework */; };
 		4568CA3E1C54728B00ACB6C2 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568CA3D1C54728B00ACB6C2 /* Utilities.swift */; };
@@ -80,6 +82,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		45646BC31C55DFF80042E2C0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				45646BC41C55E0000042E2C0 /* SwiftUtilities.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		45E147431B150EF100F46A98 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -172,6 +184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4564D6B01B181D170004A3B3 /* SwiftLogging.framework in Frameworks */,
+				45646BC21C55DFDD0042E2C0 /* SwiftUtilities.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +453,7 @@
 				4564D6A61B181D170004A3B3 /* Sources */,
 				4564D6A71B181D170004A3B3 /* Frameworks */,
 				4564D6A81B181D170004A3B3 /* Resources */,
+				45646BC31C55DFF80042E2C0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -899,6 +913,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -918,6 +933,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				INFOPLIST_FILE = "SwiftLogging Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
