@@ -16,7 +16,7 @@ class SwiftLogging_Tests: XCTestCase {
         let logger = Logger()
         XCTAssert(logger.filters.count == 0)
         logger.addFilter("test", filter: nilFilter)
-        println(logger.filters)
+        print(logger.filters)
         XCTAssert(logger.filters.count == 1)
         logger.removeFilter("test")
         XCTAssert(logger.filters.count == 0)
@@ -29,18 +29,18 @@ class SwiftLogging_Tests: XCTestCase {
      */
     func testFilters() {
         let logger = Logger()
-        let memoryDestination = MemoryDestination(logger: logger)
+        let memoryDestination = MemoryDestination()
         logger.addDestination("memory", destination: memoryDestination)
 
         XCTAssert(memoryDestination.events.count == 0)
 
-        logger.log(Event(object: 1, priority: .debug, source: Source()), immediate: true)
+        logger.log(Event(subject: 1, priority: .Debug, source: Source()), immediate: true)
 
         XCTAssert(memoryDestination.events.count == 1)
 
         logger.addFilter("test", filter: nilFilter)
 
-        logger.log(Event(object: 2, priority: .debug, source: Source()), immediate: true)
+        logger.log(Event(subject: 2, priority: .Debug, source: Source()), immediate: true)
 
         XCTAssert(memoryDestination.events.count == 1)
     }
