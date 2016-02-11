@@ -10,7 +10,7 @@ import Foundation
 
 public extension Logger {
 
-    func motd(values: [(String, AnyObject?)], priority: Priority, source: Source = Source(), tags: Tags) {
+    func motd(values: [(String, AnyObject?)], priority: Priority, source: Source = Source(), tags: Tags = Tags([preformattedTag, verboseTag])) {
 
         let values = values.filter() {
             $1 != nil
@@ -21,7 +21,7 @@ public extension Logger {
 
         string = banner(string)
 
-        let event = Event(subject: string, priority: priority, source: Source(), tags: Tags([preformattedTag, verboseTag]))
+        let event = Event(subject: string, priority: priority, source: source, tags: tags)
         log(event, immediate: true)
     }
 
