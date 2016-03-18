@@ -16,6 +16,10 @@ import SwiftLogging
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+
+        log.addDestination("server", destination: try! LogServerDestination())
+
+
         log.debug("My password is \"123456\"", tags: [sensitiveTag])
         log.debug("Poop: \n💩")
         log.debug("This is so verbose", tags: [verboseTag])

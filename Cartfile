@@ -1,1 +1,2 @@
-github "schwa/SwiftUtilities"
+github "schwa/SwiftUtilities" >= 0.0.37
+github "schwa/SwiftIO" >= 0.0.27

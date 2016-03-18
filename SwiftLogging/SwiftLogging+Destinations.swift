@@ -10,6 +10,24 @@ import Foundation
 
 import SwiftUtilities
 
+public class CallbackDestination: Destination {
+    public let formatter: EventFormatter
+
+    public var callback: (String -> Void)?
+
+    public init(formatter: EventFormatter = terseFormatter, callback: (String -> Void)? = nil) {
+        self.formatter = formatter
+        self.callback = callback
+    }
+
+    public override func receiveEvent(event: Event) {
+        let string = formatter(event) + "\n"
+        callback?(string)
+    }
+}
+
+// MARK: -
+
 public class ConsoleDestination: Destination {
     public let formatter: EventFormatter
 
