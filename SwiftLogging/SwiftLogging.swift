@@ -87,9 +87,10 @@ public class Logger {
             return
         }
 
-        if count++ == 0 {
+        if count == 0 {
             startup()
         }
+        count += 1
 
         let shouldFlush = event.tags?.contains(flushTag)
 
@@ -147,7 +148,7 @@ public struct Source {
     public let function: String
     public let line: Int
 
-    public init(filename: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+    public init(filename: String = #file, function: String = #function, line: Int = #line) {
         self.filename = filename
         self.function = function
         self.line = line
