@@ -27,12 +27,10 @@ public let passthroughFilter = {
 public func tagFilterIn(tags: Tags, replacement: (Event -> Event?)? = nil) -> Filter {
     return {
         (event: Event) -> Event? in
-        if let eventTags = event.tags {
-            return tags.intersect(eventTags).count == 0 ? replacement?(event) : event
+        guard let eventTags = event.tags else {
+            return nil
         }
-        else {
-            return event
-        }
+        return tags.intersect(eventTags).count == 0 ? replacement?(event) : event
     }
 }
 
