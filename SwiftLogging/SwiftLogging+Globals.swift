@@ -32,7 +32,6 @@ public var log: Logger = {
 
     logger.addDestination("io.schwa.SwiftLogging.default-file", destination: fileDestination)
 
-
     // MOTD
     let infoDictionary = NSBundle.mainBundle().infoDictionary!
     let processInfo = NSProcessInfo.processInfo()
