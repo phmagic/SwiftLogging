@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Priority {
+public extension Priority {
     var toEmoji: String {
         switch self {
             case .Debug:
