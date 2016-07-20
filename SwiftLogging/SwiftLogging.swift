@@ -28,7 +28,8 @@ public class Logger {
     public init() {
     }
 
-    public func addDestination(key: String, destination: Destination) {
+    public func addDestination(destination: Destination) {
+        let key = destination.identifier
         self.destinations[key] = destination
         destination.logger = self
     }
@@ -224,18 +225,6 @@ public func ==(lhs: Event, rhs: Event) -> Bool {
     return lhs.id == rhs.id
 }
 
-//extension Event {
-//    public init(event: Event, timestamp: Timestamp?) {
-//        self.id = Event.generateID()
-//        self.subject = event.subject
-//        self.priority = event.priority
-//        self.timestamp = timestamp
-//        self.source = event.source
-//        self.tags = event.tags
-//        self.userInfo = event.userInfo
-//    }
-//}
-
 // MARK: -
 
 public typealias EventFormatter = Event -> String
@@ -244,10 +233,12 @@ public typealias EventFormatter = Event -> String
 
 public class Destination {
 
+    public let identifier: String
     public var filters: [Filter] = []
     public internal(set) weak var logger: Logger!
 
-    public init() {
+    public init(identifier: String) {
+        self.identifier = identifier
     }
 
     public func startup() {

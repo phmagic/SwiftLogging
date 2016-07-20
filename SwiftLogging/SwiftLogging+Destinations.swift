@@ -15,9 +15,10 @@ public class CallbackDestination: Destination {
 
     public var callback: ((Event, String) -> Void)?
 
-    public init(formatter: EventFormatter = terseFormatter, callback: ((Event, String) -> Void)? = nil) {
+    public init(identifier: String, formatter: EventFormatter = terseFormatter, callback: ((Event, String) -> Void)? = nil) {
         self.formatter = formatter
         self.callback = callback
+        super.init(identifier: identifier)
     }
 
     public override func receiveEvent(event: Event) {
@@ -31,8 +32,9 @@ public class CallbackDestination: Destination {
 public class ConsoleDestination: Destination {
     public let formatter: EventFormatter
 
-    public init(formatter: EventFormatter = terseFormatter) {
+    public init(identifier: String, formatter: EventFormatter = terseFormatter) {
         self.formatter = formatter
+        super.init(identifier: identifier)
     }
 
     public override func receiveEvent(event: Event) {
@@ -81,10 +83,10 @@ public class FileDestination: Destination {
     public var open: Bool = false
     var channel: dispatch_io_t!
 
-    public init(url: NSURL = FileDestination.defaultFileDestinationURL, formatter: EventFormatter = preciseFormatter) {
+    public init(identifier: String, url: NSURL = FileDestination.defaultFileDestinationURL, formatter: EventFormatter = preciseFormatter) {
         self.url = url
         self.formatter = formatter
-        super.init()
+        super.init(identifier: identifier)
     }
 
     public override func startup() {

@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
 
-        log.addDestination("server", destination: try! LogServerDestination())
+        log.addDestination(try! LogServerDestination(identifier: "server"))
 
 
         log.debug("My password is \"123456\"", tags: [sensitiveTag])

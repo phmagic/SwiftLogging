@@ -13,9 +13,9 @@ public class LogServerDestination: Destination {
     public let formatter: EventFormatter
     public private(set) var server: TCPServer!
 
-    public init(address: Address, formatter: EventFormatter = terseFormatter) throws  {
+    public init(identifier: String, address: Address, formatter: EventFormatter = terseFormatter) throws  {
         self.formatter = formatter
-        super.init()
+        super.init(identifier: identifier)
 
         server = try TCPServer(address: address)
 
@@ -28,9 +28,9 @@ public class LogServerDestination: Destination {
         try server.startListening()
     }
 
-    public convenience init(port: UInt16 = 4000, formatter: EventFormatter = terseFormatter) throws  {
+    public convenience init(identifier: String, port: UInt16 = 4000, formatter: EventFormatter = terseFormatter) throws  {
         let address = try Address(address: "0.0.0.0", port: port)
-        try self.init(address: address, formatter: formatter)
+        try self.init(identifier: identifier, address: address, formatter: formatter)
     }
 
     public override func receiveEvent(event: Event) {

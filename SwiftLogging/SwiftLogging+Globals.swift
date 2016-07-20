@@ -14,8 +14,8 @@ public var log: Logger = {
     var logger = SwiftLogging.log
 
     // Logging to console.
-    let console = ConsoleDestination()
-    logger.addDestination("io.schwa.SwiftLogging.console", destination: console)
+    let console = ConsoleDestination(identifier: "io.schwa.SwiftLogging.console")
+    logger.addDestination(console)
 
     // Add source filter
     console.addFilter(sourceFilter(pattern: ".*"))
@@ -27,10 +27,10 @@ public var log: Logger = {
     console.addFilter(verbosityFilter())
 
     // Logging to file.
-    let fileDestination = FileDestination()
+    let fileDestination = FileDestination(identifier: "io.schwa.SwiftLogging.default-file")
     fileDestination.addFilter(sensitivityFilter)
 
-    logger.addDestination("io.schwa.SwiftLogging.default-file", destination: fileDestination)
+    logger.addDestination(fileDestination)
 
     // MOTD
     let infoDictionary = NSBundle.mainBundle().infoDictionary!
