@@ -10,12 +10,11 @@ import SwiftIO
 import SwiftUtilities
 
 public class LogServerDestination: Destination {
-    public let formatter: EventFormatter
     public private(set) var server: TCPServer!
 
     public init(identifier: String, address: Address, formatter: EventFormatter = terseFormatter) throws  {
-        self.formatter = formatter
         super.init(identifier: identifier)
+        self.formatter = formatter
 
         server = try TCPServer(address: address)
 
@@ -34,8 +33,10 @@ public class LogServerDestination: Destination {
     }
 
     public override func receiveEvent(event: Event) {
-        let string = formatter(event) + "\n"
-
+        guard case .Formatted(let subject) = event.subject else {
+            fatalError("Cannot process unformatted events.")
+        }
+        let string = subject + "\n"
         do {
             let data = try DispatchData <Void> (string, encoding: NSUTF8StringEncoding)
             for channel in server.connections.value {

@@ -11,18 +11,19 @@ import Foundation
 import SwiftUtilities
 
 public class CallbackDestination: Destination {
-    public let formatter: EventFormatter
-
     public var callback: ((Event, String) -> Void)?
 
     public init(identifier: String, formatter: EventFormatter = terseFormatter, callback: ((Event, String) -> Void)? = nil) {
-        self.formatter = formatter
         self.callback = callback
         super.init(identifier: identifier)
+        self.formatter = formatter
     }
 
     public override func receiveEvent(event: Event) {
-        let string = formatter(event) + "\n"
+        guard case .Formatted(let subject) = event.subject else {
+            fatalError("Cannot process unformatted events.")
+        }
+        let string = subject + "\n"
         callback?(event, string)
     }
 }
@@ -30,20 +31,18 @@ public class CallbackDestination: Destination {
 // MARK: -
 
 public class ConsoleDestination: Destination {
-    public let formatter: EventFormatter
-
     public init(identifier: String, formatter: EventFormatter = terseFormatter) {
-        self.formatter = formatter
         super.init(identifier: identifier)
+        self.formatter = formatter
     }
 
     public override func receiveEvent(event: Event) {
         dispatch_async(logger.consoleQueue) {
-            [weak self] in
-            if let strong_self = self {
-                let string = strong_self.formatter(event)
-                print(string)
+            guard case .Formatted(let subject) = event.subject else {
+                fatalError("Cannot process unformatted events.")
             }
+            let string = subject
+            print(string)
         }
     }
 }
@@ -52,7 +51,7 @@ public class ConsoleDestination: Destination {
 
 public class MemoryDestination: Destination {
 
-    // TODO: Thread safety.
+    // TODO: Thread safety (HAHA!)
 
     public internal(set) var events: [Event] = []
 
@@ -77,7 +76,6 @@ public class MemoryDestination: Destination {
 public class FileDestination: Destination {
 
     public let url: NSURL
-    public let formatter: EventFormatter
 
     public let queue = dispatch_queue_create("io.schwa.SwiftLogging.FileDestination", DISPATCH_QUEUE_SERIAL)
     public var open: Bool = false
@@ -85,8 +83,8 @@ public class FileDestination: Destination {
 
     public init(identifier: String, url: NSURL = FileDestination.defaultFileDestinationURL, formatter: EventFormatter = preciseFormatter) {
         self.url = url
-        self.formatter = formatter
         super.init(identifier: identifier)
+        self.formatter = formatter
     }
 
     public override func startup() {
@@ -128,7 +126,10 @@ public class FileDestination: Destination {
                     return
                 }
 
-                let string = strong_self.formatter(event) + "\n"
+                guard case .Formatted(let subject) = event.subject else {
+                    fatalError("Cannot process unformatted events.")
+                }
+                let string = subject + "\n"
                 let data = (string as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
                 // DISPATCH_DATA_DESTRUCTOR_DEFAULT is missing in swiff
                 let dispatchData = dispatch_data_create(data.bytes, data.length, strong_self.queue, nil)

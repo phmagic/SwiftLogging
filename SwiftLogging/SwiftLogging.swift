@@ -111,7 +111,10 @@ public class Logger {
                     continue destinationLoop
                 }
             }
-            destination.receiveEvent(filteredEvent2!)
+
+            let formattedEvent = filteredEvent2!.formatted(with: destination.formatter)
+
+            destination.receiveEvent(formattedEvent)
         }
 
         if shouldFlush == true {
@@ -209,15 +212,20 @@ public struct Event {
     public let tags: Tags?
     public let userInfo: UserInfo?
 
-    public init(subject: Any?, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
-        self.id = Event.generateID()
-        self.subject = .Raw(subject)
+    public init(id:Int? = nil, subject: Subject, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
+        self.id = id ?? Event.generateID()
+        self.subject = subject
         self.priority = priority
         self.timestamp = timestamp
         self.source = source
         self.tags = tags
         self.userInfo = userInfo
     }
+
+    public init(id:Int? = nil, subject: Any?, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
+        self = Event(id: id, subject: .Raw(subject), priority: priority, timestamp: timestamp, source: source, tags: tags, userInfo: userInfo)
+    }
+
 }
 
 extension Event: Hashable {
@@ -227,6 +235,7 @@ extension Event: Hashable {
 }
 
 public func ==(lhs: Event, rhs: Event) -> Bool {
+    // TODO: This can be inaccurate when we make copies.
     return lhs.id == rhs.id
 }
 
@@ -234,13 +243,24 @@ public func ==(lhs: Event, rhs: Event) -> Bool {
 
 public typealias EventFormatter = Event -> String
 
+
+public extension Event {
+    func formatted(with formatter:EventFormatter) -> Event {
+        let string = formatter(self)
+        let formattedSubject = Subject.Formatted(string)
+        return Event(id: id, subject: formattedSubject, priority: priority, timestamp: timestamp, source: source, tags: tags, userInfo: userInfo)
+    }
+}
+
 // MARK: -
 
 public class Destination {
 
+    public internal(set) weak var logger: Logger!
+
     public let identifier: String
     public var filters: [Filter] = []
-    public internal(set) weak var logger: Logger!
+    public var formatter: EventFormatter = terseFormatter
 
     public init(identifier: String) {
         self.identifier = identifier
