@@ -28,15 +28,23 @@ public extension Priority {
 // MARK: -
 
 public func preciseFormatter(event: Event) -> String {
-    let subject: String = event.subject != nil ? String(event.subject!) : "nil"
-    let string = subject.escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
+    guard case .Raw(let subject) = event.subject else {
+        fatalError("Cannot format an already formatted subject.")
+    }
+
+    let stringSubject: String = subject != nil ? String(subject!) : "nil"
+    let string = stringSubject.escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
     return "\(event.timestamp!) \(event.priority) \(event.source): \(string)"
 }
 
 public func terseFormatter(event: Event) -> String {
-    let subject: String = event.subject != nil ? String(event.subject!) : "nil"
-    if let tags = event.tags where tags.contains(preformattedTag) {
-        return subject
+    guard case .Raw(let subject) = event.subject else {
+        fatalError("Cannot format an already formatted subject.")
     }
-    return "\(event.timestamp!.toTimeString) \(event.priority.toEmoji) [\(event.source)]: \(subject)"
+
+    let stringSubject: String = subject != nil ? String(subject!) : "nil"
+    if let tags = event.tags where tags.contains(preformattedTag) {
+        return stringSubject
+    }
+    return "\(event.timestamp!.toTimeString) \(event.priority.toEmoji) [\(event.source)]: \(stringSubject)"
 }

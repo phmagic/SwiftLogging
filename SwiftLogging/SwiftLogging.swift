@@ -186,6 +186,11 @@ public typealias UserInfo = Dictionary <String, Any>
 
 public struct Event {
 
+    public enum Subject {
+        case Raw(Any?)
+        case Formatted(String)
+    }
+
     static var nextID: Int = 0
 
     static func generateID() -> Int {
@@ -197,7 +202,7 @@ public struct Event {
     // TODO: we'd like formatters to be able to special case subject formatting. We rely on String(subject) currently
 
     public let id: Int
-    public let subject: Any?
+    public let subject: Subject
     public let priority: Priority
     public let timestamp: Timestamp?
     public let source: Source
@@ -206,7 +211,7 @@ public struct Event {
 
     public init(subject: Any?, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
         self.id = Event.generateID()
-        self.subject = subject
+        self.subject = .Raw(subject)
         self.priority = priority
         self.timestamp = timestamp
         self.source = source
