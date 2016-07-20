@@ -21,10 +21,9 @@
 		453A35A81B07203B00A3923D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 453A35A71B07203B00A3923D /* Images.xcassets */; };
 		453A35AB1B07203B00A3923D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453A35A91B07203B00A3923D /* Main.storyboard */; };
 		453A35C21B07216F00A3923D /* SwiftLogging+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */; };
-		453A35C51B0721C800A3923D /* SwiftLoggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A35C31B0721C800A3923D /* SwiftLoggingViewController.swift */; };
-		453A35C81B0721D900A3923D /* SwiftLogging.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453A35C71B0721D900A3923D /* SwiftLogging.storyboard */; };
 		4544F6241BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; };
 		4544F6251BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; };
+		45569DD41D400EEC0048BB2C /* MemoryLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45569DD21D400E8D0048BB2C /* MemoryLogViewController.swift */; };
 		45646BB91C55D4AF0042E2C0 /* SwiftUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; };
 		45646BC21C55DFDD0042E2C0 /* SwiftUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; };
 		45646BC41C55E0000042E2C0 /* SwiftUtilities.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; };
@@ -135,10 +134,9 @@
 		453A35A71B07203B00A3923D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		453A35AA1B07203B00A3923D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+ASL.swift"; sourceTree = "<group>"; };
-		453A35C31B0721C800A3923D /* SwiftLoggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLoggingViewController.swift; sourceTree = "<group>"; };
-		453A35C71B0721D900A3923D /* SwiftLogging.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SwiftLogging.storyboard; sourceTree = "<group>"; };
 		4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Utilities.swift"; sourceTree = "<group>"; };
 		4544F6261BD593AB0057E3D2 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
+		45569DD21D400E8D0048BB2C /* MemoryLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryLogViewController.swift; sourceTree = "<group>"; };
 		455DD3991AE6F38400FF383E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLogging.swift; sourceTree = "<group>"; };
 		4564D6AA1B181D170004A3B3 /* SwiftLogging Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftLogging Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,8 +233,7 @@
 			children = (
 				453A35A31B07203B00A3923D /* AppDelegate.swift */,
 				453A35A51B07203B00A3923D /* ViewController.swift */,
-				453A35C31B0721C800A3923D /* SwiftLoggingViewController.swift */,
-				453A35C71B0721D900A3923D /* SwiftLogging.storyboard */,
+				45569DD21D400E8D0048BB2C /* MemoryLogViewController.swift */,
 				453A35A71B07203B00A3923D /* Images.xcassets */,
 				453A35A91B07203B00A3923D /* Main.storyboard */,
 				453A35A11B07203B00A3923D /* Supporting Files */,
@@ -573,7 +570,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				453A35C81B0721D900A3923D /* SwiftLogging.storyboard in Resources */,
 				453A35A81B07203B00A3923D /* Images.xcassets in Resources */,
 				453A35AB1B07203B00A3923D /* Main.storyboard in Resources */,
 			);
@@ -632,8 +628,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				456CA8601B965337000A9185 /* SwiftLogging+Globals.swift in Sources */,
-				453A35C51B0721C800A3923D /* SwiftLoggingViewController.swift in Sources */,
 				453A35A61B07203B00A3923D /* ViewController.swift in Sources */,
+				45569DD41D400EEC0048BB2C /* MemoryLogViewController.swift in Sources */,
 				453A35A41B07203B00A3923D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
