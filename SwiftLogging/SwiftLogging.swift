@@ -81,13 +81,6 @@ public class Logger {
 
     public func log(event: Event, immediate: Bool = false) {
 
-        if immediate == false {
-            dispatch_async(queue) {
-                self.log(event, immediate: true)
-            }
-            return
-        }
-
         if count == 0 {
             startup()
         }
@@ -114,7 +107,15 @@ public class Logger {
 
             let formattedEvent = filteredEvent2!.formatted(with: destination.formatter)
 
-            destination.receiveEvent(formattedEvent)
+            if immediate == false {
+                dispatch_async(queue) {
+                    destination.receiveEvent(formattedEvent)
+                }
+            }
+            else {
+                destination.receiveEvent(formattedEvent)
+            }
+
         }
 
         if shouldFlush == true {
