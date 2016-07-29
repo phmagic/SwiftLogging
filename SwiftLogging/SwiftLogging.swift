@@ -8,6 +8,7 @@
 
 import Foundation
 import Darwin
+import SwiftUtilities
 
 public var log = Logger.sharedInstance
 
@@ -25,72 +26,96 @@ public class Logger {
     internal var count: Int64 = 0
     internal var running: Bool = false
 
+    internal var lock = NSRecursiveLock()
+
     public init() {
     }
 
     public func addDestination(destination: Destination) {
-        let key = destination.identifier
-        self.destinations[key] = destination
-        destination.logger = self
-        
-        if running == true {
-            destination.startup()
+        lock.with() {
+            let key = destination.identifier
+            self.destinations[key] = destination
+            destination.logger = self
+            if running == true {
+                destination.startup()
+            }
         }
     }
 
     public func removeDestination(key: String) {
-        let destination = self.destinations[key]
-        destination?.shutdown()
-        destination?.logger = nil
-        self.destinations.removeValueForKey(key)
-
+        lock.with() {
+            let destination = self.destinations[key]
+            destination?.shutdown()
+            destination?.logger = nil
+            self.destinations.removeValueForKey(key)
+        }
     }
 
     public func destinationForKey(key: String) -> Destination? {
-        return destinations[key]
+        return lock.with() {
+            return destinations[key]
+        }
     }
 
     public func addFilter(key: String, filter: Filter) {
-        self.filters.append((key, filter))
+        lock.with() {
+            self.filters.append((key, filter))
+        }
     }
 
     public func removeFilter(key: String) {
-        for (index, (k, _)) in self.filters.enumerate() {
-            if key == k {
-                self.filters.removeAtIndex(index)
-                break
+        lock.with() {
+            for (index, (k, _)) in self.filters.enumerate() {
+                if key == k {
+                    self.filters.removeAtIndex(index)
+                    break
+                }
             }
         }
     }
 
     public func startup() {
-        running = true
-        for (_, destination) in destinations {
-            destination.startup()
+        lock.with() {
+            running = true
+            for (_, destination) in destinations {
+                destination.startup()
+            }
         }
     }
 
     public func shutdown() {
-        if running == false {
-            return
-        }
-        for (_, destination) in destinations {
-            destination.shutdown()
+        lock.with() {
+            if running == false {
+                return
+            }
+            for (_, destination) in destinations {
+                destination.shutdown()
+            }
         }
     }
 
     public func flush() {
-        for (_, destination) in destinations {
-            destination.flush()
+        lock.with() {
+            for (_, destination) in destinations {
+                destination.flush()
+            }
         }
     }
 
     public func log(event: Event, immediate: Bool = false) {
 
-        if count == 0 {
-            startup()
+        var filters: [(String, Filter)]!
+        var destinations: [String: Destination]!
+
+        lock.with() {
+            if count == 0 {
+                startup()
+            }
+            count += 1
+            
+            filters = self.filters
+            destinations = self.destinations
         }
-        count += 1
 
         let shouldFlush = event.tags?.contains(flushTag)
 
