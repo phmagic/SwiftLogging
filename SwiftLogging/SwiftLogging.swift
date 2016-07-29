@@ -40,8 +40,10 @@ public class Logger {
 
     public func removeDestination(key: String) {
         let destination = self.destinations[key]
+        destination?.shutdown()
         destination?.logger = nil
         self.destinations.removeValueForKey(key)
+
     }
 
     public func destinationForKey(key: String) -> Destination? {
