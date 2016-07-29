@@ -32,6 +32,10 @@ public class Logger {
         let key = destination.identifier
         self.destinations[key] = destination
         destination.logger = self
+        
+        if running == true {
+            destination.startup()
+        }
     }
 
     public func removeDestination(key: String) {
