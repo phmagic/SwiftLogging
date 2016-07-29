@@ -79,7 +79,7 @@ public class FileDestination: Destination {
 
     public let queue = dispatch_queue_create("io.schwa.SwiftLogging.FileDestination", DISPATCH_QUEUE_SERIAL)
     public var open: Bool = false
-    var channel: dispatch_io_t!
+    var channel: dispatch_io_t?
 
     public init(identifier: String, url: NSURL = FileDestination.defaultFileDestinationURL, formatter: EventFormatter = preciseFormatter) {
         self.url = url
@@ -88,7 +88,7 @@ public class FileDestination: Destination {
     }
 
     public override func startup() {
-        dispatch_async(queue) {
+        dispatch_sync(queue) {
             [weak self] in
 
             if let strong_self = self {
@@ -110,10 +110,12 @@ public class FileDestination: Destination {
     }
 
     public override func shutdown() {
-        dispatch_async(queue) {
+        dispatch_sync(queue) {
             [unowned self] in
             self.open = false
-            dispatch_io_close(self.channel, 0)
+            if let channel = self.channel {
+                dispatch_io_close(channel, 0)
+            }
         }
     }
 
@@ -121,34 +123,52 @@ public class FileDestination: Destination {
         dispatch_async(queue) {
             [weak self] in
 
-            if let strong_self = self {
-                if strong_self.open == false {
-                    return
-                }
+            guard let strong_self = self else {
+                return
+            }
 
-                guard case .Formatted(let subject) = event.subject else {
-                    fatalError("Cannot process unformatted events.")
-                }
-                let string = subject + "\n"
-                let data = (string as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
-                // DISPATCH_DATA_DESTRUCTOR_DEFAULT is missing in swiff
-                let dispatchData = dispatch_data_create(data.bytes, data.length, strong_self.queue, nil)
+            if strong_self.open == false {
+                return
+            }
 
-                dispatch_io_write(strong_self.channel, 0, dispatchData, strong_self.queue) {
-                    (done: Bool, data: dispatch_data_t!, error: Int32) -> Void in
-                }
+            guard case .Formatted(let subject) = event.subject else {
+                fatalError("Cannot process unformatted events.")
+            }
+            let string = subject + "\n"
+            let data = (string as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
+            // DISPATCH_DATA_DESTRUCTOR_DEFAULT is missing in swiff
+            let dispatchData = dispatch_data_create(data.bytes, data.length, strong_self.queue, nil)
+
+            guard let channel = strong_self.channel else {
+                fatalError("Trying to write log data but channel unavailable")
+            }
+
+            dispatch_io_write(channel, 0, dispatchData, strong_self.queue) {
+                (done: Bool, data: dispatch_data_t!, error: Int32) -> Void in
             }
         }
     }
 
     public override func flush() {
-        dispatch_barrier_async(queue) {
-            [weak self] in
+        flush(nil)
+    }
 
-            if let strong_self = self {
-                let descriptor = dispatch_io_get_descriptor(strong_self.channel)
-                fsync(descriptor)
+    public func flush(callback: ((NSURL) -> Void)?) {
+        dispatch_sync(queue) {
+            [weak self] in
+            
+            guard let strong_self = self else {
+                return
             }
+
+            guard let channel = strong_self.channel else {
+                fatalError("Trying to flush but channel unavailable")
+            }
+
+            let descriptor = dispatch_io_get_descriptor(channel)
+            fsync(descriptor)
+            
+            callback?(strong_self.url)
         }
     }
 
