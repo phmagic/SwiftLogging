@@ -80,9 +80,11 @@ public class FileDestination: Destination {
     public let queue = dispatch_queue_create("io.schwa.SwiftLogging.FileDestination", DISPATCH_QUEUE_SERIAL)
     public var open: Bool = false
     var channel: dispatch_io_t?
+    let rotations: Int?
 
-    public init(identifier: String, url: NSURL = FileDestination.defaultFileDestinationURL, formatter: EventFormatter = preciseFormatter) {
+    public init(identifier: String, url: NSURL = FileDestination.defaultFileDestinationURL, rotations: Int? = nil, formatter: EventFormatter = preciseFormatter) {
         self.url = url
+        self.rotations = rotations
         super.init(identifier: identifier)
         self.formatter = formatter
     }
@@ -91,11 +93,21 @@ public class FileDestination: Destination {
         dispatch_sync(queue) {
             [weak self] in
 
-            if let strong_self = self {
-                let parentURL = strong_self.url.URLByDeletingLastPathComponent!
-                if NSFileManager().fileExistsAtPath(parentURL.path!) == false {
-                    try! NSFileManager().createDirectoryAtURL(parentURL, withIntermediateDirectories: true, attributes: nil)
+            guard let strong_self = self else {
+                return
+            }
+
+            do {
+                let path = try Path(strong_self.url)
+
+                if path.parent?.exists == false {
+                    try path.parent?.createDirectory(withIntermediateDirectories: true)
                 }
+
+                if strong_self.rotations != nil {
+                    try path.rotate(strong_self.rotations)
+                }
+
                 strong_self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, strong_self.url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, strong_self.queue) {
                     (error: Int32) -> Void in
                     if error != 0 {
@@ -105,6 +117,9 @@ public class FileDestination: Destination {
                 if strong_self.channel != nil {
                     strong_self.open = true
                 }
+            }
+            catch let error {
+                strong_self.logger.internalLog("Failed to start FileDestination: \(error)")
             }
         }
     }

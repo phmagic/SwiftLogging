@@ -8,6 +8,8 @@
 
 import Foundation
 
+import SwiftUtilities
+
 internal let iso8601Formatter: NSDateFormatter = {
     let dateFormatter = NSDateFormatter()
     dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")

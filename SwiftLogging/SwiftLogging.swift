@@ -36,18 +36,30 @@ public class Logger {
             let key = destination.identifier
             self.destinations[key] = destination
             destination.logger = self
-            if running == true {
-                destination.startup()
+            do {
+                if running == true {
+                    try destination.startup()
+                }
+            }
+            catch let error {
+                internalLog("Failed to start destination: \(destination.identifier) - \(error)")
             }
         }
     }
 
     public func removeDestination(key: String) {
         lock.with() {
-            let destination = self.destinations[key]
-            destination?.shutdown()
-            destination?.logger = nil
+            guard let destination = self.destinations[key] else {
+                return
+            }
             self.destinations.removeValueForKey(key)
+            do {
+                try destination.shutdown()
+            }
+            catch let error {
+                internalLog("Failed to shut down destination: \(destination.identifier) - \(error)")
+            }
+            destination.logger = nil
         }
     }
 
@@ -78,7 +90,12 @@ public class Logger {
         lock.with() {
             running = true
             for (_, destination) in destinations {
-                destination.startup()
+                do {
+                    try destination.startup()
+                }
+                catch let error {
+                    internalLog("Failed to start up logging destination: \(destination.identifier) - \(error)")
+                }
             }
         }
     }
@@ -88,8 +105,14 @@ public class Logger {
             if running == false {
                 return
             }
+
             for (_, destination) in destinations {
-                destination.shutdown()
+                do {
+                    try destination.shutdown()
+                }
+                catch let error {
+                    internalLog("Failed to shut down logging destination: \(destination.identifier) - \(error)")
+                }
             }
         }
     }
@@ -97,7 +120,12 @@ public class Logger {
     public func flush() {
         lock.with() {
             for (_, destination) in destinations {
-                destination.flush()
+                do {
+                    try destination.flush()
+                }
+                catch let error {
+                    internalLog("Failed to flush logging destination: \(destination.identifier) - \(error)")
+                }
             }
         }
     }
@@ -298,16 +326,16 @@ public class Destination {
         self.identifier = identifier
     }
 
-    public func startup() {
+    public func startup() throws {
     }
 
     public func receiveEvent(event: Event) {
     }
 
-    public func shutdown() {
+    public func shutdown() throws {
     }
 
-    public func flush() {
+    public func flush() throws {
     }
 
     public func addFilter(filter: Filter) {

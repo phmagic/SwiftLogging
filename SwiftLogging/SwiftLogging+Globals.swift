@@ -17,6 +17,7 @@ public var log: Logger = {
     let console = ConsoleDestination(identifier: "io.schwa.SwiftLogging.console")
     logger.addDestination(console)
 
+
     // Add source filter
     console.addFilter(sourceFilter(pattern: ".*"))
 
