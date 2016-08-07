@@ -89,7 +89,7 @@ public class FileDestination: Destination {
         self.formatter = formatter
     }
 
-    public override func startup() {
+    public override func startup() throws {
         dispatch_sync(queue) {
             [weak self] in
 
@@ -124,7 +124,7 @@ public class FileDestination: Destination {
         }
     }
 
-    public override func shutdown() {
+    public override func shutdown() throws {
         dispatch_sync(queue) {
             [unowned self] in
             self.open = false
