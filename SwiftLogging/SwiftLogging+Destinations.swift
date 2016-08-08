@@ -202,7 +202,11 @@ public class FileDestination: Destination {
             var url = try! NSFileManager().URLForDirectory(.LibraryDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
             url = url.URLByAppendingPathComponent("Logs")!
             try! NSFileManager().createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil)
+#if swift(>=2.3)
             url = url.URLByAppendingPathComponent("\(processName).log")!
+#else
+            url = url.URLByAppendingPathComponent("\(processName).log")
+#endif
             return url
         }
     }
