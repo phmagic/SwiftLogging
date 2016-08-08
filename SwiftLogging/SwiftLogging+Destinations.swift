@@ -194,7 +194,11 @@ public class FileDestination: Destination {
         // If we're in a bundle: use ~/Library/Application Support/<bundle identifier>/<bundle name>.log
         if let bundleIdentifier = bundle.bundleIdentifier, let bundleName = bundle.infoDictionary?["CFBundleName"] as? String {
             let url = try! NSFileManager().URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
+#if swift(>=2.3)
             return url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")!
+#else
+            return url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
+#endif
         }
         // Otherwise use ~/Library/Logs/<process name>.log
         else {
