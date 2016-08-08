@@ -105,7 +105,7 @@ public class FileDestination: Destination {
                 }
 
                 if strong_self.rotations != nil {
-                    try path.rotate(strong_self.rotations)
+                    try path.rotate(limit: strong_self.rotations)
                 }
 
                 strong_self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, strong_self.url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, strong_self.queue) {
@@ -159,7 +159,9 @@ public class FileDestination: Destination {
             }
 
             dispatch_io_write(channel, 0, dispatchData, strong_self.queue) {
-                (done: Bool, data: dispatch_data_t!, error: Int32) -> Void in
+                _ -> Void in
+
+                // TODO: This left intentionally blank?
             }
         }
     }
@@ -192,15 +194,15 @@ public class FileDestination: Destination {
         // If we're in a bundle: use ~/Library/Application Support/<bundle identifier>/<bundle name>.log
         if let bundleIdentifier = bundle.bundleIdentifier, let bundleName = bundle.infoDictionary?["CFBundleName"] as? String {
             let url = try! NSFileManager().URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
-            return url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
+            return url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")!
         }
         // Otherwise use ~/Library/Logs/<process name>.log
         else {
             let processName = (Process.arguments.first! as NSString).pathComponents.last!
             var url = try! NSFileManager().URLForDirectory(.LibraryDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
-            url = url.URLByAppendingPathComponent("Logs")
+            url = url.URLByAppendingPathComponent("Logs")!
             try! NSFileManager().createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil)
-            url = url.URLByAppendingPathComponent("\(processName).log")
+            url = url.URLByAppendingPathComponent("\(processName).log")!
             return url
         }
     }
