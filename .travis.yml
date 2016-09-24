@@ -1,7 +1,7 @@
 language: objective-c
 osx_image: xcode7.2
 before_script:
-- carthage bootstrap
+- carthage bootstrap --no-use-binaries
 script:
 - xcodebuild -project "SwiftLogging.xcodeproj" -scheme "SwiftLogging_OSX" build
 - xcodebuild -project "SwiftLogging.xcodeproj" -scheme "SwiftLogging_iOS" -sdk iphonesimulator build
