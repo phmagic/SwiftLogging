@@ -6,8 +6,8 @@ before_install:
 before_script:
 - carthage bootstrap
 script:
-- xctool -project "SwiftLogging.xcodeproj" -scheme "SwiftLogging_OSX" build test
-- xctool -project "SwiftLogging.xcodeproj" -scheme "SwiftLogging_iOS" -sdk iphonesimulator build test
-- xctool -project "SwiftLogging.xcodeproj" -scheme "GUI" build test
-- xctool -project "SwiftLogging.xcodeproj" -scheme "GUI_iOS" -sdk iphonesimulator build test
+- xcodebuild -project "SwiftLogging.xcodeproj" -scheme "SwiftLogging_OSX" build
+- xcodebuild -project "SwiftLogging.xcodeproj" -scheme "SwiftLogging_iOS" -sdk iphonesimulator build
+- xcodebuild -project "SwiftLogging.xcodeproj" -scheme "GUI" build
+- xcodebuild -project "SwiftLogging.xcodeproj" -scheme "GUI_iOS" -sdk iphonesimulator build
 
