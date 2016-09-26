@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45112B2E1D9988310051CCD2 /* SwiftUtilities.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 45F9D9561C54246600C7BF45 /* SwiftUtilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4537337C1C541FEB00EA1E6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537337B1C541FEB00EA1E6E /* AppDelegate.swift */; };
 		453733811C541FEB00EA1E6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4537337F1C541FEB00EA1E6E /* Main.storyboard */; };
 		453733831C541FEB00EA1E6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 453733821C541FEB00EA1E6E /* Assets.xcassets */; };
 		453733861C541FEB00EA1E6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453733841C541FEB00EA1E6E /* LaunchScreen.storyboard */; };
-		453A35961B071FEC00A3923D /* BridgingHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 45347F4B1AFAFF800080DFF4 /* BridgingHelpers.m */; };
 		453A35971B071FF100A3923D /* SwiftLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */; };
 		453A35981B071FF100A3923D /* SwiftLogging+Printable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45347F4F1AFB15560080DFF4 /* SwiftLogging+Printable.swift */; };
 		453A35991B071FF100A3923D /* SwiftLogging+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45347F461AFAF94D0080DFF4 /* SwiftLogging+Filters.swift */; };
@@ -20,7 +20,6 @@
 		453A35A61B07203B00A3923D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A35A51B07203B00A3923D /* ViewController.swift */; };
 		453A35A81B07203B00A3923D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 453A35A71B07203B00A3923D /* Images.xcassets */; };
 		453A35AB1B07203B00A3923D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453A35A91B07203B00A3923D /* Main.storyboard */; };
-		453A35C21B07216F00A3923D /* SwiftLogging+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */; };
 		4544F6241BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; };
 		4544F6251BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */; };
 		45569DD41D400EEC0048BB2C /* MemoryLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45569DD21D400E8D0048BB2C /* MemoryLogViewController.swift */; };
@@ -30,27 +29,17 @@
 		4564D6AF1B181D170004A3B3 /* SwiftLogging_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4564D6AE1B181D170004A3B3 /* SwiftLogging_Tests.swift */; };
 		4564D6B01B181D170004A3B3 /* SwiftLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 453A357D1B071FD500A3923D /* SwiftLogging.framework */; };
 		4568CA3E1C54728B00ACB6C2 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568CA3D1C54728B00ACB6C2 /* Utilities.swift */; };
-		4568CA401C5474B400ACB6C2 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568CA3F1C5474B400ACB6C2 /* DataViewController.swift */; };
-		4568CA421C5474F600ACB6C2 /* DataDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568CA411C5474F600ACB6C2 /* DataDestination.swift */; };
 		456CA8601B965337000A9185 /* SwiftLogging+Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799E1B16C92C00D21B70 /* SwiftLogging+Globals.swift */; };
-		4586C5991C9C7025003C9515 /* LogServerDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4586C5981C9C7025003C9515 /* LogServerDestination.swift */; };
-		4586C59A1C9C7025003C9515 /* LogServerDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4586C5981C9C7025003C9515 /* LogServerDestination.swift */; };
-		4586C59C1C9C799A003C9515 /* SwiftIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4586C59B1C9C799A003C9515 /* SwiftIO.framework */; };
-		4586C59E1C9C79AB003C9515 /* SwiftIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4586C59D1C9C79AB003C9515 /* SwiftIO.framework */; };
-		4586C59F1C9C7CF6003C9515 /* SwiftIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4586C59B1C9C799A003C9515 /* SwiftIO.framework */; };
-		4586C5A01C9C7CFC003C9515 /* SwiftIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4586C59B1C9C799A003C9515 /* SwiftIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4586C5A11C9C7CFC003C9515 /* SwiftUtilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		45E10CCA1B1772D100B918FE /* SwiftLogging+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */; };
 		45E10CCB1B1772EE00B918FE /* SwiftLogging+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */; };
 		45E10CD21B17A31600B918FE /* SwiftLogging+Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */; };
 		45E10CD31B17A35B00B918FE /* SwiftLogging+Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */; };
 		45E1473E1B150EF100F46A98 /* SwiftLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45E147271B150EF100F46A98 /* SwiftLogging.framework */; };
-		45E147491B150F3000F46A98 /* BridgingHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 45347F4B1AFAFF800080DFF4 /* BridgingHelpers.m */; };
 		45E1474A1B150F3000F46A98 /* SwiftLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DD3A01AE6F38F00FF383E /* SwiftLogging.swift */; };
 		45E1474B1B150F3000F46A98 /* SwiftLogging+Printable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45347F4F1AFB15560080DFF4 /* SwiftLogging+Printable.swift */; };
 		45E1474C1B150F3000F46A98 /* SwiftLogging+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45347F461AFAF94D0080DFF4 /* SwiftLogging+Filters.swift */; };
 		45E1474D1B150F3000F46A98 /* SwiftLogging+Destinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45347F441AFAF9320080DFF4 /* SwiftLogging+Destinations.swift */; };
-		45E1474E1B150F3000F46A98 /* SwiftLogging+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */; };
 		45E1474F1B150FA800F46A98 /* SwiftLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E1472B1B150EF100F46A98 /* SwiftLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		45E5799B1B16C73200D21B70 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799A1B16C73200D21B70 /* Utilities.swift */; };
 		45E5799C1B16C73200D21B70 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E5799A1B16C73200D21B70 /* Utilities.swift */; };
@@ -88,6 +77,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		45112B2D1D9988270051CCD2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				45112B2E1D9988310051CCD2 /* SwiftUtilities.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		45646BC31C55DFF80042E2C0 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -105,7 +104,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				45F9D94A1C54206700C7BF45 /* SwiftLogging.framework in Embed Frameworks */,
-				4586C5A01C9C7CFC003C9515 /* SwiftIO.framework in Embed Frameworks */,
 				4586C5A11C9C7CFC003C9515 /* SwiftUtilities.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -117,8 +115,6 @@
 		45347F431AFAF8730080DFF4 /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
 		45347F441AFAF9320080DFF4 /* SwiftLogging+Destinations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Destinations.swift"; sourceTree = "<group>"; };
 		45347F461AFAF94D0080DFF4 /* SwiftLogging+Filters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Filters.swift"; sourceTree = "<group>"; };
-		45347F4A1AFAFF800080DFF4 /* BridgingHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgingHelpers.h; sourceTree = "<group>"; };
-		45347F4B1AFAFF800080DFF4 /* BridgingHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BridgingHelpers.m; sourceTree = "<group>"; };
 		45347F4F1AFB15560080DFF4 /* SwiftLogging+Printable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Printable.swift"; sourceTree = "<group>"; };
 		453733791C541FEB00EA1E6E /* GUI_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GUI_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4537337B1C541FEB00EA1E6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -133,7 +129,6 @@
 		453A35A51B07203B00A3923D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		453A35A71B07203B00A3923D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		453A35AA1B07203B00A3923D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+ASL.swift"; sourceTree = "<group>"; };
 		4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Utilities.swift"; sourceTree = "<group>"; };
 		4544F6261BD593AB0057E3D2 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
 		45569DD21D400E8D0048BB2C /* MemoryLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryLogViewController.swift; sourceTree = "<group>"; };
@@ -145,11 +140,7 @@
 		4568CA3B1C5432F000ACB6C2 /* Cartfile.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; name = Cartfile.resolved; path = ../Cartfile.resolved; sourceTree = "<group>"; };
 		4568CA3C1C5432F600ACB6C2 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; name = Cartfile; path = ../Cartfile; sourceTree = "<group>"; };
 		4568CA3D1C54728B00ACB6C2 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		4568CA3F1C5474B400ACB6C2 /* DataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
-		4568CA411C5474F600ACB6C2 /* DataDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataDestination.swift; sourceTree = "<group>"; };
 		4586C5981C9C7025003C9515 /* LogServerDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogServerDestination.swift; sourceTree = "<group>"; };
-		4586C59B1C9C799A003C9515 /* SwiftIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftIO.framework; sourceTree = "<group>"; };
-		4586C59D1C9C79AB003C9515 /* SwiftIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftIO.framework; sourceTree = "<group>"; };
 		45E10CC91B1772D100B918FE /* SwiftLogging+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Convenience.swift"; sourceTree = "<group>"; };
 		45E10CD11B17A31600B918FE /* SwiftLogging+Formatters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftLogging+Formatters.swift"; sourceTree = "<group>"; };
 		45E147271B150EF100F46A98 /* SwiftLogging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLogging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,7 +167,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4586C59C1C9C799A003C9515 /* SwiftIO.framework in Frameworks */,
 				45646BB91C55D4AF0042E2C0 /* SwiftUtilities.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -187,7 +177,6 @@
 			files = (
 				45E1473E1B150EF100F46A98 /* SwiftLogging.framework in Frameworks */,
 				45F9D95F1C54248200C7BF45 /* SwiftUtilities.framework in Frameworks */,
-				4586C59F1C9C7CF6003C9515 /* SwiftIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,7 +193,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4586C59E1C9C79AB003C9515 /* SwiftIO.framework in Frameworks */,
 				45F9D95D1C54247D00C7BF45 /* SwiftUtilities.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,8 +205,6 @@
 			children = (
 				4537337B1C541FEB00EA1E6E /* AppDelegate.swift */,
 				45F9D9601C54256100C7BF45 /* MemoryLogViewController.swift */,
-				4568CA411C5474F600ACB6C2 /* DataDestination.swift */,
-				4568CA3F1C5474B400ACB6C2 /* DataViewController.swift */,
 				4568CA3D1C54728B00ACB6C2 /* Utilities.swift */,
 				4537337F1C541FEB00EA1E6E /* Main.storyboard */,
 				453733821C541FEB00EA1E6E /* Assets.xcassets */,
@@ -289,7 +275,6 @@
 				4544F6231BD5817B0057E3D2 /* SwiftLogging+Utilities.swift */,
 				45E5799A1B16C73200D21B70 /* Utilities.swift */,
 				4586C5981C9C7025003C9515 /* LogServerDestination.swift */,
-				45E10CC81B16EA2600B918FE /* ASL (Broken) */,
 			);
 			path = SwiftLogging;
 			sourceTree = "<group>";
@@ -309,16 +294,6 @@
 				4564D6AD1B181D170004A3B3 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		45E10CC81B16EA2600B918FE /* ASL (Broken) */ = {
-			isa = PBXGroup;
-			children = (
-				45347F4A1AFAFF800080DFF4 /* BridgingHelpers.h */,
-				45347F4B1AFAFF800080DFF4 /* BridgingHelpers.m */,
-				453A35C11B07216F00A3923D /* SwiftLogging+ASL.swift */,
-			);
-			name = "ASL (Broken)";
 			sourceTree = "<group>";
 		};
 		45E147281B150EF100F46A98 /* SwiftLogging */ = {
@@ -370,7 +345,6 @@
 		45F9D94F1C54246600C7BF45 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				4586C59D1C9C79AB003C9515 /* SwiftIO.framework */,
 				45F9D9561C54246600C7BF45 /* SwiftUtilities.framework */,
 			);
 			path = iOS;
@@ -379,7 +353,6 @@
 		45F9D9581C54246600C7BF45 /* Mac */ = {
 			isa = PBXGroup;
 			children = (
-				4586C59B1C9C799A003C9515 /* SwiftIO.framework */,
 				45F9D9591C54246600C7BF45 /* SwiftUtilities.framework */,
 			);
 			path = Mac;
@@ -413,6 +386,7 @@
 				453733751C541FEB00EA1E6E /* Sources */,
 				453733761C541FEB00EA1E6E /* Frameworks */,
 				453733771C541FEB00EA1E6E /* Resources */,
+				45112B2D1D9988270051CCD2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -511,6 +485,7 @@
 				TargetAttributes = {
 					453733781C541FEB00EA1E6E = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					453A357C1B071FD500A3923D = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -522,9 +497,11 @@
 					};
 					4564D6A91B181D170004A3B3 = {
 						CreatedOnToolsVersion = 6.3.2;
+						LastSwiftMigration = 0800;
 					};
 					45E147261B150EF100F46A98 = {
 						CreatedOnToolsVersion = 6.3.2;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -600,9 +577,7 @@
 			files = (
 				45F9D9611C54256100C7BF45 /* MemoryLogViewController.swift in Sources */,
 				45F9D94C1C54208800C7BF45 /* SwiftLogging+Globals.swift in Sources */,
-				4568CA401C5474B400ACB6C2 /* DataViewController.swift in Sources */,
 				4568CA3E1C54728B00ACB6C2 /* Utilities.swift in Sources */,
-				4568CA421C5474F600ACB6C2 /* DataDestination.swift in Sources */,
 				4537337C1C541FEB00EA1E6E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -611,15 +586,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				453A35C21B07216F00A3923D /* SwiftLogging+ASL.swift in Sources */,
 				453A35981B071FF100A3923D /* SwiftLogging+Printable.swift in Sources */,
 				45E5799B1B16C73200D21B70 /* Utilities.swift in Sources */,
 				45E10CD21B17A31600B918FE /* SwiftLogging+Formatters.swift in Sources */,
 				4544F6241BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */,
 				453A35991B071FF100A3923D /* SwiftLogging+Filters.swift in Sources */,
 				453A359A1B071FF100A3923D /* SwiftLogging+Destinations.swift in Sources */,
-				4586C5991C9C7025003C9515 /* LogServerDestination.swift in Sources */,
-				453A35961B071FEC00A3923D /* BridgingHelpers.m in Sources */,
 				453A35971B071FF100A3923D /* SwiftLogging.swift in Sources */,
 				45E10CCA1B1772D100B918FE /* SwiftLogging+Convenience.swift in Sources */,
 			);
@@ -648,16 +620,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45E147491B150F3000F46A98 /* BridgingHelpers.m in Sources */,
 				45E1474A1B150F3000F46A98 /* SwiftLogging.swift in Sources */,
 				45E5799C1B16C73200D21B70 /* Utilities.swift in Sources */,
 				45E10CD31B17A35B00B918FE /* SwiftLogging+Formatters.swift in Sources */,
 				4544F6251BD5817B0057E3D2 /* SwiftLogging+Utilities.swift in Sources */,
 				45E1474B1B150F3000F46A98 /* SwiftLogging+Printable.swift in Sources */,
 				45E1474C1B150F3000F46A98 /* SwiftLogging+Filters.swift in Sources */,
-				4586C59A1C9C7025003C9515 /* LogServerDestination.swift in Sources */,
 				45E1474D1B150F3000F46A98 /* SwiftLogging+Destinations.swift in Sources */,
-				45E1474E1B150F3000F46A98 /* SwiftLogging+ASL.swift in Sources */,
 				45E10CCB1B1772EE00B918FE /* SwiftLogging+Convenience.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -725,6 +694,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.schwa.GUI-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -745,6 +715,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -774,7 +745,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.schwa.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = SwiftLogging;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -801,7 +772,7 @@
 				PRODUCT_NAME = SwiftLogging;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -824,7 +795,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.schwa.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -842,7 +813,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.schwa.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -885,8 +856,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -927,8 +898,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
@@ -952,6 +923,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.schwa.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -969,6 +941,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.schwa.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -999,6 +972,7 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1028,6 +1002,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

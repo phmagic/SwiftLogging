@@ -34,9 +34,9 @@ public var log: Logger = {
     logger.addDestination(fileDestination)
 
     // MOTD
-    let infoDictionary = NSBundle.mainBundle().infoDictionary!
-    let processInfo = NSProcessInfo.processInfo()
-    var items = [
+    let infoDictionary = Bundle.main.infoDictionary!
+    let processInfo = ProcessInfo.processInfo
+    var items: [(String, Any?)] = [
         ("App Name", infoDictionary["CFBundleName"] ?? "?"),
         ("App Identifier", infoDictionary["CFBundleIdentifier"] ?? "?"),
         ("App Version", infoDictionary["CFBundleVersion"] ?? "?"),
@@ -44,10 +44,10 @@ public var log: Logger = {
         ("Operating System", processInfo.operatingSystemVersionString),
         ("PID", "\(processInfo.processIdentifier)"),
         ("Hostname", "\(processInfo.hostName)"),
-        ("Locale", NSLocale.currentLocale().localeIdentifier),
+        ("Locale", NSLocale.current.identifier),
     ]
 
-    logger.motd(items, priority: .Info, tags: Tags([preformattedTag, verboseTag]))
+    logger.motd(items, priority: .info, tags: Tags([preformattedTag, verboseTag]))
 
     return logger
 }()

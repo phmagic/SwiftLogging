@@ -10,17 +10,17 @@ import Foundation
 
 import SwiftUtilities
 
-public class CallbackDestination: Destination {
-    public var callback: ((Event, String) -> Void)?
+open class CallbackDestination: Destination {
+    open var callback: ((Event, String) -> Void)?
 
-    public init(identifier: String, formatter: EventFormatter = terseFormatter, callback: ((Event, String) -> Void)? = nil) {
+    public init(identifier: String, formatter: @escaping EventFormatter = terseFormatter, callback: ((Event, String) -> Void)? = nil) {
         self.callback = callback
         super.init(identifier: identifier)
         self.formatter = formatter
     }
 
-    public override func receiveEvent(event: Event) {
-        guard case .Formatted(let subject) = event.subject else {
+    open override func receiveEvent(_ event: Event) {
+        guard case .formatted(let subject) = event.subject else {
             fatalError("Cannot process unformatted events.")
         }
         let string = subject + "\n"
@@ -30,15 +30,15 @@ public class CallbackDestination: Destination {
 
 // MARK: -
 
-public class ConsoleDestination: Destination {
-    public init(identifier: String, formatter: EventFormatter = terseFormatter) {
+open class ConsoleDestination: Destination {
+    public init(identifier: String, formatter: @escaping EventFormatter = terseFormatter) {
         super.init(identifier: identifier)
         self.formatter = formatter
     }
 
-    public override func receiveEvent(event: Event) {
-        dispatch_async(logger.consoleQueue) {
-            guard case .Formatted(let subject) = event.subject else {
+    open override func receiveEvent(_ event: Event) {
+        logger.consoleQueue.async {
+            guard case .formatted(let subject) = event.subject else {
                 fatalError("Cannot process unformatted events.")
             }
             let string = subject
@@ -49,48 +49,52 @@ public class ConsoleDestination: Destination {
 
 // MARK -
 
-public class MemoryDestination: Destination {
+open class MemoryDestination: Destination {
 
     // TODO: Thread safety (HAHA!)
 
-    public internal(set) var events: [Event] = []
+    open internal(set) var events: [Event] = []
 
-    var listeners: NSMapTable = NSMapTable.weakToStrongObjectsMapTable()
+    public typealias Closure = (Event) -> Void
 
-    public override func receiveEvent(event: Event) {
+    private typealias BoxedClosure = Box <Closure>
+    private var listeners = NSMapTable <AnyObject, BoxedClosure> (keyOptions: [.weakMemory, .objectPersonality], valueOptions: [.strongMemory, .objectPersonality])
+
+    open override func receiveEvent(_ event: Event) {
         events.append(event)
-        typealias Closure = Event -> Void
-        for (_, value) in listeners {
-            let closureBox = value as! Box <Closure>
+
+        for object in listeners.objectEnumerator()! {
+            let closureBox = object as! Box <Closure>
             closureBox.value(event)
         }
     }
 
-    public func addListener(listener: AnyObject, closure: Event -> Void) {
-        listeners.setObject(Box(closure), forKey: listener)
+    open func addListener(_ listener: AnyObject, closure: @escaping Closure) {
+        let box = BoxedClosure(closure)
+        listeners.setObject(box, forKey: listener)
     }
 }
 
 // MARK: -
 
-public class FileDestination: Destination {
+open class FileDestination: Destination {
 
-    public let url: NSURL
+    open let url: URL
 
-    public let queue = dispatch_queue_create("io.schwa.SwiftLogging.FileDestination", DISPATCH_QUEUE_SERIAL)
-    public var open: Bool = false
-    var channel: dispatch_io_t?
+    open let queue = DispatchQueue(label: "io.schwa.SwiftLogging.FileDestination", attributes: [])
+    open var open: Bool = false
+    var channel: DispatchIO?
     let rotations: Int?
 
-    public init(identifier: String, url: NSURL = FileDestination.defaultFileDestinationURL, rotations: Int? = nil, formatter: EventFormatter = preciseFormatter) {
+    public init(identifier: String, url: URL = FileDestination.defaultFileDestinationURL, rotations: Int? = nil, formatter: @escaping EventFormatter = preciseFormatter) {
         self.url = url
         self.rotations = rotations
         super.init(identifier: identifier)
         self.formatter = formatter
     }
 
-    public override func startup() throws {
-        dispatch_sync(queue) {
+    open override func startup() throws {
+        queue.sync {
             [weak self] in
 
             guard let strong_self = self else {
@@ -108,12 +112,17 @@ public class FileDestination: Destination {
                     try path.rotate(limit: strong_self.rotations)
                 }
 
-                strong_self.channel = dispatch_io_create_with_path(DISPATCH_IO_STREAM, strong_self.url.fileSystemRepresentation, O_CREAT | O_WRONLY | O_APPEND, 0o600, strong_self.queue) {
-                    (error: Int32) -> Void in
-                    if error != 0 {
-                        strong_self.logger.internalLog("ERROR: \(error)")
+                strong_self.channel = strong_self.url.withUnsafeFileSystemRepresentation() {
+                    pathRepresentation in
+
+                    return DispatchIO(type: .stream, path: pathRepresentation!, oflag: O_CREAT | O_WRONLY | O_APPEND, mode: 0o600, queue: strong_self.queue) {
+                        (error: Int32) -> Void in
+                        if error != 0 {
+                            strong_self.logger.internalLog("ERROR: \(error)")
+                        }
                     }
                 }
+
                 if strong_self.channel != nil {
                     strong_self.open = true
                 }
@@ -124,18 +133,18 @@ public class FileDestination: Destination {
         }
     }
 
-    public override func shutdown() throws {
-        dispatch_sync(queue) {
+    open override func shutdown() throws {
+        queue.sync {
             [unowned self] in
             self.open = false
             if let channel = self.channel {
-                dispatch_io_close(channel, 0)
+                channel.close(flags: DispatchIO.CloseFlags(rawValue: UInt(0)))
             }
         }
     }
 
-    public override func receiveEvent(event: Event) {
-        dispatch_async(queue) {
+    open override func receiveEvent(_ event: Event) {
+        queue.async {
             [weak self] in
 
             guard let strong_self = self else {
@@ -146,19 +155,20 @@ public class FileDestination: Destination {
                 return
             }
 
-            guard case .Formatted(let subject) = event.subject else {
+            guard case .formatted(let subject) = event.subject else {
                 fatalError("Cannot process unformatted events.")
             }
             let string = subject + "\n"
-            let data = (string as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
+            let data = string.data(using: String.Encoding.utf8)!
             // DISPATCH_DATA_DESTRUCTOR_DEFAULT is missing in swiff
-            let dispatchData = dispatch_data_create(data.bytes, data.length, strong_self.queue, nil)
+
+            let dispatchData = DispatchData(data: data)
 
             guard let channel = strong_self.channel else {
                 fatalError("Trying to write log data but channel unavailable")
             }
 
-            dispatch_io_write(channel, 0, dispatchData, strong_self.queue) {
+            channel.write(offset: 0, data: dispatchData, queue: strong_self.queue) {
                 _ -> Void in
 
                 // TODO: This left intentionally blank?
@@ -166,12 +176,12 @@ public class FileDestination: Destination {
         }
     }
 
-    public override func flush() {
+    open override func flush() {
         flush(nil)
     }
 
-    public func flush(callback: ((NSURL) -> Void)?) {
-        dispatch_sync(queue) {
+    open func flush(_ callback: ((URL) -> Void)?) {
+        queue.sync {
             [weak self] in
             
             guard let strong_self = self else {
@@ -182,37 +192,27 @@ public class FileDestination: Destination {
                 fatalError("Trying to flush but channel unavailable")
             }
 
-            let descriptor = dispatch_io_get_descriptor(channel)
+            let descriptor = channel.fileDescriptor
             fsync(descriptor)
             
             callback?(strong_self.url)
         }
     }
 
-    public static var defaultFileDestinationURL: NSURL {
-        let bundle = NSBundle.mainBundle()
+    open static var defaultFileDestinationURL: URL {
+        let bundle = Bundle.main
         // If we're in a bundle: use ~/Library/Application Support/<bundle identifier>/<bundle name>.log
         if let bundleIdentifier = bundle.bundleIdentifier, let bundleName = bundle.infoDictionary?["CFBundleName"] as? String {
-            let url = try! NSFileManager().URLForDirectory(.ApplicationSupportDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
-#if swift(>=2.3)
-            return url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")!
-#else
-            return url.URLByAppendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
-#endif
+            let url = try! FileManager().url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            return url.appendingPathComponent("\(bundleIdentifier)/Logs/\(bundleName).log")
         }
         // Otherwise use ~/Library/Logs/<process name>.log
         else {
-            let processName = (Process.arguments.first! as NSString).pathComponents.last!
-            var url = try! NSFileManager().URLForDirectory(.LibraryDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
-#if swift(>=2.3)
-            url = url.URLByAppendingPathComponent("Logs")!
-            try! NSFileManager().createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil)
-            url = url.URLByAppendingPathComponent("\(processName).log")!
-#else
-            url = url.URLByAppendingPathComponent("Logs")
-            try! NSFileManager().createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil)
-            url = url.URLByAppendingPathComponent("\(processName).log")
-#endif
+            let processName = (CommandLine.arguments.first! as NSString).pathComponents.last!
+            var url = try! FileManager().url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            url = url.appendingPathComponent("Logs")
+            try! FileManager().createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+            url = url.appendingPathComponent("\(processName).log")
             return url
         }
     }

@@ -10,14 +10,14 @@ import Foundation
 
 public extension Logger {
 
-    func motd(values: [(String, AnyObject?)], priority: Priority, source: Source = Source(), tags: Tags = Tags([preformattedTag, verboseTag])) {
+    func motd(_ values: [(String, Any?)], priority: Priority, source: Source = Source(), tags: Tags = Tags([preformattedTag, verboseTag])) {
 
         let values = values.filter() {
             $1 != nil
         }
         var string = values.map() {
             return "\($0.0): \($0.1!)"
-        }.joinWithSeparator("\n")
+        }.joined(separator: "\n")
 
         string = banner(string)
 

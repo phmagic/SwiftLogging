@@ -17,15 +17,15 @@ extension Event: CustomStringConvertible {
 extension Priority {
     public var toString: String {
         switch self {
-            case .Debug:
+            case .debug:
                 return "debug"
-            case .Info:
+            case .info:
                 return "info"
-            case .Warning:
+            case .warning:
                 return "warning"
-            case .Error:
+            case .error:
                 return "error"
-            case .Critical:
+            case .critical:
                 return "critical"
         }
     }

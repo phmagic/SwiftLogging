@@ -15,14 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        log.addDestination("memory", destination: MemoryDestination())
-        log.addDestination("data", destination: DataDestination())
+        log.addDestination(MemoryDestination(identifier: "memory"))
 
-        DispatchQueue.main.timer(interval: 1) {
-            log.debug(KeyValue(key: "Hello", value: CFAbsoluteTimeGetCurrent()))
-        }
+//        DispatchQueue.main.timer(interval: 1) {
+////            log.debug(KeyValue(key: "Hello", value: CFAbsoluteTimeGetCurrent()))
+//        }
 
         return true
     }

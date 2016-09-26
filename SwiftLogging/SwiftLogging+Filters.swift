@@ -24,21 +24,21 @@ public let passthroughFilter = {
 
 // MARK: Tag Filters
 
-public func tagFilterIn(tags: Tags, replacement: (Event -> Event?)? = nil) -> Filter {
+public func tagFilterIn(_ tags: Tags, replacement: ((Event) -> Event?)? = nil) -> Filter {
     return {
         (event: Event) -> Event? in
         guard let eventTags = event.tags else {
             return nil
         }
-        return tags.intersect(eventTags).count == 0 ? replacement?(event) : event
+        return tags.intersection(eventTags).count == 0 ? replacement?(event) : event
     }
 }
 
-public func tagFilterOut(tags: Tags, replacement: (Event -> Event?)? = nil) -> Filter {
+public func tagFilterOut(_ tags: Tags, replacement: ((Event) -> Event?)? = nil) -> Filter {
     return {
         (event: Event) -> Event? in
         if let eventTags = event.tags {
-            return tags.intersect(eventTags).count > 0 ? replacement?(event) : event
+            return tags.intersection(eventTags).count > 0 ? replacement?(event) : event
         }
         else {
             return event
@@ -48,14 +48,14 @@ public func tagFilterOut(tags: Tags, replacement: (Event -> Event?)? = nil) -> F
 
 // MARK: Priority Filter
 
-public func priorityFilter(priorities: PrioritySet) -> Filter {
+public func priorityFilter(_ priorities: PrioritySet) -> Filter {
     return {
        (event: Event) -> Event? in
         return priorities.contains(event.priority) ? event : nil
     }
 }
 
-public func priorityFilter(priorities: [Priority]) -> Filter {
+public func priorityFilter(_ priorities: [Priority]) -> Filter {
     return priorityFilter(PrioritySet(priorities))
 }
 
@@ -86,25 +86,25 @@ public func priorityFilter(priorities: [Priority]) -> Filter {
 // MARK: Sensitivity Filter
 
 public let sensitivityFilter = tagFilterOut(Tags([sensitiveTag])) {
-    return Event(subject: "Sensitive log info redacted.", priority: .Warning, timestamp: $0.timestamp, source: $0.source)
+    return Event(subject: "Sensitive log info redacted.", priority: .warning, timestamp: $0.timestamp, source: $0.source)
 }
 
 // MARK: Verbosity Filter
 
 public enum Verbosity: Int {
-    case Normal = 0
-    case Verbose = 1
-    case VeryVerbose = 2
+    case normal = 0
+    case verbose = 1
+    case veryVerbose = 2
 
     public init(tags: Tags) {
         if tags.contains(veryVerboseTag) {
-            self = .VeryVerbose
+            self = .veryVerbose
         }
         if tags.contains(verboseTag) {
-            self = .Verbose
+            self = .verbose
         }
         else {
-            self = .Normal
+            self = .normal
         }
     }
 }
@@ -124,7 +124,7 @@ public func verbosityFilter(verbosityLimit userVerbosityLimit: Verbosity? = nil)
         verbosityLimit = userVerbosityLimit!
     }
     else {
-        let verbosityRaw = NSUserDefaults.standardUserDefaults().integerForKey("loggingFilterVerbosityLimit")
+        let verbosityRaw = UserDefaults.standard.integer(forKey: "loggingFilterVerbosityLimit")
         verbosityLimit = Verbosity(rawValue:verbosityRaw)!
     }
 
@@ -149,18 +149,18 @@ public func verbosityFilter(verbosityLimit userVerbosityLimit: Verbosity? = nil)
 
 // MARK: Source Filter
 
-public func sourceFilter(pattern pattern: String? = nil, inclusive: Bool = true) -> Filter {
+public func sourceFilter(pattern: String? = nil, inclusive: Bool = true) -> Filter {
 
     var pattern = pattern
     if pattern == nil {
-        pattern = NSUserDefaults.standardUserDefaults().stringForKey("loggingFilterSourcePattern")
+        pattern = UserDefaults.standard.string(forKey: "loggingFilterSourcePattern")
     }
 
     guard let strongPattern = pattern else {
         return passthroughFilter
     }
 
-    guard let expression = try? NSRegularExpression(pattern: strongPattern, options: NSRegularExpressionOptions()) else {
+    guard let expression = try? NSRegularExpression(pattern: strongPattern, options: NSRegularExpression.Options()) else {
         SwiftLogging.log.internalLog("Pattern provided to SwiftLogging log is not a valid regular expression.")
         return passthroughFilter
     }
@@ -168,9 +168,9 @@ public func sourceFilter(pattern pattern: String? = nil, inclusive: Bool = true)
     return {
         (event: Event) -> Event? in
 
-        let string = String(event.source)
+        let string = String(describing: event.source)
 
-        let matches = expression.numberOfMatchesInString(string, options: NSMatchingOptions(), range: NSRange(location: 0, length: (string as NSString).length))
+        let matches = expression.numberOfMatches(in: string, options: NSRegularExpression.MatchingOptions(), range: NSRange(location: 0, length: (string as NSString).length))
         if inclusive == true {
             if matches == 0 {
                 return nil

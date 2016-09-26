@@ -11,15 +11,15 @@ import Foundation
 public extension Priority {
     var toEmoji: String {
         switch self {
-            case .Debug:
+            case .debug:
                 return "👷"
-            case .Info:
+            case .info:
                 return "📰"
-            case .Warning:
+            case .warning:
                 return "🚧"
-            case .Error:
+            case .error:
                 return "🚨"
-            case .Critical:
+            case .critical:
                 return "💣"
         }
     }
@@ -27,23 +27,23 @@ public extension Priority {
 
 // MARK: -
 
-public func preciseFormatter(event: Event) -> String {
-    guard case .Raw(let subject) = event.subject else {
+public func preciseFormatter(_ event: Event) -> String {
+    guard case .raw(let subject) = event.subject else {
         fatalError("Cannot format an already formatted subject.")
     }
 
-    let stringSubject: String = subject != nil ? String(subject!) : "nil"
-    let string = stringSubject.escape(asASCII: false, extraCharacters: NSCharacterSet.newlineCharacterSet())
+    let stringSubject: String = subject != nil ? String(describing: subject!) : "nil"
+    let string = stringSubject.escape(asASCII: false, extraCharacters: CharacterSet.newlines)
     return "\(event.timestamp!) \(event.priority) \(event.source): \(string)"
 }
 
-public func terseFormatter(event: Event) -> String {
-    guard case .Raw(let subject) = event.subject else {
+public func terseFormatter(_ event: Event) -> String {
+    guard case .raw(let subject) = event.subject else {
         fatalError("Cannot format an already formatted subject.")
     }
 
-    let stringSubject: String = subject != nil ? String(subject!) : "nil"
-    if let tags = event.tags where tags.contains(preformattedTag) {
+    let stringSubject: String = subject != nil ? String(describing: subject!) : "nil"
+    if let tags = event.tags , tags.contains(preformattedTag) {
         return stringSubject
     }
     return "\(event.timestamp!.toTimeString) \(event.priority.toEmoji) [\(event.source)]: \(stringSubject)"

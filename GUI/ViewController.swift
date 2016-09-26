@@ -13,7 +13,7 @@ import SwiftLogging
 class ViewController: NSViewController {
     dynamic var subject: String?
 
-    @IBAction func log(sender: AnyObject) {
+    @IBAction func log(_ sender: AnyObject) {
         SwiftLogging.log.debug(subject)
         subject = nil
     }

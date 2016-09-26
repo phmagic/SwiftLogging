@@ -12,15 +12,15 @@ import SwiftUtilities
 
 public var log = Logger.sharedInstance
 
-public class Logger {
+open class Logger {
 
     static let sharedInstance = Logger()
 
-    public internal(set) var destinations: [String: Destination] = [:]
-    public internal(set) var filters: [(String, Filter)] = []
+    open internal(set) var destinations: [String: Destination] = [:]
+    open internal(set) var filters: [(String, Filter)] = []
 
-    public let queue = dispatch_queue_create("io.schwa.SwiftLogger", DISPATCH_QUEUE_SERIAL)
-    public let consoleQueue = dispatch_queue_create("io.schwa.SwiftLogger.console", DISPATCH_QUEUE_SERIAL)
+    open let queue = DispatchQueue(label: "io.schwa.SwiftLogger", attributes: [])
+    open let consoleQueue = DispatchQueue(label: "io.schwa.SwiftLogger.console", attributes: [])
 
     internal let startTimestamp: Timestamp = Timestamp()
     internal var count: Int64 = 0
@@ -31,7 +31,7 @@ public class Logger {
     public init() {
     }
 
-    public func addDestination(destination: Destination) {
+    open func addDestination(_ destination: Destination) {
         lock.with() {
             let key = destination.identifier
             self.destinations[key] = destination
@@ -47,12 +47,12 @@ public class Logger {
         }
     }
 
-    public func removeDestination(key: String) {
+    open func removeDestination(_ key: String) {
         lock.with() {
             guard let destination = self.destinations[key] else {
                 return
             }
-            self.destinations.removeValueForKey(key)
+            self.destinations.removeValue(forKey: key)
             do {
                 try destination.shutdown()
             }
@@ -63,30 +63,30 @@ public class Logger {
         }
     }
 
-    public func destinationForKey(key: String) -> Destination? {
+    open func destinationForKey(_ key: String) -> Destination? {
         return lock.with() {
             return destinations[key]
         }
     }
 
-    public func addFilter(key: String, filter: Filter) {
+    open func addFilter(_ key: String, filter: @escaping Filter) {
         lock.with() {
             self.filters.append((key, filter))
         }
     }
 
-    public func removeFilter(key: String) {
+    open func removeFilter(_ key: String) {
         lock.with() {
-            for (index, (k, _)) in self.filters.enumerate() {
+            for (index, (k, _)) in self.filters.enumerated() {
                 if key == k {
-                    self.filters.removeAtIndex(index)
+                    self.filters.remove(at: index)
                     break
                 }
             }
         }
     }
 
-    public func startup() {
+    open func startup() {
         lock.with() {
             running = true
             for (_, destination) in destinations {
@@ -100,7 +100,7 @@ public class Logger {
         }
     }
 
-    public func shutdown() {
+    open func shutdown() {
         lock.with() {
             if running == false {
                 return
@@ -117,7 +117,7 @@ public class Logger {
         }
     }
 
-    public func flush() {
+    open func flush() {
         lock.with() {
             for (_, destination) in destinations {
                 do {
@@ -130,7 +130,7 @@ public class Logger {
         }
     }
 
-    public func log(event: Event, immediate: Bool = false) {
+    open func log(_ event: Event, immediate: Bool = false) {
 
         var filters: [(String, Filter)]!
         var destinations: [String: Destination]!
@@ -167,7 +167,7 @@ public class Logger {
             let formattedEvent = filteredEvent2!.formatted(with: destination.formatter)
 
             if immediate == false {
-                dispatch_async(queue) {
+                queue.async {
                     destination.receiveEvent(formattedEvent)
                 }
             }
@@ -182,8 +182,8 @@ public class Logger {
         }
     }
 
-    func internalLog(subject: Any?) {
-        dispatch_async(consoleQueue) {
+    func internalLog(_ subject: Any?) {
+        consoleQueue.async {
             print(subject)
         }
     }
@@ -192,11 +192,11 @@ public class Logger {
 // MARK: -
 
 public enum Priority: Int8 {
-    case Debug
-    case Info
-    case Warning
-    case Error
-    case Critical
+    case debug
+    case info
+    case warning
+    case error
+    case critical
 }
 
 // MARK: -
@@ -250,8 +250,8 @@ public typealias UserInfo = Dictionary <String, Any>
 public struct Event {
 
     public enum Subject {
-        case Raw(Any?)
-        case Formatted(String)
+        case raw(Any?)
+        case formatted(String)
     }
 
     static var nextID: Int = 0
@@ -283,7 +283,7 @@ public struct Event {
     }
 
     public init(id:Int? = nil, subject: Any?, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
-        self = Event(id: id, subject: .Raw(subject), priority: priority, timestamp: timestamp, source: source, tags: tags, userInfo: userInfo)
+        self = Event(id: id, subject: .raw(subject), priority: priority, timestamp: timestamp, source: source, tags: tags, userInfo: userInfo)
     }
 
 }
@@ -301,44 +301,44 @@ public func ==(lhs: Event, rhs: Event) -> Bool {
 
 // MARK: -
 
-public typealias EventFormatter = Event -> String
+public typealias EventFormatter = (Event) -> String
 
 
 public extension Event {
     func formatted(with formatter:EventFormatter) -> Event {
         let string = formatter(self)
-        let formattedSubject = Subject.Formatted(string)
+        let formattedSubject = Subject.formatted(string)
         return Event(id: id, subject: formattedSubject, priority: priority, timestamp: timestamp, source: source, tags: tags, userInfo: userInfo)
     }
 }
 
 // MARK: -
 
-public class Destination {
+open class Destination {
 
-    public internal(set) weak var logger: Logger!
+    open internal(set) weak var logger: Logger!
 
-    public let identifier: String
-    public var filters: [Filter] = []
-    public var formatter: EventFormatter = terseFormatter
+    open let identifier: String
+    open var filters: [Filter] = []
+    open var formatter: EventFormatter = terseFormatter
 
     public init(identifier: String) {
         self.identifier = identifier
     }
 
-    public func startup() throws {
+    open func startup() throws {
     }
 
-    public func receiveEvent(event: Event) {
+    open func receiveEvent(_ event: Event) {
     }
 
-    public func shutdown() throws {
+    open func shutdown() throws {
     }
 
-    public func flush() throws {
+    open func flush() throws {
     }
 
-    public func addFilter(filter: Filter) {
+    open func addFilter(_ filter: @escaping Filter) {
         filters.append(filter)
     }
 }

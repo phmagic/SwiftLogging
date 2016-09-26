@@ -21,7 +21,7 @@ class MemoryLogViewController: NSViewController {
 
         memoryDestination.addListener(self) {
             _ in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 [weak self] in
                 self?.update()
             }
@@ -57,7 +57,7 @@ class EventBox: NSObject {
 
     var subject: String {
 
-        if case .Formatted(let subject) = self.event.subject {
+        if case .formatted(let subject) = self.event.subject {
             return String(subject)
         }
         else {

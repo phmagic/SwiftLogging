@@ -10,27 +10,27 @@ import Foundation
 
 import SwiftUtilities
 
-internal let iso8601Formatter: NSDateFormatter = {
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+internal let iso8601Formatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
     dateFormatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSXX"
 //    dateFormatter.timeZone = NSTimeZone(name: "UTC")
     return dateFormatter
 }()
 
-internal let timeFormatter: NSDateFormatter = {
-    let dateFormatter = NSDateFormatter()
+internal let timeFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "HH':'mm':'ss.SSS"
 //    dateFormatter.timeZone = NSTimeZone(name: "UTC")
     return dateFormatter
 }()
 
 extension String {
-    func escape(asASCII  asASCII: Bool, extraCharacters: NSCharacterSet? = nil) -> String {
+    func escape(asASCII: Bool, extraCharacters: CharacterSet? = nil) -> String {
         let f: [String] = self.unicodeScalars.map {
             (unicodeScalar: UnicodeScalar) -> String in
 
-            if let extraCharacters = extraCharacters where extraCharacters.longCharacterIsMember(unicodeScalar.value) {
+            if let extraCharacters = extraCharacters , extraCharacters.contains(UnicodeScalar(unicodeScalar.value)!) {
 
                 switch unicodeScalar.value {
                     case 0x07: return "\\a"
@@ -49,19 +49,19 @@ extension String {
                 }
             }
 
-            return unicodeScalar.escape(asASCII: asASCII)
+            return unicodeScalar.escaped(asASCII: asASCII)
         }
-        return f.joinWithSeparator("")
+        return f.joined(separator: "")
     }
 }
 
 // MARK: -
 
 public struct Timestamp {
-    let timeIntervalSinceReferenceDate: NSTimeInterval
+    let timeIntervalSinceReferenceDate: TimeInterval
 
     init() {
-        timeIntervalSinceReferenceDate = NSDate().timeIntervalSinceReferenceDate
+        timeIntervalSinceReferenceDate = Date().timeIntervalSinceReferenceDate
     }
 }
 
@@ -83,37 +83,50 @@ extension Timestamp: CustomStringConvertible {
 
 public extension Timestamp {
     var toString: String {
-        return iso8601Formatter.stringFromDate(asDate)
+        return iso8601Formatter.string(from: asDate)
     }
 
     public var toTimeString: String {
-        return timeFormatter.stringFromDate(asDate)
+        return timeFormatter.string(from: asDate)
     }
 }
 
 public extension Timestamp {
-    var asDate: NSDate {
-        return NSDate(timeIntervalSinceReferenceDate: timeIntervalSinceReferenceDate)
+    var asDate: Date {
+        return Date(timeIntervalSinceReferenceDate: timeIntervalSinceReferenceDate)
     }
 }
 
 // MARK: -
 
-public func banner(string: String, width: Int = 72, borderCharacter: Character = "*") -> String {
+public func banner(_ string: String, width: Int = 72, borderCharacter: Character = "*") -> String {
 
     let borderString = "\(borderCharacter)"
 
-    var output = "".stringByPaddingToLength(width, withString: borderString, startingAtIndex: 0) + "\n"
+    var output = "".padding(toLength: width, withPad: borderString, startingAt: 0) + "\n"
 
 
-    for line in string.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet()) {
+    for line in string.components(separatedBy: CharacterSet.newlines) {
         var formattedLine = borderString + " " + line
-        formattedLine = formattedLine.stringByPaddingToLength(width - 2, withString: " ", startingAtIndex: 0)
+        formattedLine = formattedLine.padding(toLength: width - 2, withPad: " ", startingAt: 0)
         formattedLine += " " + borderString + "\n"
         output += formattedLine
     }
 
-    output += "".stringByPaddingToLength(width, withString: borderString, startingAtIndex: 0)
+    output += "".padding(toLength: width, withPad: borderString, startingAt: 0)
 
     return output
+}
+
+// TODO: Move to SwiftUtilities & make public
+
+internal extension DispatchData {
+    init(data: Data) {
+        self = data.withUnsafeBytes() {
+            (bytes: UnsafePointer <UInt8>) -> DispatchData in
+
+            let buffer = UnsafeBufferPointer <UInt8> (start: bytes, byteCount: data.count)
+            return DispatchData(bytes: buffer)
+        }
+    }
 }

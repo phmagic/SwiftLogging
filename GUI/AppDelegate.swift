@@ -15,9 +15,9 @@ import SwiftLogging
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
 
-        log.addDestination(try! LogServerDestination(identifier: "server"))
+//        log.addDestination(try! LogServerDestination(identifier: "server"))
 
         log.debug("My password is \"123456\"", tags: [sensitiveTag])
         log.debug("Poop: \n💩")

@@ -19,7 +19,7 @@ class MemoryLogViewController: UITableViewController {
 
         memoryDestination?.addListener(self) {
             _ in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 [weak self] in
                 self?.update()
                 self?.tableView.scrollToBottom(true)
@@ -37,9 +37,9 @@ class MemoryLogViewController: UITableViewController {
         events = memoryDestination!.events
         tableView.beginUpdates()
         let indexPaths = (lastCount..<events.count).map {
-            return NSIndexPath(forRow: $0, inSection: 0)
+            return IndexPath(row: $0, section: 0)
         }
-        tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+        tableView.insertRows(at: indexPaths, with: .none)
         tableView.endUpdates()
         lastCount = events.count
     }
@@ -51,19 +51,19 @@ class MemoryLogViewController: UITableViewController {
     var lastCount = 0
     var events: [Event] = []
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return events.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("EVENT_CELL", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "EVENT_CELL", for: indexPath)
 
         let event = events[indexPath.row]
-        cell.textLabel?.text = String(event.subject ?? "")
+        cell.textLabel?.text = String(describing: event.subject)
         cell.detailTextLabel?.text = terseFormatter(event)
 
         return cell
