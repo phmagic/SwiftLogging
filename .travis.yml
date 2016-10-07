@@ -3,8 +3,16 @@ osx_image: xcode8
 before_script:
 - carthage bootstrap --no-use-binaries
 script:
-- xcodebuild -project "SwiftLogging.xcodeproj" -scheme "SwiftLogging_OSX" build
-- xcodebuild -project "SwiftLogging.xcodeproj" -scheme "SwiftLogging_iOS" -sdk iphonesimulator build
-- xcodebuild -project "SwiftLogging.xcodeproj" -scheme "GUI" build
-- xcodebuild -project "SwiftLogging.xcodeproj" -scheme "GUI_iOS" -sdk iphonesimulator build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'GUI_iOS' -sdk iphoneos -configuration Debug build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'GUI_iOS' -sdk iphoneos -configuration Release build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'SwiftLogging_iOS' -sdk iphoneos -configuration Debug build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'SwiftLogging_iOS' -sdk iphoneos -configuration Release build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'GUI_iOS' -sdk iphonesimulator -configuration Debug build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'GUI_iOS' -sdk iphonesimulator -configuration Release build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'SwiftLogging_iOS' -sdk iphonesimulator -configuration Debug build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'SwiftLogging_iOS' -sdk iphonesimulator -configuration Release build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'GUI_OSX' -sdk macosx -configuration Debug build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'GUI_OSX' -sdk macosx -configuration Release build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'SwiftLogging_OSX' -sdk macosx -configuration Debug build
+- xcodebuild -project 'SwiftLogging.xcodeproj' -scheme 'SwiftLogging_OSX' -sdk macosx -configuration Release build
 
