@@ -86,7 +86,7 @@ public func priorityFilter(_ priorities: [Priority]) -> Filter {
 // MARK: Sensitivity Filter
 
 public let sensitivityFilter = tagFilterOut(Tags([sensitiveTag])) {
-    return Event(subject: "Sensitive log info redacted.", priority: .warning, timestamp: $0.timestamp, source: $0.source)
+    return Event(items: ["Sensitive log info redacted."], priority: .warning, timestamp: $0.timestamp, source: $0.source)
 }
 
 // MARK: Verbosity Filter
@@ -100,7 +100,7 @@ public enum Verbosity: Int {
         if tags.contains(veryVerboseTag) {
             self = .veryVerbose
         }
-        if tags.contains(verboseTag) {
+        else if tags.contains(verboseTag) {
             self = .verbose
         }
         else {
@@ -134,7 +134,7 @@ public func verbosityFilter(verbosityLimit userVerbosityLimit: Verbosity? = nil)
 
         if let tags = event.tags {
             let verbosity = Verbosity(tags: tags)
-            if verbosity >= verbosityLimit {
+            if verbosity > verbosityLimit {
                 return nil
             }
             else {

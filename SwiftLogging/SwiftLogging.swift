@@ -69,7 +69,7 @@ open class Logger {
         }
     }
 
-    open func addFilter(_ key: String, filter: @escaping Filter) {
+    open func addFilter(key: String, filter: @escaping Filter) {
         lock.with() {
             self.filters.append((key, filter))
         }
@@ -130,7 +130,7 @@ open class Logger {
         }
     }
 
-    open func log(_ event: Event, immediate: Bool = false) {
+    open func log(event: Event, immediate: Bool = false) {
 
         var filters: [(String, Filter)]!
         var destinations: [String: Destination]!
@@ -157,9 +157,10 @@ open class Logger {
 
         destinationLoop: for (_, destination) in destinations {
             var filteredEvent2: Event? = filteredEvent1
-            for filter in destination.filters {
+            for (key, filter) in destination.filters {
                 filteredEvent2 = filter(filteredEvent2!)
                 if filteredEvent2 == nil {
+                    internalLog("Filtered out by \(key)")
                     continue destinationLoop
                 }
             }
@@ -182,9 +183,12 @@ open class Logger {
         }
     }
 
-    func internalLog(_ subject: Any?) {
+    
+    
+    func internalLog(_ items: Any..., separator: String = " ") {
         consoleQueue.async {
-            print(subject)
+            let subject = items.map(String.init(describing:)).joined(separator: separator)
+            print("SwiftLogging Internal:", subject)
         }
     }
 }
@@ -250,7 +254,7 @@ public typealias UserInfo = Dictionary <String, Any>
 public struct Event {
 
     public enum Subject {
-        case raw(Any?)
+        case raw(items: [Any], separator: String)
         case formatted(String)
     }
 
@@ -282,8 +286,8 @@ public struct Event {
         self.userInfo = userInfo
     }
 
-    public init(id:Int? = nil, subject: Any?, priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
-        self = Event(id: id, subject: .raw(subject), priority: priority, timestamp: timestamp, source: source, tags: tags, userInfo: userInfo)
+    public init(id:Int? = nil, items: [Any], separator: String = " ", priority: Priority, timestamp: Timestamp? = Timestamp(), source: Source, tags: Tags? = nil, userInfo: UserInfo? = nil) {
+        self = Event(id: id, subject: .raw(items: items, separator: separator), priority: priority, timestamp: timestamp, source: source, tags: tags, userInfo: userInfo)
     }
 
 }
@@ -319,7 +323,7 @@ open class Destination {
     open internal(set) weak var logger: Logger!
 
     open let identifier: String
-    open var filters: [Filter] = []
+    open var filters: [(String, Filter)] = []
     open var formatter: EventFormatter = terseFormatter
 
     public init(identifier: String) {
@@ -338,8 +342,8 @@ open class Destination {
     open func flush() throws {
     }
 
-    open func addFilter(_ filter: @escaping Filter) {
-        filters.append(filter)
+    open func addFilter(key: String, filter: @escaping Filter) {
+        filters.append((key, filter))
     }
 }
 

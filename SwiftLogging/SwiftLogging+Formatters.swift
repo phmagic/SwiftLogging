@@ -28,23 +28,24 @@ public extension Priority {
 // MARK: -
 
 public func preciseFormatter(_ event: Event) -> String {
-    guard case .raw(let subject) = event.subject else {
+    guard case .raw(let items, let separator) = event.subject else {
         fatalError("Cannot format an already formatted subject.")
     }
 
-    let stringSubject: String = subject != nil ? String(describing: subject!) : "nil"
-    let string = stringSubject.escape(asASCII: false, extraCharacters: CharacterSet.newlines)
-    return "\(event.timestamp!) \(event.priority) \(event.source): \(string)"
+    let subject = items.map(String.init(describing:)).joined(separator: separator)
+    let string = subject.escape(asASCII: false, extraCharacters: CharacterSet.newlines)
+    let formattedEvent = "\(event.timestamp!) \(event.priority) \(event.source): \(string)"
+    return formattedEvent
 }
 
 public func terseFormatter(_ event: Event) -> String {
-    guard case .raw(let subject) = event.subject else {
+    guard case .raw(let items, let separator) = event.subject else {
         fatalError("Cannot format an already formatted subject.")
     }
 
-    let stringSubject: String = subject != nil ? String(describing: subject!) : "nil"
+    let subject = items.map(String.init(describing:)).joined(separator: separator)
     if let tags = event.tags , tags.contains(preformattedTag) {
-        return stringSubject
+        return subject
     }
-    return "\(event.timestamp!.toTimeString) \(event.priority.toEmoji) [\(event.source)]: \(stringSubject)"
+    return "\(event.timestamp!.toTimeString) \(event.priority.toEmoji) [\(event.source)]: \(subject)"
 }
