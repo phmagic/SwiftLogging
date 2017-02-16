@@ -183,9 +183,13 @@ open class Logger {
         }
     }
 
-    
+
+    var isInternalLogEnabled = false
     
     func internalLog(_ items: Any..., separator: String = " ") {
+        guard isInternalLogEnabled == true else {
+            return
+        }
         consoleQueue.async {
             let subject = items.map(String.init(describing:)).joined(separator: separator)
             print("SwiftLogging Internal:", subject)
