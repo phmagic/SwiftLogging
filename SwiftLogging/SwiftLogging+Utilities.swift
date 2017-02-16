@@ -21,8 +21,7 @@ public extension Logger {
 
         string = banner(string)
 
-        let event = Event(subject: string, priority: priority, source: source, tags: tags)
-        log(event, immediate: true)
+        log(string, priority: priority, tags: tags, source: source)
     }
 
 }

@@ -8,46 +8,52 @@
 
 extension Logger {
 
-    public func log(_ subject: Any?, priority: Priority = .debug, tags: Tags? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
+    public func log(_ items: Any..., separator: String = " ", priority: Priority = .debug, tags: Tags? = nil, userInfo: UserInfo? = nil, source: Source) {
+        let event = Event(items: items, separator: separator, priority: priority, source: source, tags: tags, userInfo: userInfo)
+        log(event: event)
+    }
+
+    
+    public func log(_ items: Any..., separator: String = " ", priority: Priority = .debug, tags: Tags? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
         let source = Source(filename: filename, function: function, line: line)
-        let event = Event(subject: subject, priority: priority, source: source, tags: tags, userInfo: userInfo)
-        log(event)
+        let event = Event(items: items, separator: separator, priority: priority, source: source, tags: tags, userInfo: userInfo)
+        log(event: event)
     }
 
     // Priority based logging
 
-    public func debug(_ subject: Any?, tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
+    public func debug(_ items: Any..., separator: String = " ", tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
         let source = Source(filename: filename, function: function, line: line)
         let tags: Tags? = tags != nil ? Tags(tags!) : nil
-        let event = Event(subject: subject, priority: .debug, source: source, tags: tags, userInfo: userInfo)
-        log(event)
+        let event = Event(items: items, separator: separator, priority: .debug, source: source, tags: tags, userInfo: userInfo)
+        log(event: event)
     }
 
-    public func info(_ subject: Any?, tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
+    public func info(_ items: Any..., separator: String = " ", tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
         let source = Source(filename: filename, function: function, line: line)
         let tags: Tags? = tags != nil ? Tags(tags!) : nil
-        let event = Event(subject: subject, priority: .info, source: source, tags: tags, userInfo: userInfo)
-        log(event)
+        let event = Event(items: items, separator: separator, priority: .info, source: source, tags: tags, userInfo: userInfo)
+        log(event: event)
     }
 
-    public func warning(_ subject: Any?, tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
+    public func warning(_ items: Any..., separator: String = " ", tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
         let source = Source(filename: filename, function: function, line: line)
         let tags: Tags? = tags != nil ? Tags(tags!) : nil
-        let event = Event(subject: subject, priority: .warning, source: source, tags: tags, userInfo: userInfo)
-        log(event)
+        let event = Event(items: items, separator: separator, priority: .warning, source: source, tags: tags, userInfo: userInfo)
+        log(event: event)
     }
 
-    public func error(_ subject: Any?, tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
+    public func error(_ items: Any..., separator: String = " ", tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
         let source = Source(filename: filename, function: function, line: line)
         let tags: Tags? = tags != nil ? Tags(tags!) : nil
-        let event = Event(subject: subject, priority: .error, source: source, tags: tags, userInfo: userInfo)
-        log(event)
+        let event = Event(items: items, separator: separator, priority: .error, source: source, tags: tags, userInfo: userInfo)
+        log(event: event)
     }
 
-    public func critical(_ subject: Any?, tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
+    public func critical(_ items: Any..., separator: String = " ", tags: [String]? = nil, userInfo: UserInfo? = nil, filename: String = #file, function: String = #function, line: Int = #line) {
         let source = Source(filename: filename, function: function, line: line)
         let tags: Tags? = tags != nil ? Tags(tags!) : nil
-        let event = Event(subject: subject, priority: .critical, source: source, tags: tags, userInfo: userInfo)
-        log(event)
+        let event = Event(items: items, separator: separator, priority: .critical, source: source, tags: tags, userInfo: userInfo)
+        log(event: event)
     }
 }
